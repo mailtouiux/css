@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My CSS Grid Reference - The ONE Method</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1a1a2e;
+    color: #eaeaea;
+    padding: 30px;
+    line-height: 1.6;
+  }
+  h1 {
+    color: #00d9ff;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 32px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #ffb84d;
+    margin-bottom: 40px;
+    font-size: 18px;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .step {
+    background: #16213e;
+    border-left: 5px solid #00d9ff;
+    padding: 20px 25px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+  }
+  .step h2 {
+    color: #00d9ff;
+    margin-bottom: 15px;
+  }
+  pre {
+    background: #0f3460;
+    color: #f0f0f0;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .keyword { color: #ff79c6; }
+  .property { color: #8be9fd; }
+  .value { color: #f1fa8c; }
+  .comment { color: #6272a4; font-style: italic; }
+
+  /* THE ACTUAL DEMO LAYOUT */
+  .demo-wrap {
+    background: #fff;
+    color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  .demo {
+    display: grid;
+    grid-template-areas:
+      "header header header"
+      "sidebar main   main"
+      "sidebar main   main"
+      "footer footer footer";
+    grid-template-columns: 200px 1fr 1fr;
+    grid-template-rows: 70px 150px 150px 60px;
+    gap: 10px;
+    height: 480px;
+  }
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 18px;
+  }
+  .header  { grid-area: header;  background: #ff6b6b; }
+  .sidebar { grid-area: sidebar; background: #4ecdc4; }
+  .main    { grid-area: main;    background: #ffd93d; color: #333; }
+  .footer  { grid-area: footer;  background: #6c5ce7; }
+
+  .map {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    background: #0f3460;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    margin: 15px 0;
+  }
+  .map div {
+    background: #ffb84d;
+    color: #1a1a2e;
+    text-align: center;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  .map .h { background: #ff6b6b; color: white; }
+  .map .s { background: #4ecdc4; color: white; }
+  .map .m { background: #ffd93d; color: #1a1a2e; }
+  .map .f { background: #6c5ce7; color: white; }
+
+  .rule {
+    background: #2d1b4e;
+    border: 1px dashed #ff79c6;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+  }
+  .rule strong { color: #ff79c6; }
+
+  .tip {
+    background: #1e3a2f;
+    border-left: 4px solid #4ade80;
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 15px 0;
+  }
+  .tip strong { color: #4ade80; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>My CSS Grid — The ONE Method to Remember</h1>
+  <p class="subtitle">Method: <strong>"Named Areas"</strong> (grid-template-areas)</p>
+
+  <div class="rule">
+    <strong>Why this method?</strong> You literally <em>draw</em> your layout using words.
+    No counting lines, no math. What you see is what you get.
+  </div>
+
+  <!-- ============ THE 3 STEP METHOD ============ -->
+  <div class="step">
+    <h2>Step 1 — Make the parent a grid</h2>
+    <pre><span class="property">.parent</span> {
+  <span class="property">display</span>: <span class="value">grid</span>;
+}</pre>
+    <p>Just turn ON grid mode. That's it.</p>
+  </div>
+
+  <div class="step">
+    <h2>Step 2 — Draw your layout with words</h2>
+    <pre><span class="property">.parent</span> {
+  <span class="property">display</span>: <span class="value">grid</span>;
+
+  <span class="comment">/* Draw your page like a picture using names */</span>
+  <span class="property">grid-template-areas</span>:
+    <span class="value">"header  header  header"</span>
+    <span class="value">"sidebar main    main"</span>
+    <span class="value">"sidebar main    main"</span>
+    <span class="value">"footer  footer  footer"</span>;
+
+  <span class="property">grid-template-columns</span>: <span class="value">200px 1fr 1fr</span>;
+  <span class="property">grid-template-rows</span>: <span class="value">70px 150px 150px 60px</span>;
+  <span class="property">gap</span>: <span class="value">10px</span>;
+}</pre>
+
+    <p><strong>Visual map of what you just wrote:</strong></p>
+    <div class="map">
+      <div class="h">header</div><div class="h">header</div><div class="h">header</div>
+      <div class="s">sidebar</div><div class="m">main</div><div class="m">main</div>
+      <div class="s">sidebar</div><div class="m">main</div><div class="m">main</div>
+      <div class="f">footer</div><div class="f">footer</div><div class="f">footer</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <h2>Step 3 — Tell each child WHICH area it belongs to</h2>
+    <pre><span class="property">.header</span>  { <span class="property">grid-area</span>: <span class="value">header</span>; }
+<span class="property">.sidebar</span> { <span class="property">grid-area</span>: <span class="value">sidebar</span>; }
+<span class="property">.main</span>    { <span class="property">grid-area</span>: <span class="value">main</span>; }
+<span class="property">.footer</span>  { <span class="property">grid-area</span>: <span class="value">footer</span>; }</pre>
+    <p>Done. The child goes wherever its name is in the picture.</p>
+  </div>
+
+  <!-- ============ LIVE DEMO ============ -->
+  <div class="step">
+    <h2>Live Result (this is real CSS Grid running below)</h2>
+    <div class="demo-wrap">
+      <div class="demo">
+        <div class="box header">HEADER</div>
+        <div class="box sidebar">SIDEBAR</div>
+        <div class="box main">MAIN CONTENT</div>
+        <div class="box footer">FOOTER</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RULES TO REMEMBER ============ -->
+  <div class="step">
+    <h2>4 Rules — Keep These In Mind</h2>
+
+    <div class="rule">
+      <strong>Rule 1:</strong> Each row in <code>grid-template-areas</code> must have the
+      <em>same number of columns</em> (same number of words).
+    </div>
+
+    <div class="rule">
+      <strong>Rule 2:</strong> To make an area span multiple cells, just <em>repeat the name</em>.
+      <br>Example: <code>"header header header"</code> = header spans all 3 columns.
+    </div>
+
+    <div class="rule">
+      <strong>Rule 3:</strong> Use a <code>.</code> (dot) for an empty cell.
+      <br>Example: <code>"sidebar . main"</code> = empty space in the middle.
+    </div>
+
+    <div class="rule">
+      <strong>Rule 4:</strong> Repeated names must form a <em>rectangle</em> — never an L-shape.
+    </div>
+  </div>
+
+  <!-- ============ UNITS CHEAT SHEET ============ -->
+  <div class="step">
+    <h2>Tiny Units Cheat Sheet (only what you need)</h2>
+    <pre><span class="value">200px</span>  <span class="comment">→ fixed width</span>
+<span class="value">1fr</span>    <span class="comment">→ takes 1 share of leftover space</span>
+<span class="value">2fr</span>    <span class="comment">→ takes 2 shares (twice as wide as 1fr)</span>
+<span class="value">auto</span>   <span class="comment">→ size based on content</span></pre>
+
+    <div class="tip">
+      <strong>Pro tip:</strong> Mix them. <code>grid-template-columns: 200px 1fr 1fr;</code>
+      means "fixed 200px sidebar, then split the rest into two equal pieces."
+    </div>
+  </div>
+
+  <!-- ============ MENTAL MODEL ============ -->
+  <div class="step">
+    <h2>The Mental Model — Keep this picture in your head</h2>
+    <p>Think of CSS Grid like building a house with rooms:</p>
+    <ul style="margin-left: 25px; margin-top: 10px;">
+      <li><strong>Step 1:</strong> Decide how big the house is (columns + rows)</li>
+      <li><strong>Step 2:</strong> Name each room on the floor plan (grid-template-areas)</li>
+      <li><strong>Step 3:</strong> Tell each piece of furniture which room it goes in (grid-area)</li>
+    </ul>
+
+    <div class="tip">
+      <strong>Stick to this method only.</strong> Ignore <code>grid-column-start</code>,
+      <code>grid-row-end</code>, line numbers, etc. for now. You can do 95% of real-world
+      layouts with just <code>grid-template-areas</code>. Learn the rest LATER, only when
+      you actually need them.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

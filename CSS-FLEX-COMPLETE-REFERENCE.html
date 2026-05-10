@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Flexbox — Professional Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d17;
+    --bg-2: #11141f;
+    --bg-3: #181b29;
+    --bg-4: #1f2336;
+    --border: #2a2e44;
+    --text: #e6e8ef;
+    --text-dim: #9ba1b3;
+    --accent: #6ee7ff;
+    --accent-2: #a78bfa;
+    --warn: #fb7185;
+    --good: #34d399;
+    --gold: #fbbf24;
+    --code-bg: #06080f;
+    --pink: #f472b6;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ TOP NAV ============ */
+  .topnav {
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .topnav .topnav-brand {
+    font-weight: 700;
+    color: var(--text);
+    margin-right: 32px;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .topnav .topnav-tabs { display: flex; gap: 4px; }
+  .topnav a {
+    padding: 8px 18px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .topnav a:hover { background: var(--bg-3); color: var(--text); }
+  .topnav a.active {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* ============ LAYOUT ============ */
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 52px); }
+
+  /* ============ SIDEBAR ============ */
+  aside {
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+  aside .brand {
+    padding: 0 28px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  aside .brand h1 { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  aside .brand p { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  aside nav { padding: 0 16px; }
+  aside nav .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 12px 12px 6px;
+  }
+  aside nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  aside nav a:hover { background: var(--bg-3); color: var(--text); }
+  aside nav a.active { background: var(--bg-4); color: var(--accent); }
+  aside nav a .file-num {
+    background: var(--bg-3);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 26px;
+    text-align: center;
+  }
+  aside nav a .pc-tag {
+    margin-left: auto;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  aside nav a .pc-tag.p { background: rgba(110, 231, 255, 0.15); color: var(--accent); }
+  aside nav a .pc-tag.c { background: rgba(244, 114, 182, 0.15); color: var(--pink); }
+
+  main { padding: 0; max-width: 100%; overflow-x: hidden; }
+
+  .hero {
+    padding: 64px 56px 48px;
+    background:
+      radial-gradient(ellipse at top right, rgba(110,231,255,0.08), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(167,139,250,0.06), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .eyebrow {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--bg-3);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead { font-size: 17px; color: var(--text-dim); max-width: 680px; line-height: 1.6; }
+
+  .content { padding: 48px 56px 80px; max-width: 920px; }
+
+  /* ============ SECTION ============ */
+  section.lesson {
+    margin-bottom: 72px;
+    scroll-margin-top: 76px;
+  }
+  section.lesson .file-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  section.lesson .file-tag .num {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .badges { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .badge.parent { background: rgba(110, 231, 255, 0.1); color: var(--accent); border-color: rgba(110, 231, 255, 0.3); }
+  .badge.child { background: rgba(244, 114, 182, 0.1); color: var(--pink); border-color: rgba(244, 114, 182, 0.3); }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  section.lesson h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  section.lesson h2 .star { color: var(--gold); font-size: 24px; vertical-align: middle; }
+  section.lesson .topic {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  section.lesson h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 32px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  section.lesson h3 .icon {
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  section.lesson p { margin-bottom: 14px; }
+  section.lesson ul { margin: 8px 0 16px 20px; }
+  section.lesson ul li { margin-bottom: 6px; color: var(--text-dim); }
+  section.lesson ul li strong { color: var(--text); }
+
+  /* ============ CODE BLOCK ============ */
+  .code-wrap { position: relative; margin: 16px 0; }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-3);
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .copy-btn {
+    background: var(--bg-4);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .copy-btn.copied { background: var(--good); color: var(--bg); border-color: var(--good); }
+  pre {
+    background: var(--code-bg);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .prop { color: #82d9ff; }
+  .val { color: #fde68a; }
+  .com { color: #6b7280; font-style: italic; }
+  .key { color: #f472b6; }
+  .sel { color: #c4b5fd; }
+  .punc { color: #9ba1b3; }
+
+  code {
+    background: var(--bg-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  /* ============ FLEX DEMO WITH AXIS LABELS ============ */
+  .fdemo {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0 24px;
+    box-shadow: var(--shadow);
+    color: #222;
+    position: relative;
+  }
+  .fdemo .demo-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .fdemo .demo-label::before {
+    content: ''; width: 8px; height: 8px;
+    background: var(--good); border-radius: 50%;
+    display: inline-block;
+  }
+  /* The flex container */
+  .fcontainer {
+    background: #f3f4f6;
+    border: 2px dashed #cbd5e1;
+    padding: 18px;
+    border-radius: 6px;
+    position: relative;
+    list-style: none;
+  }
+  .fcontainer .fitem {
+    background: linear-gradient(135deg, #6ee7ff, #4dc4e6);
+    color: #0b1220;
+    padding: 14px 16px;
+    margin: 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    list-style: none;
+    min-width: 80px;
+  }
+  /* Color variation per item for visual clarity */
+  .fcontainer .fitem:nth-child(6n+2) { background: linear-gradient(135deg, #f472b6, #db4d97); color: #fff; }
+  .fcontainer .fitem:nth-child(6n+3) { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #422006; }
+  .fcontainer .fitem:nth-child(6n+4) { background: linear-gradient(135deg, #86efac, #16a34a); color: #052e16; }
+  .fcontainer .fitem:nth-child(6n+5) { background: linear-gradient(135deg, #c4b5fd, #7c3aed); color: #fff; }
+  .fcontainer .fitem:nth-child(6n) { background: linear-gradient(135deg, #fdba74, #ea580c); color: #fff; }
+  /* Axis indicators */
+  .axis-info {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    background: #fafafa;
+    border-left: 3px solid #0ea5e9;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #475569;
+  }
+  .axis-info .axis {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .axis-info .arr {
+    font-weight: 800;
+    color: #0ea5e9;
+    font-size: 16px;
+  }
+  .axis-info .arr.cross { color: #db2777; }
+
+  /* ============ CALLOUTS ============ */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 14px 0;
+    font-size: 14px;
+    border-left: 3px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout .cicon { font-weight: 700; flex-shrink: 0; width: 18px; text-align: center; }
+  .callout strong { color: var(--text); }
+  .callout.tip { background: rgba(52, 211, 153, 0.07); border-color: var(--good); color: var(--text-dim); }
+  .callout.tip .cicon { color: var(--good); }
+  .callout.warn { background: rgba(251, 113, 133, 0.07); border-color: var(--warn); color: var(--text-dim); }
+  .callout.warn .cicon { color: var(--warn); }
+  .callout.info { background: rgba(110, 231, 255, 0.06); border-color: var(--accent); color: var(--text-dim); }
+  .callout.info .cicon { color: var(--accent); }
+  .callout.real { background: rgba(251, 191, 36, 0.06); border-color: var(--gold); color: var(--text-dim); }
+  .callout.real .cicon { color: var(--gold); }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 12px 0 20px;
+  }
+  .value-pill {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .value-pill .v {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .value-pill .d { color: var(--text-dim); font-size: 12px; }
+
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+  .compare th { background: var(--bg-3); color: var(--text); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .compare td { color: var(--text-dim); }
+  .compare td code, .compare th code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* ============ DEMO STYLES (per lesson) ============ */
+  /* 1. flex-what */
+  .d-1 { display: flex; }
+  /* 3. flex-direction */
+  .d-3-row { display: flex; flex-direction: row; }
+  .d-3-rowrev { display: flex; flex-direction: row-reverse; }
+  .d-3-col { display: flex; flex-direction: column; }
+  .d-3-colrev { display: flex; flex-direction: column-reverse; }
+  /* 4. flex-wrap */
+  .d-4-nowrap { display: flex; flex-wrap: nowrap; }
+  .d-4-wrap { display: flex; flex-wrap: wrap; }
+  .d-4-wraprev { display: flex; flex-wrap: wrap-reverse; }
+  /* 5. flex-flow */
+  .d-5 { display: flex; flex-flow: row wrap; }
+  /* 6. justify-content */
+  .d-6-fs { display: flex; justify-content: flex-start; }
+  .d-6-fe { display: flex; justify-content: flex-end; }
+  .d-6-c { display: flex; justify-content: center; }
+  .d-6-sb { display: flex; justify-content: space-between; }
+  .d-6-sa { display: flex; justify-content: space-around; }
+  .d-6-se { display: flex; justify-content: space-evenly; }
+  /* 7. align-items */
+  .d-7-stretch { display: flex; align-items: stretch; height: 160px; }
+  .d-7-fs { display: flex; align-items: flex-start; height: 160px; }
+  .d-7-fe { display: flex; align-items: flex-end; height: 160px; }
+  .d-7-c { display: flex; align-items: center; height: 160px; }
+  .d-7-base { display: flex; align-items: baseline; height: 160px; }
+  .d-7-base .fitem:first-child { padding: 5px; }
+  .d-7-base .fitem { padding-top: 20px; padding-bottom: 20px; }
+  /* 8. align-content */
+  .d-8 { display: flex; flex-wrap: wrap; height: 240px; }
+  .d-8 .fitem { padding: 8px 12px; min-width: 60px; font-size: 13px; }
+  .d-8.s { align-content: stretch; }
+  .d-8.fs { align-content: flex-start; }
+  .d-8.fe { align-content: flex-end; }
+  .d-8.c { align-content: center; }
+  .d-8.sb { align-content: space-between; }
+  .d-8.sa { align-content: space-around; }
+  .d-8.se { align-content: space-evenly; }
+  /* 9. order */
+  .d-9 { display: flex; }
+  .d-9 .fitem.o1 { order: 1; background: linear-gradient(135deg, #f472b6, #db4d97); }
+  .d-9 .fitem.o2 { order: 2; background: linear-gradient(135deg, #fde68a, #f59e0b); color: #422006; }
+  .d-9 .fitem.o3 { order: 3; background: linear-gradient(135deg, #c4b5fd, #7c3aed); }
+  .d-9 .fitem.on1 { order: -1; background: linear-gradient(135deg, #fdba74, #ea580c); }
+  /* 10. flex-grow */
+  .d-10 { display: flex; }
+  .d-10 .fitem.g1 { flex-grow: 1; }
+  .d-10 .fitem.g3 { flex-grow: 3; background: linear-gradient(135deg, #f472b6, #db4d97); }
+  /* 11. flex-shrink */
+  .d-11 { display: flex; width: 100%; }
+  .d-11 .fitem { width: 200px; }
+  .d-11 .fitem.s0 { flex-shrink: 0; background: linear-gradient(135deg, #f472b6, #db4d97); }
+  /* 12. flex-basis */
+  .d-12 { display: flex; }
+  .d-12 .fitem.b25 { flex-basis: 25rem; background: linear-gradient(135deg, #f472b6, #db4d97); }
+  /* 13. flex shorthand */
+  .d-13 { display: flex; }
+  .d-13 .fitem.flex1 { flex: 1 0 20rem; background: linear-gradient(135deg, #f472b6, #db4d97); }
+  /* 14. align-self */
+  .d-14 { display: flex; align-items: flex-end; height: 160px; }
+  .d-14 .fitem.self { align-self: flex-start; background: linear-gradient(135deg, #f472b6, #db4d97); }
+
+  /* SVG diagram wrapper */
+  .grid-svg-wrap {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+
+  /* CSS keyword inline note */
+  .kw-note {
+    background: linear-gradient(90deg, rgba(167,139,250,0.1), rgba(110,231,255,0.1));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .kw-note::before {
+    content: '📖';
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .kw-note strong { color: var(--accent-2); }
+
+  /* Glossary section */
+  .glossary {
+    background: linear-gradient(135deg, rgba(167,139,250,0.06), rgba(110,231,255,0.06));
+    border: 1px solid var(--accent-2);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 48px;
+    box-shadow: var(--shadow);
+  }
+  .glossary h2 {
+    color: var(--accent-2);
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .glossary .desc { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
+  .glossary h3 {
+    color: var(--accent);
+    font-size: 16px;
+    margin-top: 28px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Master cheat sheet */
+  .cheat {
+    background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 48px;
+    box-shadow: var(--shadow);
+  }
+  .cheat h2 { font-size: 24px; margin-bottom: 6px; color: var(--text); }
+  .cheat .desc { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
+
+  footer {
+    padding: 32px 56px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    .hero, .content, footer { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: 32px; }
+  }
+
+  @media print {
+    .topnav, aside, .copy-btn, .code-header { display: none; }
+    body { background: #fff; color: #000; }
+    .layout { display: block; }
+    pre { background: #f5f5f5; color: #000; }
+    .prop, .val, .com, .key { color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAVIGATION ============ -->
+<nav class="topnav">
+  <span class="topnav-brand">📚 CSS Reference</span>
+  <div class="topnav-tabs">
+    <a href="CSS-FLEX-COMPLETE-REFERENCE.html" class="active">FLEX</a>
+    <a href="CSS-GRID-COMPLETE-REFERENCE.html">GRID</a>
+    <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">PSEUDO-CLASSES</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside>
+    <div class="brand">
+      <h1>CSS Flexbox Reference</h1>
+      <p>Chapter — Resource Files</p>
+    </div>
+    <nav>
+<div class="label">Chapter — File Order</div>
+      <a href="#f1"><span class="file-num">1</span> flex-what<span class="pc-tag p">P</span></a>
+      <a href="#f2"><span class="file-num">2</span> flex-why<span class="pc-tag p">P</span></a>
+      <a href="#f3"><span class="file-num">3</span> flex-direction<span class="pc-tag p">P</span></a>
+      <a href="#f4"><span class="file-num">4</span> flex-wrap<span class="pc-tag p">P</span></a>
+      <a href="#f5"><span class="file-num">5</span> flex-flow<span class="pc-tag p">P</span></a>
+      <a href="#f6"><span class="file-num">6</span> justify-content<span class="pc-tag p">P</span></a>
+      <a href="#f7"><span class="file-num">7</span> align-items<span class="pc-tag p">P</span></a>
+      <a href="#f8"><span class="file-num">8</span> align-content<span class="pc-tag p">P</span></a>
+      <a href="#f9"><span class="file-num">9</span> order<span class="pc-tag c">C</span></a>
+      <a href="#f10"><span class="file-num">10</span> flex-grow<span class="pc-tag c">C</span></a>
+      <a href="#f11"><span class="file-num">11</span> flex-shrink<span class="pc-tag c">C</span></a>
+      <a href="#f12"><span class="file-num">12</span> flex-basis<span class="pc-tag c">C</span></a>
+      <a href="#f13"><span class="file-num">13</span> flex-Shorthand<span class="pc-tag c">C</span></a>
+      <a href="#f14"><span class="file-num">14</span> align-self<span class="pc-tag c">C</span></a>
+
+      <div class="label">Reference</div>
+      <a href="#cheat"><span class="file-num">📋</span>Cheat sheet</a>
+      <a href="#mistakes"><span class="file-num">⚠</span>Common mistakes</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <div class="hero">
+      <span class="eyebrow">CSS FLEXBOX LAYOUT</span>
+      <h1>The Complete CSS Flexbox Reference</h1>
+      <p class="lead">Every property, every value, every alignment option — built from your tutorial files. Each example is a live working flexbox layout with axis indicators showing main/cross axis direction.</p>
+      <div style="margin-top: 28px; padding: 16px 20px; background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; max-width: 680px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 10px;">Legend</div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+          <span class="badge parent">Parent property</span>
+          <span style="font-size: 13px; color: var(--text-dim);">→ goes on the flex container</span>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 8px;">
+          <span class="badge child">Child property</span>
+          <span style="font-size: 13px; color: var(--text-dim);">→ goes on individual flex items</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+<!-- ============ FILE 1 ============ -->
+      <section class="lesson" id="f1">
+        <span class="file-tag"><span class="num">1</span> flex-what.html</span>
+        <h2>What is a Flex Container?</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Activate Flexbox by setting <code>display: flex</code> on the parent. The parent becomes a "flex container," and its direct children become "flex items."</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>1.flex-what.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span> <span class="com">&lt;!-- Parent Element --&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Two Ways to Activate Flex</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>1.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Flex Container => Parent */</span>
+<span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">background-color</span>: <span class="val">lightslategray</span>;
+  <span class="prop">padding</span>: <span class="val">20px</span>;
+
+  <span class="com">/* Flex Container Properties */</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="com">/* display: inline-flex; — acts inline but children flex */</span>
+<span class="punc">}</span>
+
+<span class="com">/* Flex Items => Children */</span>
+<span class="sel">li</span> <span class="punc">{</span>
+  <span class="prop">list-style</span>: <span class="val">none</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">background-color</span>: <span class="val">#20b2aa</span>;
+  <span class="prop">padding</span>: <span class="val">10px</span>;
+  <span class="prop">margin</span>: <span class="val">20px</span>;
+  <span class="prop">width</span>: <span class="val">100px</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">display: flex — children line up on the main axis</div>
+          <div class="axis-info">
+            <div class="axis"><span class="arr">→</span> Main axis (horizontal, default)</div>
+            <div class="axis"><span class="arr cross">↓</span> Cross axis (vertical)</div>
+          </div>
+          <ul class="fcontainer d-1">
+            <li class="fitem">1st child</li>
+            <li class="fitem">2nd child</li>
+            <li class="fitem">3rd child</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>The Two Axes — Most Important Concept</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 720 360" style="width:100%; max-width:680px; display:block; margin:0 auto;">
+            <defs>
+              <marker id="ma1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/></marker>
+              <marker id="ca1" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#db2777"/></marker>
+            </defs>
+
+            <!-- Title -->
+            <text x="360" y="30" text-anchor="middle" fill="#475569" font-size="14" font-weight="700">Direction: row (default) — items flow along the main axis</text>
+
+            <!-- Container -->
+            <rect x="100" y="70" width="520" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4,4" rx="6"/>
+            <text x="115" y="60" fill="#6b7280" font-size="11" font-weight="700">FLEX CONTAINER</text>
+
+            <!-- 3 items -->
+            <rect x="140" y="120" width="100" height="60" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="6"/>
+            <text x="190" y="155" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">Item 1</text>
+            <rect x="260" y="120" width="100" height="60" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="6"/>
+            <text x="310" y="155" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Item 2</text>
+            <rect x="380" y="120" width="100" height="60" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="6"/>
+            <text x="430" y="155" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">Item 3</text>
+
+            <!-- Main axis line (horizontal below container) -->
+            <line x1="100" y1="280" x2="620" y2="280" stroke="#0ea5e9" stroke-width="3" marker-end="url(#ma1)"/>
+            <rect x="280" y="263" width="160" height="26" fill="#fff" stroke="#0ea5e9" stroke-width="1.5" rx="13"/>
+            <text x="360" y="281" text-anchor="middle" fill="#0ea5e9" font-size="14" font-weight="700">MAIN AXIS →</text>
+
+            <!-- Main start/end labels (below main axis) -->
+            <text x="100" y="312" fill="#0ea5e9" font-size="11" font-weight="600">main-start</text>
+            <text x="620" y="312" text-anchor="end" fill="#0ea5e9" font-size="11" font-weight="600">main-end</text>
+
+            <!-- Cross axis line (vertical to the right of container) -->
+            <line x1="660" y1="80" x2="660" y2="225" stroke="#db2777" stroke-width="3" marker-end="url(#ca1)"/>
+            <rect x="630" y="135" width="60" height="40" fill="#fff" stroke="#db2777" stroke-width="1.5" rx="8"/>
+            <text x="660" y="151" text-anchor="middle" fill="#db2777" font-size="11" font-weight="700">CROSS</text>
+            <text x="660" y="165" text-anchor="middle" fill="#db2777" font-size="11" font-weight="700">AXIS ↓</text>
+
+            <!-- Cross start/end labels (left of container) -->
+            <text x="55" y="84" fill="#db2777" font-size="11" font-weight="600">cross-start</text>
+            <text x="55" y="225" fill="#db2777" font-size="11" font-weight="600">cross-end</text>
+
+            <!-- Note at bottom -->
+            <text x="360" y="345" text-anchor="middle" fill="#94a3b8" font-size="11" font-style="italic">All Flexbox alignment refers to these 4 reference points: main-start, main-end, cross-start, cross-end</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Remember these 4 points:</strong> main-start, main-end (along main axis) and cross-start, cross-end (along cross axis). All flex alignment refers to these 4 points.</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Use Flexbox for 1D layouts (a row of nav items, a card with horizontal content). Use Grid for 2D layouts (page sections with rows AND columns).</div>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>display: flex vs inline-flex:</strong> <code>flex</code> takes full width (block-like), <code>inline-flex</code> takes only its content width (inline-like). Both make children flex.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 2 ============ -->
+      <section class="lesson" id="f2">
+        <span class="file-tag"><span class="num">2</span> flex-why.html</span>
+        <h2>Why Use Flexbox?</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Real-world example showing why Flexbox solves common layout problems — easy alignment, distribution of space, and natural responsiveness.</p>
+
+        <h3><span class="icon"></span>The Problem Flex Solves</h3>
+        <p>Before Flex, lining up sections side-by-side required floats, inline-blocks, or table layouts — all with quirks. Flex makes it trivial:</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>2.flex-why.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">section</span> <span class="prop">class</span>=<span class="val">"child-1"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"content"</span><span class="punc">&gt;</span>
+    <span class="punc">&lt;</span><span class="key">h2</span><span class="punc">&gt;</span>Section 1<span class="punc">&lt;/</span><span class="key">h2</span><span class="punc">&gt;</span>
+    <span class="punc">&lt;</span><span class="key">p</span><span class="punc">&gt;</span>Lorem ipsum...<span class="punc">&lt;/</span><span class="key">p</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">section</span><span class="punc">&gt;</span>
+<span class="com">&lt;!-- Section 2 and Section 3 (same structure) --&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>2.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Body becomes the flex container */</span>
+<span class="sel">body</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;   <span class="com">/* responsiveness — wraps to next row */</span>
+<span class="punc">}</span>
+
+<span class="sel">section</span> <span class="punc">{</span>
+  <span class="prop">width</span>: <span class="val">20rem</span>;
+  <span class="prop">background-color</span>: <span class="val">lightslategray</span>;
+  <span class="prop">padding</span>: <span class="val">1.5rem</span>;
+  <span class="prop">margin</span>: <span class="val">1rem</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">3 sections side-by-side, naturally responsive (wraps when narrow)</div>
+          <div class="axis-info">
+            <div class="axis"><span class="arr">→</span> Main axis</div>
+            <div class="axis"><span class="arr cross">↓</span> Cross axis (wraps here)</div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+            <section style="flex: 1; min-width: 180px; background: #708090; padding: 14px; color: white; border-radius: 4px;">
+              <h4 style="margin-bottom: 6px;">Section 1</h4>
+              <p style="font-size: 12px; line-height: 1.5;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </section>
+            <section style="flex: 1; min-width: 180px; background: #708090; padding: 14px; color: white; border-radius: 4px;">
+              <h4 style="margin-bottom: 6px;">Section 2</h4>
+              <p style="font-size: 12px; line-height: 1.5;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </section>
+            <section style="flex: 1; min-width: 180px; background: #708090; padding: 14px; color: white; border-radius: 4px;">
+              <h4 style="margin-bottom: 6px;">Section 3</h4>
+              <p style="font-size: 12px; line-height: 1.5;">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            </section>
+          </div>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world wins:</strong> Navbars, card rows, button groups, centered content (vertical + horizontal), equal-height columns, and natural responsive layouts.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 3 ============ -->
+      <section class="lesson" id="f3">
+        <span class="file-tag"><span class="num">3</span> flex.direction.html</span>
+        <h2>flex-direction</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Sets which way the main axis flows: horizontal (row) or vertical (column), and whether items go forward or in reverse.</p>
+
+        <h3><span class="icon"></span>4 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">row</span><span class="d">Default — left to right →</span></div>
+          <div class="value-pill"><span class="v">row-reverse</span><span class="d">Right to left ←</span></div>
+          <div class="value-pill"><span class="v">column</span><span class="d">Top to bottom ↓</span></div>
+          <div class="value-pill"><span class="v">column-reverse</span><span class="d">Bottom to top ↑</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>3.flex.direction.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>5th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>3.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;             <span class="com">/* default → */</span>
+  <span class="com">/* flex-direction: row-reverse; */</span>     <span class="com">/* ← */</span>
+  <span class="com">/* flex-direction: column; */</span>          <span class="com">/* ↓ */</span>
+  <span class="com">/* flex-direction: column-reverse; */</span>  <span class="com">/* ↑ */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-direction: row (default)</div>
+          <div class="axis-info"><div class="axis"><span class="arr">→</span> Main axis (left to right)</div></div>
+          <ul class="fcontainer d-3-row">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-direction: row-reverse</div>
+          <div class="axis-info"><div class="axis"><span class="arr">←</span> Main axis (right to left)</div></div>
+          <ul class="fcontainer d-3-rowrev">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-direction: column</div>
+          <div class="axis-info"><div class="axis"><span class="arr">↓</span> Main axis (top to bottom)</div></div>
+          <ul class="fcontainer d-3-col" style="max-width: 200px;">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-direction: column-reverse</div>
+          <div class="axis-info"><div class="axis"><span class="arr">↑</span> Main axis (bottom to top)</div></div>
+          <ul class="fcontainer d-3-colrev" style="max-width: 200px;">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>All 4 Directions Visualized</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 320" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <defs>
+              <marker id="ad1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/></marker>
+            </defs>
+
+            <!-- ROW (top-left) -->
+            <text x="20" y="30" fill="#0ea5e9" font-size="12" font-weight="700">flex-direction: row</text>
+            <rect x="20" y="40" width="280" height="80" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="35" y="55" width="40" height="50" fill="#6ee7ff" rx="3"/><text x="55" y="86" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1</text>
+            <rect x="85" y="55" width="40" height="50" fill="#f472b6" rx="3"/><text x="105" y="86" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2</text>
+            <rect x="135" y="55" width="40" height="50" fill="#fde68a" rx="3"/><text x="155" y="86" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">3</text>
+            <line x1="35" y1="135" x2="295" y2="135" stroke="#0ea5e9" stroke-width="2" marker-end="url(#ad1)"/>
+
+            <!-- ROW-REVERSE (top-right) -->
+            <text x="340" y="30" fill="#0ea5e9" font-size="12" font-weight="700">flex-direction: row-reverse</text>
+            <rect x="340" y="40" width="280" height="80" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="565" y="55" width="40" height="50" fill="#6ee7ff" rx="3"/><text x="585" y="86" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1</text>
+            <rect x="515" y="55" width="40" height="50" fill="#f472b6" rx="3"/><text x="535" y="86" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2</text>
+            <rect x="465" y="55" width="40" height="50" fill="#fde68a" rx="3"/><text x="485" y="86" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">3</text>
+            <line x1="605" y1="135" x2="345" y2="135" stroke="#0ea5e9" stroke-width="2" marker-end="url(#ad1)"/>
+
+            <!-- COLUMN (bottom-left) -->
+            <text x="20" y="170" fill="#0ea5e9" font-size="12" font-weight="700">flex-direction: column</text>
+            <rect x="20" y="180" width="120" height="120" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="35" y="195" width="90" height="28" fill="#6ee7ff" rx="3"/><text x="80" y="214" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">1</text>
+            <rect x="35" y="230" width="90" height="28" fill="#f472b6" rx="3"/><text x="80" y="249" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <rect x="35" y="265" width="90" height="28" fill="#fde68a" rx="3"/><text x="80" y="284" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">3</text>
+            <line x1="155" y1="195" x2="155" y2="295" stroke="#0ea5e9" stroke-width="2" marker-end="url(#ad1)" transform="rotate(0)"/>
+
+            <!-- COLUMN-REVERSE (bottom-right) -->
+            <text x="200" y="170" fill="#0ea5e9" font-size="12" font-weight="700">flex-direction: column-reverse</text>
+            <rect x="200" y="180" width="120" height="120" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="215" y="265" width="90" height="28" fill="#6ee7ff" rx="3"/><text x="260" y="284" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">1</text>
+            <rect x="215" y="230" width="90" height="28" fill="#f472b6" rx="3"/><text x="260" y="249" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <rect x="215" y="195" width="90" height="28" fill="#fde68a" rx="3"/><text x="260" y="214" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">3</text>
+            <line x1="335" y1="295" x2="335" y2="195" stroke="#0ea5e9" stroke-width="2" marker-end="url(#ad1)"/>
+
+            <text x="490" y="240" text-anchor="middle" fill="#475569" font-size="12" font-weight="600">Item order</text>
+            <text x="490" y="258" text-anchor="middle" fill="#475569" font-size="11">in HTML stays</text>
+            <text x="490" y="272" text-anchor="middle" fill="#475569" font-size="11">the same — only</text>
+            <text x="490" y="286" text-anchor="middle" fill="#475569" font-size="11">VISUAL order changes</text>
+          </svg>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Important:</strong> When you change direction, the <em>main axis swaps with the cross axis</em>. So <code>justify-content</code> and <code>align-items</code> change meaning too.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 4 ============ -->
+      <section class="lesson" id="f4">
+        <span class="file-tag"><span class="num">4</span> flex-wrap.html</span>
+        <h2>flex-wrap</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Controls whether items stay on a single line or wrap to a new line when there's not enough space.</p>
+
+        <h3><span class="icon"></span>3 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">nowrap</span><span class="d">Default — single line, items shrink</span></div>
+          <div class="value-pill"><span class="v">wrap</span><span class="d">Wrap to new lines below</span></div>
+          <div class="value-pill"><span class="v">wrap-reverse</span><span class="d">Wrap to new lines above</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>4.flex-wrap.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="com">... 12 items total ...</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>12th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>4.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">nowrap</span>;        <span class="com">/* default — items shrink to fit one row */</span>
+  <span class="com">/* flex-wrap: wrap; */</span>          <span class="com">/* multi-line, new rows below */</span>
+  <span class="com">/* flex-wrap: wrap-reverse; */</span>  <span class="com">/* multi-line, new rows above */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-wrap: nowrap (default) — 12 items squished into one row</div>
+          <ul class="fcontainer d-4-nowrap">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li>
+            <li class="fitem">5</li><li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li>
+            <li class="fitem">9</li><li class="fitem">10</li><li class="fitem">11</li><li class="fitem">12</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-wrap: wrap — items keep size, wrap to new rows</div>
+          <ul class="fcontainer d-4-wrap">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li>
+            <li class="fitem">5</li><li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li>
+            <li class="fitem">9</li><li class="fitem">10</li><li class="fitem">11</li><li class="fitem">12</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-wrap: wrap-reverse — first row is at the BOTTOM</div>
+          <ul class="fcontainer d-4-wraprev">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li>
+            <li class="fitem">5</li><li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li>
+            <li class="fitem">9</li><li class="fitem">10</li><li class="fitem">11</li><li class="fitem">12</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>How wrap works</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 240" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- nowrap (left) -->
+            <text x="20" y="22" fill="#0ea5e9" font-size="11" font-weight="700">nowrap (default) — items shrink to fit one row</text>
+            <rect x="20" y="32" width="290" height="50" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="28" y="42" width="35" height="30" fill="#6ee7ff" rx="2"/><text x="46" y="62" text-anchor="middle" fill="#0b1220" font-size="10" font-weight="700">1</text>
+            <rect x="68" y="42" width="35" height="30" fill="#f472b6" rx="2"/><text x="86" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+            <rect x="108" y="42" width="35" height="30" fill="#fde68a" rx="2"/><text x="126" y="62" text-anchor="middle" fill="#422006" font-size="10" font-weight="700">3</text>
+            <rect x="148" y="42" width="35" height="30" fill="#86efac" rx="2"/><text x="166" y="62" text-anchor="middle" fill="#052e16" font-size="10" font-weight="700">4</text>
+            <rect x="188" y="42" width="35" height="30" fill="#c4b5fd" rx="2"/><text x="206" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">5</text>
+            <rect x="228" y="42" width="35" height="30" fill="#fdba74" rx="2"/><text x="246" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">6</text>
+            <rect x="268" y="42" width="35" height="30" fill="#94a3b8" rx="2"/><text x="286" y="62" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">7</text>
+
+            <!-- wrap (right) -->
+            <text x="330" y="22" fill="#0ea5e9" font-size="11" font-weight="700">wrap — items keep size, flow to next row</text>
+            <rect x="330" y="32" width="290" height="120" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="338" y="42" width="55" height="30" fill="#6ee7ff" rx="2"/><text x="365" y="62" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="398" y="42" width="55" height="30" fill="#f472b6" rx="2"/><text x="425" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="458" y="42" width="55" height="30" fill="#fde68a" rx="2"/><text x="485" y="62" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+            <rect x="518" y="42" width="55" height="30" fill="#86efac" rx="2"/><text x="545" y="62" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">4</text>
+            <rect x="338" y="78" width="55" height="30" fill="#c4b5fd" rx="2"/><text x="365" y="98" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+            <rect x="398" y="78" width="55" height="30" fill="#fdba74" rx="2"/><text x="425" y="98" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6</text>
+            <rect x="458" y="78" width="55" height="30" fill="#94a3b8" rx="2"/><text x="485" y="98" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">7</text>
+
+            <!-- wrap-reverse (bottom-spanning) -->
+            <text x="20" y="180" fill="#db2777" font-size="11" font-weight="700">wrap-reverse — first row appears at the BOTTOM</text>
+            <rect x="20" y="190" width="600" height="44" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="28" y="195" width="55" height="18" fill="#94a3b8" rx="2"/><text x="55" y="208" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">5</text>
+            <rect x="88" y="195" width="55" height="18" fill="#fdba74" rx="2"/><text x="115" y="208" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">6</text>
+            <rect x="148" y="195" width="55" height="18" fill="#c4b5fd" rx="2"/><text x="175" y="208" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">7</text>
+            <rect x="28" y="216" width="55" height="14" fill="#6ee7ff" rx="2"/><text x="55" y="227" text-anchor="middle" fill="#0b1220" font-size="9" font-weight="700">1</text>
+            <rect x="88" y="216" width="55" height="14" fill="#f472b6" rx="2"/><text x="115" y="227" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">2</text>
+            <rect x="148" y="216" width="55" height="14" fill="#fde68a" rx="2"/><text x="175" y="227" text-anchor="middle" fill="#422006" font-size="9" font-weight="700">3</text>
+            <rect x="208" y="216" width="55" height="14" fill="#86efac" rx="2"/><text x="235" y="227" text-anchor="middle" fill="#052e16" font-size="9" font-weight="700">4</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Almost always use <code>flex-wrap: wrap</code> for responsive layouts. <code>nowrap</code> can cause items to squish unreadably small on narrow screens.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 5 ============ -->
+      <section class="lesson" id="f5">
+        <span class="file-tag"><span class="num">5</span> flex-flow.html</span>
+        <h2>flex-flow (Shorthand)</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Shorthand combining <code>flex-direction</code> and <code>flex-wrap</code> in one line.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>5.flex-flow.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="com">... 12 items total ...</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>12th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>5.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Long form */</span>
+<span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">flex-direction</span>: <span class="val">row</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Short form (same thing) */</span>
+<span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">flex-flow</span>: <span class="val">row wrap</span>;
+<span class="punc">}</span>
+
+<span class="com">/* All 8 combinations possible: */</span>
+<span class="prop">flex-flow</span>: <span class="val">row wrap</span>;             <span class="com">/* horizontal, wraps */</span>
+<span class="prop">flex-flow</span>: <span class="val">column wrap</span>;          <span class="com">/* vertical, wraps */</span>
+<span class="prop">flex-flow</span>: <span class="val">row-reverse wrap</span>;     <span class="com">/* reverse horizontal, wraps */</span>
+<span class="prop">flex-flow</span>: <span class="val">column-reverse wrap</span>;  <span class="com">/* reverse vertical, wraps */</span>
+<span class="prop">flex-flow</span>: <span class="val">row nowrap</span>;           <span class="com">/* default */</span>
+<span class="prop">flex-flow</span>: <span class="val">row-reverse nowrap</span>;
+<span class="prop">flex-flow</span>: <span class="val">column nowrap</span>;
+<span class="prop">flex-flow</span>: <span class="val">column-reverse nowrap</span>;</pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-flow: row wrap — combines direction + wrapping</div>
+          <ul class="fcontainer d-5">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li>
+            <li class="fitem">5</li><li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li>
+            <li class="fitem">9</li><li class="fitem">10</li><li class="fitem">11</li><li class="fitem">12</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>flex-flow = 2 properties in 1</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 220" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- Two boxes: direction + wrap -->
+            <rect x="40" y="60" width="180" height="80" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="6"/>
+            <text x="130" y="85" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">flex-direction</text>
+            <text x="130" y="103" text-anchor="middle" fill="#0b1220" font-size="11">row | row-reverse</text>
+            <text x="130" y="119" text-anchor="middle" fill="#0b1220" font-size="11">column | column-reverse</text>
+
+            <text x="240" y="105" text-anchor="middle" fill="#475569" font-size="22" font-weight="700">+</text>
+
+            <rect x="260" y="60" width="180" height="80" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="6"/>
+            <text x="350" y="85" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">flex-wrap</text>
+            <text x="350" y="103" text-anchor="middle" fill="#fff" font-size="11">nowrap | wrap</text>
+            <text x="350" y="119" text-anchor="middle" fill="#fff" font-size="11">wrap-reverse</text>
+
+            <text x="460" y="105" text-anchor="middle" fill="#475569" font-size="22" font-weight="700">=</text>
+
+            <rect x="480" y="60" width="140" height="80" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="6"/>
+            <text x="550" y="92" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">flex-flow</text>
+            <text x="550" y="112" text-anchor="middle" fill="#422006" font-size="11">(shorthand)</text>
+
+            <!-- Example -->
+            <text x="320" y="180" text-anchor="middle" fill="#475569" font-size="13">
+              Example: <tspan fill="#0ea5e9" font-weight="700" font-family="JetBrains Mono">flex-flow: row wrap;</tspan>
+            </text>
+            <text x="320" y="200" text-anchor="middle" fill="#475569" font-size="11" font-style="italic">
+              = flex-direction: row + flex-wrap: wrap, in one line
+            </text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Use <code>flex-flow</code> when you set both direction AND wrap. It's cleaner than two separate properties.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 6 ============ -->
+      <section class="lesson" id="f6">
+        <span class="file-tag"><span class="num">6</span> justify-content.html</span>
+        <h2>justify-content <span class="star">★</span></h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Aligns items along the <strong>main axis</strong>. The most-used Flexbox alignment property.</p>
+
+        <h3><span class="icon"></span>6 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">flex-start</span><span class="d">Default — pack to start</span></div>
+          <div class="value-pill"><span class="v">flex-end</span><span class="d">Pack to end</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Center on main axis</span></div>
+          <div class="value-pill"><span class="v">space-between</span><span class="d">Edges + equal gaps</span></div>
+          <div class="value-pill"><span class="v">space-around</span><span class="d">Equal space around each</span></div>
+          <div class="value-pill"><span class="v">space-evenly</span><span class="d">Equal space everywhere</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>6.justify-content.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>5th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>6.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">flex-start</span>;     <span class="com">/* default */</span>
+  <span class="com">/* justify-content: flex-end; */</span>
+  <span class="com">/* justify-content: center; */</span>
+  <span class="com">/* justify-content: space-between; */</span>
+  <span class="com">/* justify-content: space-around; */</span>
+  <span class="com">/* justify-content: space-evenly; */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-start (default)</div>
+          <div class="axis-info"><div class="axis"><span class="arr">→</span> items pack at start of main axis</div></div>
+          <ul class="fcontainer d-6-fs"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-end</div>
+          <ul class="fcontainer d-6-fe"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">center</div>
+          <ul class="fcontainer d-6-c"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-between — first/last touch edges, gaps equal</div>
+          <ul class="fcontainer d-6-sb"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-around — equal space wraps each item (half at edges)</div>
+          <ul class="fcontainer d-6-sa"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-evenly — equal space everywhere (including edges)</div>
+          <ul class="fcontainer d-6-se"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <h3><span class="icon"></span>All 6 Values Side-by-Side</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 400" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- flex-start -->
+            <text x="20" y="22" fill="#475569" font-size="11" font-weight="700">flex-start (default)</text>
+            <rect x="20" y="30" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="28" y="38" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="53" y="53" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="83" y="38" width="50" height="20" fill="#f472b6" rx="2"/><text x="108" y="53" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="138" y="38" width="50" height="20" fill="#fde68a" rx="2"/><text x="163" y="53" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <!-- flex-end -->
+            <text x="20" y="92" fill="#475569" font-size="11" font-weight="700">flex-end</text>
+            <rect x="20" y="100" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="452" y="108" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="477" y="123" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="507" y="108" width="50" height="20" fill="#f472b6" rx="2"/><text x="532" y="123" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="562" y="108" width="50" height="20" fill="#fde68a" rx="2"/><text x="587" y="123" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <!-- center -->
+            <text x="20" y="162" fill="#475569" font-size="11" font-weight="700">center</text>
+            <rect x="20" y="170" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="237" y="178" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="262" y="193" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="292" y="178" width="50" height="20" fill="#f472b6" rx="2"/><text x="317" y="193" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="347" y="178" width="50" height="20" fill="#fde68a" rx="2"/><text x="372" y="193" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <!-- space-between -->
+            <text x="20" y="232" fill="#475569" font-size="11" font-weight="700">space-between (edges + equal gaps)</text>
+            <rect x="20" y="240" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="28" y="248" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="53" y="263" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="295" y="248" width="50" height="20" fill="#f472b6" rx="2"/><text x="320" y="263" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="562" y="248" width="50" height="20" fill="#fde68a" rx="2"/><text x="587" y="263" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <!-- space-around -->
+            <text x="20" y="302" fill="#475569" font-size="11" font-weight="700">space-around (half-space at edges)</text>
+            <rect x="20" y="310" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="80" y="318" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="105" y="333" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="295" y="318" width="50" height="20" fill="#f472b6" rx="2"/><text x="320" y="333" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="510" y="318" width="50" height="20" fill="#fde68a" rx="2"/><text x="535" y="333" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <!-- space-evenly -->
+            <text x="20" y="372" fill="#475569" font-size="11" font-weight="700">space-evenly (equal everywhere)</text>
+            <rect x="20" y="380" width="600" height="36" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="125" y="388" width="50" height="20" fill="#6ee7ff" rx="2"/><text x="150" y="403" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="295" y="388" width="50" height="20" fill="#f472b6" rx="2"/><text x="320" y="403" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="465" y="388" width="50" height="20" fill="#fde68a" rx="2"/><text x="490" y="403" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Memory trick:</strong> "<strong>justify</strong>" affects the <strong>main axis</strong> (the direction items flow). For row layouts, that's horizontal.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 7 ============ -->
+      <section class="lesson" id="f7">
+        <span class="file-tag"><span class="num">7</span> align-items.html</span>
+        <h2>align-items <span class="star">★</span></h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Aligns items along the <strong>cross axis</strong> (perpendicular to main axis). Only works when container has a defined height (or items have different heights).</p>
+
+        <h3><span class="icon"></span>5 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">stretch</span><span class="d">Default — fills cross axis</span></div>
+          <div class="value-pill"><span class="v">flex-start</span><span class="d">Top of cross axis</span></div>
+          <div class="value-pill"><span class="v">flex-end</span><span class="d">Bottom of cross axis</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Center on cross axis</span></div>
+          <div class="value-pill"><span class="v">baseline</span><span class="d">Aligned by text baseline</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>7.align-items.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>5th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>7.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">height</span>: <span class="val">300px</span>;            <span class="com">/* needed for vertical alignment */</span>
+  <span class="prop">align-items</span>: <span class="val">stretch</span>;     <span class="com">/* default */</span>
+  <span class="com">/* align-items: flex-start; */</span>
+  <span class="com">/* align-items: flex-end; */</span>
+  <span class="com">/* align-items: center; */</span>
+  <span class="com">/* align-items: baseline; */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">stretch (default) — items fill the height</div>
+          <ul class="fcontainer d-7-stretch"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-start — items at top</div>
+          <ul class="fcontainer d-7-fs"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-end — items at bottom</div>
+          <ul class="fcontainer d-7-fe"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">center — items vertically centered</div>
+          <ul class="fcontainer d-7-c"><li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li></ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">baseline — aligned by text baseline (note item 1 has different padding)</div>
+          <ul class="fcontainer d-7-base"><li class="fitem">1st</li><li class="fitem">2nd</li><li class="fitem">3rd</li></ul>
+        </div>
+
+        <h3><span class="icon"></span>All 5 Values Side-by-Side</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 220" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- 5 mini containers showing each align-items value -->
+            <!-- stretch -->
+            <text x="60" y="20" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">stretch</text>
+            <rect x="20" y="30" width="80" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="30" y="40" width="60" height="140" fill="#6ee7ff" rx="3"/>
+            <text x="60" y="120" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+
+            <!-- flex-start -->
+            <text x="180" y="20" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">flex-start</text>
+            <rect x="140" y="30" width="80" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="150" y="40" width="60" height="40" fill="#f472b6" rx="3"/>
+            <text x="180" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+
+            <!-- flex-end -->
+            <text x="300" y="20" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">flex-end</text>
+            <rect x="260" y="30" width="80" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="270" y="140" width="60" height="40" fill="#fde68a" rx="3"/>
+            <text x="300" y="165" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">1</text>
+
+            <!-- center -->
+            <text x="420" y="20" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">center</text>
+            <rect x="380" y="30" width="80" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="390" y="90" width="60" height="40" fill="#86efac" rx="3"/>
+            <text x="420" y="115" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">1</text>
+
+            <!-- baseline -->
+            <text x="540" y="20" text-anchor="middle" fill="#475569" font-size="10" font-weight="700">baseline</text>
+            <rect x="500" y="30" width="80" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="510" y="80" width="60" height="40" fill="#c4b5fd" rx="3"/>
+            <text x="540" y="105" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <line x1="500" y1="115" x2="580" y2="115" stroke="#7c3aed" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+
+            <text x="320" y="210" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">All 5 align-items values along the cross axis (vertical for row layouts)</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Memory trick:</strong> "<strong>align</strong>" affects the <strong>cross axis</strong> (perpendicular to main). For row layouts, that's vertical.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 8 ============ -->
+      <section class="lesson" id="f8">
+        <span class="file-tag"><span class="num">8</span> align-content.html</span>
+        <h2>align-content</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Aligns multiple lines of items along the cross axis. <strong>Only works when items wrap into multiple rows</strong>.</p>
+
+        <h3><span class="icon"></span>7 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">stretch</span><span class="d">Default — rows fill cross axis</span></div>
+          <div class="value-pill"><span class="v">flex-start</span><span class="d">Rows pack at start</span></div>
+          <div class="value-pill"><span class="v">flex-end</span><span class="d">Rows pack at end</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Rows centered</span></div>
+          <div class="value-pill"><span class="v">space-between</span><span class="d">Edges + equal gaps</span></div>
+          <div class="value-pill"><span class="v">space-around</span><span class="d">Space around each row</span></div>
+          <div class="value-pill"><span class="v">space-evenly</span><span class="d">Equal space everywhere</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>8.align-content.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="com">... 15 items total (need many to wrap into rows) ...</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>15<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>8.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;             <span class="com">/* MUST wrap to see effect */</span>
+  <span class="prop">height</span>: <span class="val">600px</span>;
+  <span class="prop">align-content</span>: <span class="val">center</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">stretch (default) — rows fill cross axis evenly</div>
+          <ul class="fcontainer d-8 s">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-start — rows pack at top</div>
+          <ul class="fcontainer d-8 fs">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">flex-end — rows pack at bottom</div>
+          <ul class="fcontainer d-8 fe">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">center — rows packed in middle</div>
+          <ul class="fcontainer d-8 c">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-between — first/last rows at edges</div>
+          <ul class="fcontainer d-8 sb">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-around — equal space around each row</div>
+          <ul class="fcontainer d-8 sa">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">space-evenly — equal space everywhere (including edges)</div>
+          <ul class="fcontainer d-8 se">
+            <li class="fitem">1</li><li class="fitem">2</li><li class="fitem">3</li><li class="fitem">4</li><li class="fitem">5</li>
+            <li class="fitem">6</li><li class="fitem">7</li><li class="fitem">8</li><li class="fitem">9</li><li class="fitem">10</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>align-items vs align-content</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 260" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- align-items (left) -->
+            <text x="20" y="22" fill="#0ea5e9" font-size="12" font-weight="700">align-items: aligns items WITHIN their row</text>
+            <rect x="20" y="32" width="290" height="200" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <!-- Row 1 with items aligned center within row -->
+            <rect x="30" y="50" width="270" height="60" fill="rgba(110,231,255,0.15)" rx="3"/>
+            <rect x="40" y="68" width="50" height="24" fill="#6ee7ff" rx="2"/><text x="65" y="84" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="100" y="68" width="50" height="24" fill="#f472b6" rx="2"/><text x="125" y="84" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="160" y="68" width="50" height="24" fill="#fde68a" rx="2"/><text x="185" y="84" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+            <text x="280" y="85" text-anchor="end" fill="#0ea5e9" font-size="9" font-weight="600">row 1</text>
+
+            <rect x="30" y="120" width="270" height="60" fill="rgba(110,231,255,0.15)" rx="3"/>
+            <rect x="40" y="138" width="50" height="24" fill="#86efac" rx="2"/><text x="65" y="154" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">4</text>
+            <rect x="100" y="138" width="50" height="24" fill="#c4b5fd" rx="2"/><text x="125" y="154" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+            <rect x="160" y="138" width="50" height="24" fill="#fdba74" rx="2"/><text x="185" y="154" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6</text>
+            <text x="280" y="155" text-anchor="end" fill="#0ea5e9" font-size="9" font-weight="600">row 2</text>
+
+            <text x="165" y="210" text-anchor="middle" fill="#475569" font-size="11">Items center inside each row's strip</text>
+
+            <!-- align-content (right) -->
+            <text x="330" y="22" fill="#db2777" font-size="12" font-weight="700">align-content: aligns ROWS as a group</text>
+            <rect x="330" y="32" width="290" height="200" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <!-- Both rows packed together in middle -->
+            <rect x="340" y="100" width="270" height="60" fill="rgba(244,114,182,0.15)" rx="3"/>
+            <rect x="350" y="115" width="50" height="30" fill="#6ee7ff" rx="2"/><text x="375" y="135" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1</text>
+            <rect x="410" y="115" width="50" height="30" fill="#f472b6" rx="2"/><text x="435" y="135" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="470" y="115" width="50" height="30" fill="#fde68a" rx="2"/><text x="495" y="135" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3</text>
+
+            <rect x="340" y="170" width="270" height="40" fill="rgba(244,114,182,0.15)" rx="3"/>
+            <rect x="350" y="180" width="50" height="20" fill="#86efac" rx="2"/><text x="375" y="194" text-anchor="middle" fill="#052e16" font-size="10" font-weight="700">4</text>
+            <rect x="410" y="180" width="50" height="20" fill="#c4b5fd" rx="2"/><text x="435" y="194" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">5</text>
+            <rect x="470" y="180" width="50" height="20" fill="#fdba74" rx="2"/><text x="495" y="194" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">6</text>
+
+            <text x="475" y="225" text-anchor="middle" fill="#475569" font-size="11">Both rows packed in the middle</text>
+
+            <text x="475" y="60" text-anchor="middle" fill="#94a3b8" font-size="9" font-style="italic">empty space above</text>
+          </svg>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Important:</strong> <code>align-content</code> only works when there are MULTIPLE rows. Single-line flex containers ignore it. Use <code>flex-wrap: wrap</code> first.</div>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>align-items vs align-content:</strong>
+          <br>• <code>align-items</code> = aligns each item WITHIN its row
+          <br>• <code>align-content</code> = aligns the ROWS as a group</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 9 ============ -->
+      <section class="lesson" id="f9">
+        <span class="file-tag"><span class="num">9</span> order.html</span>
+        <h2>order</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Reorders flex items visually without changing the HTML. Default is 0. Lower numbers come first, negative numbers come before 0.</p>
+
+        <div class="kw-note">
+          <div><strong>This section uses <code>:nth-child(N)</code></strong> — a built-in CSS pseudo-class that picks the Nth child. Example: <code>li:nth-child(2)</code> = the 2nd <code>&lt;li&gt;</code>. See the <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a> for full reference.</div>
+        </div>
+
+        <!-- ============ STEP 1: BEFORE ============ -->
+        <h3><span class="icon"></span>STEP 1 — Normal order (no <code>order</code> applied)</h3>
+
+        <div class="code-wrap">
+          <div class="code-header"><span>HTML — order.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>5th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>6th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>7th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>8th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header"><span>CSS — basic flex, no order</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+<span class="punc">}</span>
+<span class="com">/* No order property — items appear in HTML order */</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">RESULT — items appear 1, 2, 3, 4, 5, 6, 7, 8 (same as HTML)</div>
+          <ul class="fcontainer" style="display: flex; flex-wrap: wrap;">
+            <li class="fitem">1</li>
+            <li class="fitem">2</li>
+            <li class="fitem">3</li>
+            <li class="fitem">4</li>
+            <li class="fitem">5</li>
+            <li class="fitem">6</li>
+            <li class="fitem">7</li>
+            <li class="fitem">8</li>
+          </ul>
+        </div>
+
+        <!-- ============ STEP 2: AFTER ============ -->
+        <h3><span class="icon"></span>STEP 2 — Apply <code>order</code> to specific items</h3>
+
+        <div class="code-wrap">
+          <div class="code-header"><span>HTML — UNCHANGED (still 1 to 8)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">&lt;!-- Same HTML, no changes --&gt;</span>
+<span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="com">... 8 items in HTML order ...</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <div class="code-wrap">
+          <div class="code-header"><span>CSS — 9.style.css (apply order)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span> <span class="prop">display</span>: <span class="val">flex</span>; <span class="punc">}</span>
+
+<span class="com">/* Negative values → move items EARLIER (before default 0) */</span>
+<span class="sel">li:nth-child(2)</span> <span class="punc">{</span> <span class="prop">order</span>: <span class="val">-2</span>; <span class="punc">}</span>   <span class="com">/* item 2 → very first */</span>
+<span class="sel">li:nth-child(8)</span> <span class="punc">{</span> <span class="prop">order</span>: <span class="val">-1</span>; <span class="punc">}</span>   <span class="com">/* item 8 → second */</span>
+
+<span class="com">/* Items 1, 4, 7 have no order set → default 0 */</span>
+
+<span class="com">/* Positive values → move items LATER (after default 0) */</span>
+<span class="sel">li:nth-child(3)</span> <span class="punc">{</span> <span class="prop">order</span>: <span class="val">1</span>; <span class="punc">}</span>
+<span class="sel">li:nth-child(6)</span> <span class="punc">{</span> <span class="prop">order</span>: <span class="val">2</span>; <span class="punc">}</span>
+<span class="sel">li:nth-child(5)</span> <span class="punc">{</span> <span class="prop">order</span>: <span class="val">5</span>; <span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">RESULT — visual order is now: 2, 8, 1, 4, 7, 3, 6, 5</div>
+          <ul class="fcontainer" style="display: flex; flex-wrap: wrap;">
+            <li class="fitem" style="background: linear-gradient(135deg, #6ee7ff, #4dc4e6); color: #0b1220;">1<br><small>order: 0</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #f472b6, #db4d97); color: #fff; order: -2;">2<br><small>order: -2</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #fde68a, #f59e0b); color: #422006; order: 1;">3<br><small>order: 1</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #86efac, #16a34a); color: #052e16;">4<br><small>order: 0</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #c4b5fd, #7c3aed); color: #fff; order: 5;">5<br><small>order: 5</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #fdba74, #ea580c); color: #fff; order: 2;">6<br><small>order: 2</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #6ee7ff, #4dc4e6); color: #0b1220;">7<br><small>order: 0</small></li>
+            <li class="fitem" style="background: linear-gradient(135deg, #f472b6, #db4d97); color: #fff; order: -1;">8<br><small>order: -1</small></li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>How the sorting works</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 320" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- HTML order (top) -->
+            <text x="20" y="22" fill="#475569" font-size="12" font-weight="700">BEFORE — HTML order (default order: 0)</text>
+            <rect x="20" y="35" width="600" height="50" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <g font-family="JetBrains Mono, monospace">
+              <rect x="35" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="67" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+              <rect x="110" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="142" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+              <rect x="185" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="217" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+              <rect x="260" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="292" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+              <rect x="335" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="367" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+              <rect x="410" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="442" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6</text>
+              <rect x="485" y="48" width="65" height="26" fill="#94a3b8" rx="3"/>
+              <text x="517" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">7</text>
+              <rect x="555" y="48" width="60" height="26" fill="#94a3b8" rx="3"/>
+              <text x="585" y="65" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">8</text>
+            </g>
+
+            <!-- Apply order arrow -->
+            <text x="320" y="115" text-anchor="middle" fill="#db2777" font-size="13" font-weight="700">↓ Apply order values via CSS ↓</text>
+            <text x="320" y="135" text-anchor="middle" fill="#475569" font-size="11">2: order:-2 · 8: order:-1 · 1,4,7: default 0 · 3: order:1 · 6: order:2 · 5: order:5</text>
+
+            <!-- Visual order (bottom, sorted) -->
+            <text x="20" y="178" fill="#0ea5e9" font-size="12" font-weight="700">AFTER — Visual order on screen (sorted ascending by order value)</text>
+            <rect x="20" y="190" width="600" height="50" fill="#f3f4f6" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <g font-family="JetBrains Mono, monospace">
+              <rect x="35" y="203" width="65" height="26" fill="#f472b6" rx="3"/>
+              <text x="67" y="220" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2 (-2)</text>
+              <rect x="110" y="203" width="65" height="26" fill="#fdba74" rx="3"/>
+              <text x="142" y="220" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">8 (-1)</text>
+              <rect x="185" y="203" width="65" height="26" fill="#6ee7ff" rx="3"/>
+              <text x="217" y="220" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">1 (0)</text>
+              <rect x="260" y="203" width="65" height="26" fill="#86efac" rx="3"/>
+              <text x="292" y="220" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">4 (0)</text>
+              <rect x="335" y="203" width="65" height="26" fill="#6ee7ff" rx="3"/>
+              <text x="367" y="220" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">7 (0)</text>
+              <rect x="410" y="203" width="65" height="26" fill="#fde68a" rx="3"/>
+              <text x="442" y="220" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">3 (1)</text>
+              <rect x="485" y="203" width="65" height="26" fill="#fdba74" rx="3"/>
+              <text x="517" y="220" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6 (2)</text>
+              <rect x="555" y="203" width="60" height="26" fill="#c4b5fd" rx="3"/>
+              <text x="585" y="220" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5 (5)</text>
+            </g>
+
+            <text x="20" y="265" fill="#475569" font-size="11">• Big number = HTML position. (small number) = order value.</text>
+            <text x="20" y="282" fill="#475569" font-size="11">• Items with same order keep HTML order: 1, 4, 7 all have order:0 → so 1 comes before 4 before 7.</text>
+            <text x="20" y="299" fill="#475569" font-size="11">• Lowest order goes first: -2 → -1 → 0 → 1 → 2 → 5</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>How sorting works:</strong> Items are sorted by order value (lowest first). Items with the same order keep their HTML order. Default order = 0.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Accessibility note:</strong> Screen readers follow HTML order, NOT visual order. Don't use <code>order</code> for content where reading sequence matters (like article paragraphs).</div>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world use:</strong> Showing a "Featured" item first on desktop but keeping it last in mobile HTML for SEO. Or putting a logo in the middle of a navbar via order.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 10 ============ -->
+      <section class="lesson" id="f10">
+        <span class="file-tag"><span class="num">10</span> flex-grow.html</span>
+        <h2>flex-grow</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Defines how much an item grows relative to siblings when there's extra space. Default is 0 (don't grow).</p>
+
+        <div class="kw-note">
+          <div><strong>This section uses <code>:first-child</code> and <code>:nth-child(N)</code></strong> — pseudo-classes that pick specific items by position. <code>li:first-child</code> = the 1st <code>&lt;li&gt;</code>. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>10.flex-grow.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>10.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span> <span class="prop">display</span>: <span class="val">flex</span>; <span class="punc">}</span>
+
+<span class="com">/* Default: flex-grow: 0 (items don't grow) */</span>
+
+<span class="sel">li:first-child</span> <span class="punc">{</span> <span class="prop">flex-grow</span>: <span class="val">1</span>; <span class="punc">}</span>     <span class="com">/* gets 1 share of leftover */</span>
+<span class="sel">li:nth-child(3)</span> <span class="punc">{</span> <span class="prop">flex-grow</span>: <span class="val">3</span>; <span class="punc">}</span>     <span class="com">/* gets 3 shares (3× more) */</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">Item 1 grows 1×, Item 3 grows 3× (others don't grow)</div>
+          <ul class="fcontainer d-10">
+            <li class="fitem g1">1 (grow:1)</li>
+            <li class="fitem">2</li>
+            <li class="fitem g3">3 (grow:3)</li>
+            <li class="fitem">4</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>How flex-grow Math Works</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 240" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- Container -->
+            <rect x="20" y="40" width="600" height="60" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- Items at default size (100px each, 4 of them = 400px) -->
+            <rect x="30" y="50" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="70" y="75" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">1</text>
+            <rect x="120" y="50" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="160" y="75" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+            <rect x="210" y="50" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="250" y="75" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3</text>
+            <rect x="300" y="50" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="340" y="75" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">4</text>
+
+            <!-- Available space indicator -->
+            <rect x="385" y="50" width="225" height="40" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,3" rx="3"/>
+            <text x="497" y="75" text-anchor="middle" fill="#92400e" font-size="11" font-weight="700">Extra space (225px)</text>
+
+            <text x="20" y="30" fill="#475569" font-size="12" font-weight="700">Default state — items don't grow, leaves extra space</text>
+
+            <!-- After flex-grow applied -->
+            <text x="20" y="135" fill="#0ea5e9" font-size="12" font-weight="700">With flex-grow: 1, 0, 3, 0 — item 1 gets ¼, item 3 gets ¾ of extra space</text>
+            <rect x="20" y="145" width="600" height="60" fill="#f3f4f6" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+
+            <!-- Item 1: original 80 + 56 (1/4 of 225) = 136 -->
+            <rect x="30" y="155" width="136" height="40" fill="#6ee7ff" rx="3"/>
+            <text x="98" y="180" text-anchor="middle" fill="#0b1220" font-size="12" font-weight="700">1 (grow:1) → +56px</text>
+
+            <!-- Item 2: 80 -->
+            <rect x="176" y="155" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="216" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+
+            <!-- Item 3: 80 + 169 (3/4 of 225) = 249 -->
+            <rect x="266" y="155" width="249" height="40" fill="#f472b6" rx="3"/>
+            <text x="390" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3 (grow:3) → +169px</text>
+
+            <!-- Item 4: 80 -->
+            <rect x="525" y="155" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="565" y="180" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">4</text>
+
+            <!-- Math explanation -->
+            <text x="320" y="225" text-anchor="middle" fill="#475569" font-size="11">Total grow units: 1+0+3+0 = 4. Item 1 = 1/4 × 225 = ~56px, Item 3 = 3/4 × 225 = ~169px</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>How math works:</strong> If 4 items + extra space, item with grow:1 takes ¼ of that extra space, item with grow:3 takes ¾. The ratio matters, not absolute values.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 11 ============ -->
+      <section class="lesson" id="f11">
+        <span class="file-tag"><span class="num">11</span> flex-shrink.html</span>
+        <h2>flex-shrink</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Defines how much an item shrinks when there's not enough space. Default is 1 (shrinks). Set to 0 to prevent shrinking.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>:first-child</code></strong> — pseudo-class that picks the 1st child. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>11.flex-shrink.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>11.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span> <span class="prop">display</span>: <span class="val">flex</span>; <span class="punc">}</span>
+
+<span class="com">/* Default: flex-shrink: 1 (items shrink when needed) */</span>
+
+<span class="sel">li:first-child</span> <span class="punc">{</span>
+  <span class="prop">flex-shrink</span>: <span class="val">0</span>;    <span class="com">/* DON'T shrink — keep its size */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">Item 1 has flex-shrink: 0 — keeps its 200px width while others shrink</div>
+          <ul class="fcontainer d-11">
+            <li class="fitem s0">1 (no shrink)</li>
+            <li class="fitem">2</li>
+            <li class="fitem">3</li>
+            <li class="fitem">4</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>How flex-shrink works</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 220" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- Default (all shrink) -->
+            <text x="20" y="22" fill="#475569" font-size="11" font-weight="700">Default (all flex-shrink: 1) — all items shrink equally</text>
+            <rect x="20" y="32" width="600" height="50" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="30" y="42" width="140" height="30" fill="#94a3b8" rx="3"/><text x="100" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <rect x="180" y="42" width="140" height="30" fill="#94a3b8" rx="3"/><text x="250" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="330" y="42" width="140" height="30" fill="#94a3b8" rx="3"/><text x="400" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <rect x="480" y="42" width="140" height="30" fill="#94a3b8" rx="3"/><text x="550" y="62" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <!-- With shrink: 0 on first -->
+            <text x="20" y="115" fill="#0ea5e9" font-size="11" font-weight="700">With flex-shrink: 0 on item 1 — item 1 keeps full size, others shrink more</text>
+            <rect x="20" y="125" width="600" height="50" fill="#f3f4f6" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <rect x="30" y="135" width="200" height="30" fill="#f472b6" rx="3"/><text x="130" y="155" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1 (no shrink)</text>
+            <rect x="240" y="135" width="120" height="30" fill="#94a3b8" rx="3"/><text x="300" y="155" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="370" y="135" width="120" height="30" fill="#94a3b8" rx="3"/><text x="430" y="155" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <rect x="500" y="135" width="120" height="30" fill="#94a3b8" rx="3"/><text x="560" y="155" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <text x="320" y="200" text-anchor="middle" fill="#475569" font-size="11" font-style="italic">flex-shrink: 0 = "freeze size, never shrink." Default is 1 (shrinks proportionally).</text>
+          </svg>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world use:</strong> Logo or sidebar that should NEVER shrink. Set <code>flex-shrink: 0</code> on it.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 12 ============ -->
+      <section class="lesson" id="f12">
+        <span class="file-tag"><span class="num">12</span> flex-basis.html</span>
+        <h2>flex-basis</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Sets the initial main-axis size of an item BEFORE growing/shrinking. Default is <code>auto</code> (uses content size or width).</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>:first-child</code></strong> and the keyword <code>auto</code>. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>12.flex-basis.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>12.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span> <span class="prop">display</span>: <span class="val">flex</span>; <span class="punc">}</span>
+
+<span class="com">/* Default: flex-basis: auto */</span>
+
+<span class="sel">li:first-child</span> <span class="punc">{</span>
+  <span class="prop">flex-basis</span>: <span class="val">25rem</span>;    <span class="com">/* starts at 25rem before grow/shrink */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">Item 1 has flex-basis: 25rem — starts much wider than the others</div>
+          <ul class="fcontainer d-12">
+            <li class="fitem b25">1 (basis: 25rem)</li>
+            <li class="fitem">2</li>
+            <li class="fitem">3</li>
+            <li class="fitem">4</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>How flex-basis works</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 200" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- Default basis: auto -->
+            <text x="20" y="22" fill="#475569" font-size="11" font-weight="700">Default (flex-basis: auto) — items size based on content</text>
+            <rect x="20" y="32" width="600" height="46" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+            <rect x="30" y="42" width="80" height="26" fill="#94a3b8" rx="3"/><text x="70" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <rect x="120" y="42" width="80" height="26" fill="#94a3b8" rx="3"/><text x="160" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="210" y="42" width="80" height="26" fill="#94a3b8" rx="3"/><text x="250" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <rect x="300" y="42" width="80" height="26" fill="#94a3b8" rx="3"/><text x="340" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <!-- flex-basis: 25rem on first -->
+            <text x="20" y="110" fill="#0ea5e9" font-size="11" font-weight="700">flex-basis: 25rem on item 1 — item 1 starts MUCH wider</text>
+            <rect x="20" y="120" width="600" height="46" fill="#f3f4f6" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <rect x="30" y="130" width="380" height="26" fill="#f472b6" rx="3"/><text x="220" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1 (basis: 25rem)</text>
+            <rect x="420" y="130" width="60" height="26" fill="#94a3b8" rx="3"/><text x="450" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <rect x="490" y="130" width="60" height="26" fill="#94a3b8" rx="3"/><text x="520" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <rect x="560" y="130" width="60" height="26" fill="#94a3b8" rx="3"/><text x="590" y="148" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <text x="320" y="190" text-anchor="middle" fill="#475569" font-size="11" font-style="italic">flex-basis sets the INITIAL size (before grow/shrink kick in)</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>basis vs width:</strong> They look similar but <code>flex-basis</code> works WITH grow/shrink, <code>width</code> can be overridden by them. Prefer <code>flex-basis</code> in flex containers.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 13 ============ -->
+      <section class="lesson" id="f13">
+        <span class="file-tag"><span class="num">13</span> flex-Shorthand.html</span>
+        <h2>flex (Shorthand)</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Shorthand for <code>flex-grow</code>, <code>flex-shrink</code>, and <code>flex-basis</code> in one line.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>13.flex-Shorthand.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>3rd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>4th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>13.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Long form */</span>
+<span class="sel">.item</span> <span class="punc">{</span>
+  <span class="prop">flex-grow</span>: <span class="val">1</span>;
+  <span class="prop">flex-shrink</span>: <span class="val">0</span>;
+  <span class="prop">flex-basis</span>: <span class="val">20rem</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Shorthand (same thing) — grow shrink basis */</span>
+<span class="sel">.item</span> <span class="punc">{</span>
+  <span class="prop">flex</span>: <span class="val">1 0 20rem</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Common shortcuts: */</span>
+<span class="prop">flex</span>: <span class="val">1</span>;          <span class="com">/* = flex: 1 1 0% — fills remaining space evenly */</span>
+<span class="prop">flex</span>: <span class="val">auto</span>;       <span class="com">/* = flex: 1 1 auto */</span>
+<span class="prop">flex</span>: <span class="val">none</span>;       <span class="com">/* = flex: 0 0 auto — fixed size */</span>
+<span class="prop">flex</span>: <span class="val">initial</span>;    <span class="com">/* = flex: 0 1 auto — default */</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">Item 1 uses flex: 1 0 20rem (grow 1, no shrink, basis 20rem)</div>
+          <ul class="fcontainer d-13">
+            <li class="fitem flex1">1 (flex: 1 0 20rem)</li>
+            <li class="fitem">2</li>
+            <li class="fitem">3</li>
+            <li class="fitem">4</li>
+          </ul>
+        </div>
+
+        <h3><span class="icon"></span>flex shorthand = 3 properties combined</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 220" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <!-- 3 boxes for grow + shrink + basis -->
+            <rect x="20" y="60" width="160" height="80" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="6"/>
+            <text x="100" y="90" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">flex-grow</text>
+            <text x="100" y="110" text-anchor="middle" fill="#0b1220" font-size="11">(default 0)</text>
+            <text x="100" y="125" text-anchor="middle" fill="#0b1220" font-size="11">how much to expand</text>
+
+            <text x="200" y="105" text-anchor="middle" fill="#475569" font-size="22" font-weight="700">+</text>
+
+            <rect x="220" y="60" width="160" height="80" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="6"/>
+            <text x="300" y="90" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">flex-shrink</text>
+            <text x="300" y="110" text-anchor="middle" fill="#fff" font-size="11">(default 1)</text>
+            <text x="300" y="125" text-anchor="middle" fill="#fff" font-size="11">how much to shrink</text>
+
+            <text x="400" y="105" text-anchor="middle" fill="#475569" font-size="22" font-weight="700">+</text>
+
+            <rect x="420" y="60" width="160" height="80" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="6"/>
+            <text x="500" y="90" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">flex-basis</text>
+            <text x="500" y="110" text-anchor="middle" fill="#422006" font-size="11">(default auto)</text>
+            <text x="500" y="125" text-anchor="middle" fill="#422006" font-size="11">starting size</text>
+
+            <!-- Combined into flex shorthand -->
+            <text x="320" y="170" text-anchor="middle" fill="#475569" font-size="14">↓ Combined into one shorthand</text>
+            <rect x="200" y="180" width="240" height="32" fill="#f1f5f9" stroke="#0ea5e9" stroke-width="2" rx="6"/>
+            <text x="320" y="201" text-anchor="middle" fill="#0ea5e9" font-size="14" font-weight="700" font-family="JetBrains Mono">flex: 1 0 20rem;</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Use <code>flex: 1</code> as the most common shortcut — it makes an item grow to fill available space evenly with siblings.</div>
+        </div>
+      </section>
+
+      <!-- ============ FILE 14 ============ -->
+      <section class="lesson" id="f14">
+        <span class="file-tag"><span class="num">14</span> align-self.html</span>
+        <h2>align-self</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Like <code>align-items</code>, but applied to ONE specific item — overrides the parent's alignment for just that item.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>:first-child</code></strong> to target one specific item. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>6 Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">auto</span><span class="d">Default — inherits align-items</span></div>
+          <div class="value-pill"><span class="v">flex-start</span><span class="d">Top of cross axis</span></div>
+          <div class="value-pill"><span class="v">flex-end</span><span class="d">Bottom of cross axis</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Center on cross axis</span></div>
+          <div class="value-pill"><span class="v">stretch</span><span class="d">Fills cross axis</span></div>
+          <div class="value-pill"><span class="v">baseline</span><span class="d">Text baseline aligned</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>14.align-self.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">ul</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>1st Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>2nd Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+  <span class="com">... 8 items total ...</span>
+  <span class="punc">&lt;</span><span class="key">li</span><span class="punc">&gt;</span>8th Child<span class="punc">&lt;/</span><span class="key">li</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">ul</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>14.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">ul</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">flex-end</span>;     <span class="com">/* parent: all items at bottom */</span>
+  <span class="prop">height</span>: <span class="val">300px</span>;
+<span class="punc">}</span>
+
+<span class="sel">li:first-child</span> <span class="punc">{</span>
+  <span class="prop">align-self</span>: <span class="val">flex-start</span>;    <span class="com">/* OVERRIDE: this one at top */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="fdemo">
+          <div class="demo-label">Parent: align-items: flex-end. Item 1: align-self: flex-start (overrides parent)</div>
+          <ul class="fcontainer d-14">
+            <li class="fitem self">1 (self: flex-start)</li>
+            <li class="fitem">2</li>
+            <li class="fitem">3</li>
+            <li class="fitem">4</li>
+            <li class="fitem">5</li>
+          </ul>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world use:</strong> A logo aligned to top while every other navbar item is centered. <code>align-self: flex-start</code> on just the logo.</div>
+        </div>
+
+        <h3><span class="icon"></span>How align-self overrides align-items</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 240" style="width:100%; max-width:620px; display:block; margin:0 auto;">
+            <text x="320" y="22" text-anchor="middle" fill="#475569" font-size="12" font-weight="700">Parent: align-items: flex-end (all items at bottom)</text>
+
+            <!-- Container -->
+            <rect x="20" y="35" width="600" height="160" fill="#f3f4f6" stroke="#cbd5e1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- Item 1: align-self: flex-start (override - at top) -->
+            <rect x="40" y="50" width="80" height="40" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="3"/>
+            <text x="80" y="73" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1 (override)</text>
+            <text x="80" y="100" text-anchor="middle" fill="#db2777" font-size="9" font-weight="600">align-self:</text>
+            <text x="80" y="112" text-anchor="middle" fill="#db2777" font-size="9" font-weight="600">flex-start</text>
+
+            <!-- Items 2-5: at bottom (parent's align-items: flex-end) -->
+            <rect x="160" y="150" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="200" y="173" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+
+            <rect x="260" y="150" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="300" y="173" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+
+            <rect x="360" y="150" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="400" y="173" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <rect x="460" y="150" width="80" height="40" fill="#94a3b8" rx="3"/>
+            <text x="500" y="173" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+
+            <!-- Annotation -->
+            <text x="20" y="220" fill="#475569" font-size="11">• Item 1 (pink): <tspan font-weight="700" fill="#db2777">align-self: flex-start</tspan> — sticks at TOP</text>
+            <text x="20" y="235" fill="#475569" font-size="11">• Items 2–5 (gray): inherit parent's align-items: flex-end — at BOTTOM</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Specificity:</strong> <code>align-self</code> on a child OVERRIDES <code>align-items</code> on the parent. Use parent for "all items," child for "exceptions."</div>
+        </div>
+      </section>
+
+      <!-- ============ MASTER CHEAT SHEET ============ -->
+      <section class="lesson" id="cheat">
+        <div class="cheat">
+          <h2>📋 Master Cheat Sheet — All Flex Properties</h2>
+          <p class="desc">Every property you've learned — what it does and where it goes.</p>
+
+          <table class="compare">
+            <tr><th>Property</th><th>Goes On</th><th>Purpose</th></tr>
+            <tr><td><code>display: flex</code></td><td>Parent</td><td>Activate Flex mode</td></tr>
+            <tr><td><code>display: inline-flex</code></td><td>Parent</td><td>Inline Flex container</td></tr>
+            <tr><td><code>flex-direction</code></td><td>Parent</td><td>row · row-reverse · column · column-reverse</td></tr>
+            <tr><td><code>flex-wrap</code></td><td>Parent</td><td>nowrap · wrap · wrap-reverse</td></tr>
+            <tr><td><code>flex-flow</code></td><td>Parent</td><td>Shorthand: direction + wrap</td></tr>
+            <tr><td><code>justify-content</code></td><td>Parent</td><td>Main-axis alignment ★</td></tr>
+            <tr><td><code>align-items</code></td><td>Parent</td><td>Cross-axis alignment ★</td></tr>
+            <tr><td><code>align-content</code></td><td>Parent</td><td>Multi-line cross-axis</td></tr>
+            <tr><td><code>order</code></td><td>Child</td><td>Reorder items visually</td></tr>
+            <tr><td><code>flex-grow</code></td><td>Child</td><td>Growth ratio (default 0)</td></tr>
+            <tr><td><code>flex-shrink</code></td><td>Child</td><td>Shrink ratio (default 1)</td></tr>
+            <tr><td><code>flex-basis</code></td><td>Child</td><td>Initial main-axis size</td></tr>
+            <tr><td><code>flex</code></td><td>Child</td><td>Shorthand: grow shrink basis</td></tr>
+            <tr><td><code>align-self</code></td><td>Child</td><td>Override align-items for one item</td></tr>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 32px;"><span class="icon"></span>The 2 Axes — Most Important Concept</h3>
+        <table class="compare">
+          <tr><th></th><th>flex-direction: row (default)</th><th>flex-direction: column</th></tr>
+          <tr><td>Main axis</td><td>Horizontal →</td><td>Vertical ↓</td></tr>
+          <tr><td>Cross axis</td><td>Vertical ↓</td><td>Horizontal →</td></tr>
+          <tr><td><code>justify-content</code></td><td>Horizontal alignment</td><td>Vertical alignment</td></tr>
+          <tr><td><code>align-items</code></td><td>Vertical alignment</td><td>Horizontal alignment</td></tr>
+        </table>
+      </section>
+
+      <!-- ============ COMMON MISTAKES ============ -->
+      <section class="lesson" id="mistakes">
+        <h2>⚠ Common Mistakes to Avoid</h2>
+        <p class="topic">The most frequent Flexbox mistakes and how to fix them.</p>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>1. Confusing main vs cross axis.</strong> When direction is <code>row</code>, main = horizontal. When direction is <code>column</code>, main = vertical. <code>justify-content</code> always means "main axis."</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>2. <code>align-content</code> doing nothing.</strong> It only works with <code>flex-wrap: wrap</code> AND multiple rows. Single-row containers ignore it — use <code>align-items</code> instead.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>3. Using <code>order</code> for important content.</strong> Screen readers follow HTML order, not visual order. Don't reorder critical reading content with <code>order</code>.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>4. Forgetting that flex-shrink defaults to 1.</strong> Items shrink by default! Set <code>flex-shrink: 0</code> on logos/sidebars that should keep their size.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>5. <code>align-items</code> with no container height.</strong> Vertical alignment needs a container with height OR items with different heights — otherwise there's nothing to align within.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>6. Using Flex for 2D layouts.</strong> Flex is 1D. If you need rows AND columns aligned together, use Grid.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>7. Setting width vs flex-basis.</strong> Inside a flex container, prefer <code>flex-basis</code> — it cooperates with grow/shrink. <code>width</code> can be overridden in unexpected ways.</div>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      CSS Flexbox Reference · Built from your Chapter Resource Files · Print-friendly (Ctrl/Cmd + P)
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.parentElement.nextElementSibling;
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      const orig = btn.innerText;
+      btn.innerText = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerText = orig; btn.classList.remove('copied'); }, 1500);
+    });
+  }
+  const sections = document.querySelectorAll('section.lesson');
+  const links = document.querySelectorAll('aside nav a');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Pseudo-classes & Keywords — Complete Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d17; --bg-2: #11141f; --bg-3: #181b29; --bg-4: #1f2336;
+    --border: #2a2e44;
+    --text: #e6e8ef; --text-dim: #9ba1b3;
+    --accent: #6ee7ff; --accent-2: #a78bfa;
+    --warn: #fb7185; --good: #34d399; --gold: #fbbf24;
+    --code-bg: #06080f; --pink: #f472b6;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased;
+  }
+
+  /* TOP NAV */
+  .topnav {
+    background: var(--bg-2); border-bottom: 1px solid var(--border);
+    padding: 0 32px; display: flex; align-items: center;
+    height: 52px; position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .topnav .topnav-brand {
+    font-weight: 700; color: var(--text); margin-right: 32px;
+    font-size: 14px; letter-spacing: -0.01em;
+  }
+  .topnav .topnav-tabs { display: flex; gap: 4px; }
+  .topnav a {
+    padding: 8px 18px; color: var(--text-dim); text-decoration: none;
+    font-weight: 600; font-size: 13px; border-radius: 6px;
+    letter-spacing: 0.04em; transition: all 0.15s;
+  }
+  .topnav a:hover { background: var(--bg-3); color: var(--text); }
+  .topnav a.active { background: var(--accent-2); color: var(--bg); }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 52px); }
+
+  aside {
+    background: var(--bg-2); border-right: 1px solid var(--border);
+    padding: 32px 0; position: sticky; top: 52px;
+    height: calc(100vh - 52px); overflow-y: auto;
+  }
+  aside .brand {
+    padding: 0 28px 24px; border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  aside .brand h1 { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  aside .brand p { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  aside nav { padding: 0 16px; }
+  aside nav .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-dim); padding: 16px 12px 6px;
+  }
+  aside nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 12px; color: var(--text-dim); text-decoration: none;
+    font-size: 12.5px; border-radius: 6px; transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  aside nav a:hover { background: var(--bg-3); color: var(--text); }
+  aside nav a.active { background: var(--bg-4); color: var(--accent-2); }
+
+  main { padding: 0; max-width: 100%; overflow-x: hidden; }
+
+  .hero {
+    padding: 64px 56px 48px;
+    background:
+      radial-gradient(ellipse at top right, rgba(167,139,250,0.10), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(110,231,255,0.06), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .eyebrow {
+    display: inline-block; padding: 4px 12px;
+    background: var(--bg-3); color: var(--accent-2);
+    border: 1px solid var(--border); border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 44px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead { font-size: 17px; color: var(--text-dim); max-width: 720px; line-height: 1.6; }
+  .hero .stats {
+    display: flex; gap: 24px; margin-top: 32px; flex-wrap: wrap;
+  }
+  .hero .stat {
+    background: var(--bg-3); border: 1px solid var(--border);
+    padding: 12px 18px; border-radius: 8px;
+    font-size: 13px; color: var(--text-dim);
+  }
+  .hero .stat strong { color: var(--accent-2); font-size: 18px; display: block; }
+
+  .content { padding: 48px 56px 80px; max-width: 1600px; }
+  @media (min-width: 1800px) { .content { max-width: 1700px; } }
+  @media (min-width: 1400px) { .content { max-width: 1400px; } }
+
+  /* ============ CATEGORY GROUP ============ */
+  .category {
+    margin-bottom: 64px;
+    padding-top: 32px;
+    scroll-margin-top: 76px;
+  }
+  .category h2 {
+    font-size: 28px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.2;
+    margin-bottom: 8px; color: var(--text);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent-2);
+  }
+  .category > .topic {
+    font-size: 15px; color: var(--text-dim); margin-bottom: 28px;
+  }
+
+  /* ============ INDIVIDUAL ITEM ============ */
+  .pc-item {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px 28px;
+    margin-bottom: 18px;
+    scroll-margin-top: 76px;
+  }
+  .pc-item h3 {
+    font-size: 20px; font-weight: 700; color: var(--accent-2);
+    margin-bottom: 6px; font-family: 'JetBrains Mono', monospace;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .pc-item h3 .badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 3px 9px; border-radius: 999px;
+    background: rgba(110,231,255,0.1); color: var(--accent);
+    border: 1px solid rgba(110,231,255,0.3);
+  }
+  .pc-item h3 .badge.modern { background: rgba(251,191,36,0.1); color: var(--gold); border-color: rgba(251,191,36,0.3); }
+  .pc-item h3 .badge.element { background: rgba(244,114,182,0.1); color: var(--pink); border-color: rgba(244,114,182,0.3); }
+  .pc-item .desc { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
+
+  /* code blocks */
+  .code-wrap { position: relative; margin: 12px 0; }
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg-3); padding: 7px 14px;
+    border: 1px solid var(--border); border-bottom: none;
+    border-radius: 6px 6px 0 0; font-size: 11px; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .copy-btn {
+    background: var(--bg-4); color: var(--text-dim);
+    border: 1px solid var(--border); padding: 3px 8px;
+    border-radius: 4px; font-size: 10px; cursor: pointer;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: var(--accent-2); color: var(--bg); border-color: var(--accent-2); }
+  .copy-btn.copied { background: var(--good); color: var(--bg); border-color: var(--good); }
+  pre {
+    background: var(--code-bg); padding: 14px 18px;
+    border: 1px solid var(--border); border-radius: 0 0 6px 6px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.6;
+  }
+  .prop { color: #82d9ff; }
+  .val { color: #fde68a; }
+  .com { color: #6b7280; font-style: italic; }
+  .key { color: #f472b6; }
+  .sel { color: #c4b5fd; }
+  .punc { color: #9ba1b3; }
+
+  code {
+    background: var(--bg-3); padding: 2px 6px;
+    border-radius: 3px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em; color: var(--accent); border: 1px solid var(--border);
+  }
+
+  /* Use-case box */
+  .use-case {
+    background: rgba(251,191,36,0.06);
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px; border-radius: 6px;
+    margin: 12px 0; font-size: 13px; color: var(--text-dim);
+  }
+  .use-case::before { content: '★ '; color: var(--gold); font-weight: 700; }
+  .use-case strong { color: var(--text); }
+
+  /* ============ LIVE DEMO BOX ============ */
+  .demo-live {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    box-shadow: var(--shadow);
+    color: #222;
+  }
+  .demo-live .demo-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #6b7280; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .demo-live .demo-label::before {
+    content: '👁'; font-size: 14px;
+  }
+
+  /* Demo elements - ALL scoped inside .demo-live */
+  .demo-live ul, .demo-live ol { list-style: none; padding: 0; margin: 0; }
+  .demo-live ul.bullet-list { list-style: disc; padding-left: 22px; }
+  .demo-live ul.bullet-list li { background: none; color: #333; margin: 4px 0; padding: 2px; }
+  .demo-live li {
+    padding: 8px 14px; margin: 3px 0;
+    background: linear-gradient(135deg, #6ee7ff, #4dc4e6);
+    color: #0b1220; border-radius: 4px;
+    font-weight: 600; font-size: 14px;
+  }
+
+  /* :hover demo */
+  .demo-live .btn-hover {
+    background: #6ee7ff; color: #0b1220;
+    border: none; padding: 10px 20px;
+    border-radius: 6px; cursor: pointer;
+    font-weight: 600; transition: all 0.2s;
+    font-size: 14px;
+  }
+  .demo-live .btn-hover:hover {
+    background: #f472b6; color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244,114,182,0.4);
+  }
+  .demo-live .btn-active:active { transform: scale(0.95); background: #db2777; }
+
+  /* :focus demo */
+  .demo-live input.demo-input {
+    padding: 10px 14px; border: 2px solid #cbd5e1;
+    border-radius: 6px; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .demo-live input.demo-input:focus {
+    border-color: #6ee7ff; box-shadow: 0 0 0 3px rgba(110,231,255,0.2);
+  }
+
+  /* :focus-within demo */
+  .demo-live .form-fw {
+    background: #f9fafb; padding: 12px; border-radius: 6px;
+    transition: all 0.2s; border: 2px solid transparent;
+  }
+  .demo-live .form-fw:focus-within {
+    background: #eff6ff; border-color: #6ee7ff;
+  }
+
+  /* :checked demo */
+  .demo-live .toggle-checked input { display: none; }
+  .demo-live .toggle-checked label {
+    display: inline-block; padding: 8px 18px;
+    background: #e5e7eb; border-radius: 999px;
+    cursor: pointer; transition: all 0.2s;
+    font-weight: 600; user-select: none;
+  }
+  .demo-live .toggle-checked input:checked + label {
+    background: #34d399; color: white;
+  }
+
+  /* :nth-child demo */
+  .demo-live ul.nth-list li:nth-child(odd) { background: #f3f4f6; color: #333; }
+  .demo-live ul.nth-list li:nth-child(even) { background: #6ee7ff; color: #0b1220; }
+  .demo-live ul.nth-list li:nth-child(3) { background: #f472b6; color: #fff; outline: 2px solid #db2777; }
+
+  /* :first-child / :last-child demo */
+  .demo-live ul.fl-list li { background: #e5e7eb; color: #333; }
+  .demo-live ul.fl-list li:first-child { background: #f472b6; color: #fff; font-weight: 700; }
+  .demo-live ul.fl-list li:last-child { background: #fde68a; color: #422006; font-weight: 700; }
+
+  /* :only-child demo */
+  .demo-live .only-child-demo p:only-child { background: #86efac; color: #052e16; padding: 10px; border-radius: 4px; font-weight: 600; }
+  .demo-live .only-child-demo p { background: #e5e7eb; padding: 6px 10px; border-radius: 4px; margin: 4px 0; }
+
+  /* :empty demo */
+  .demo-live .empty-demo div { padding: 12px; border: 2px dashed #cbd5e1; border-radius: 4px; margin: 4px 0; min-height: 40px; }
+  .demo-live .empty-demo div:empty::before { content: 'Empty (no content)'; color: #6b7280; font-style: italic; }
+  .demo-live .empty-demo div:empty { background: #fef3c7; border-color: #f59e0b; }
+
+  /* :not demo */
+  .demo-live ul.not-list li:not(:first-child) { background: #fde68a; color: #422006; }
+
+  /* :is/:where demo */
+  .demo-live .is-demo :is(h4, h5) { color: #7c3aed; padding: 4px 0; }
+
+  /* :has demo (modern) */
+  .demo-live .card-has { padding: 12px; background: #f3f4f6; border-radius: 6px; transition: all 0.2s; }
+  .demo-live .card-has:has(.alert) { background: #fee2e2; border-left: 4px solid #dc2626; }
+
+  /* ::before / ::after demo */
+  .demo-live .star-list li::before { content: '★ '; color: #f59e0b; font-weight: 700; }
+  .demo-live .arrow-link::after { content: ' →'; color: #6ee7ff; }
+
+  /* ::first-letter demo */
+  .demo-live .dropcap::first-letter {
+    font-size: 3em; font-weight: 800; float: left;
+    color: #db2777; padding-right: 6px; line-height: 1;
+  }
+
+  /* ::first-line demo */
+  .demo-live .first-line-demo::first-line { font-weight: 700; color: #7c3aed; }
+
+  /* ::placeholder demo */
+  .demo-live .ph-demo::placeholder { color: #db2777; font-style: italic; font-weight: 600; }
+
+  /* ::marker demo */
+  .demo-live ol.marker-demo { list-style: decimal; padding-left: 30px; }
+  .demo-live ol.marker-demo li { background: none; color: #333; padding: 2px 0; margin: 0; }
+  .demo-live ol.marker-demo li::marker { color: #db2777; font-weight: 800; font-size: 1.2em; }
+
+  /* :required / :valid / :invalid demo */
+  .demo-live .form-validate input { padding: 8px 12px; border: 2px solid #cbd5e1; border-radius: 4px; margin-bottom: 4px; }
+  .demo-live .form-validate input:required { border-left: 4px solid #fb7185; }
+  .demo-live .form-validate input:valid { border-color: #34d399; }
+  .demo-live .form-validate input:invalid:not(:placeholder-shown) { border-color: #fb7185; }
+  .demo-live .form-validate input:disabled { background: #f3f4f6; cursor: not-allowed; opacity: 0.6; }
+  .demo-live .form-validate input:read-only { background: #fef3c7; }
+
+  /* ::selection demo */
+  .demo-live .selection-demo::selection { background: #fde68a; color: #422006; }
+
+  /* :target visual */
+  .demo-live .target-demo:target { background: #fef3c7; padding: 8px; border-radius: 4px; }
+
+  /* Fluid responsive tables */
+  .table-wrap {
+    width: 100%; overflow-x: auto; border-radius: 8px;
+    border: 1px solid var(--border); margin: 14px 0 20px;
+    background: var(--bg-2);
+  }
+  table.compare {
+    width: 100%; border-collapse: collapse;
+    table-layout: auto; font-size: 14px;
+  }
+  table.compare th, table.compare td {
+    padding: 14px 18px; text-align: left;
+    border-bottom: 1px solid var(--border);
+    word-break: break-word; vertical-align: top;
+  }
+  table.compare tr:last-child td { border-bottom: none; }
+  table.compare th {
+    background: var(--bg-3); color: var(--text); font-weight: 700;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  table.compare td { color: var(--text-dim); line-height: 1.6; }
+  table.compare td code, table.compare th code {
+    background: var(--code-bg); padding: 3px 8px;
+    border-radius: 4px; color: var(--accent-2);
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    white-space: nowrap; border: 1px solid rgba(167,139,250,0.2);
+  }
+  table.compare tbody tr:hover { background: rgba(167,139,250,0.04); }
+  @media (max-width: 700px) {
+    table.compare, table.compare tbody, table.compare tr, table.compare td, table.compare th {
+      display: block; width: 100%;
+    }
+    table.compare thead { display: none; }
+    table.compare tr { border-bottom: 2px solid var(--border); padding: 8px 0; }
+    table.compare td { border: none; padding: 6px 14px; }
+    table.compare td:first-child { font-weight: 700; color: var(--accent-2); padding-top: 14px; }
+  }
+
+  .callout {
+    padding: 12px 16px; border-radius: 8px;
+    margin: 12px 0; font-size: 13px;
+    border-left: 3px solid;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .callout strong { color: var(--text); }
+  .callout.tip { background: rgba(52, 211, 153, 0.07); border-color: var(--good); color: var(--text-dim); }
+  .callout.warn { background: rgba(251, 113, 133, 0.07); border-color: var(--warn); color: var(--text-dim); }
+  .callout.info { background: rgba(110, 231, 255, 0.06); border-color: var(--accent); color: var(--text-dim); }
+
+  footer {
+    padding: 32px 56px; border-top: 1px solid var(--border);
+    color: var(--text-dim); font-size: 13px; text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    .hero, .content, footer { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: 32px; }
+  }
+  @media print {
+    .topnav, aside, .copy-btn, .code-header { display: none; }
+    body { background: #fff; color: #000; }
+    .layout { display: block; }
+    pre { background: #f5f5f5; color: #000; }
+    .prop, .val, .com, .key { color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="topnav-brand">📚 CSS Reference</span>
+  <div class="topnav-tabs">
+    <a href="CSS-FLEX-COMPLETE-REFERENCE.html">FLEX</a>
+    <a href="CSS-GRID-COMPLETE-REFERENCE.html">GRID</a>
+    <a href="CSS-PSEUDO-CLASSES-REFERENCE.html" class="active">PSEUDO-CLASSES</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <aside>
+    <div class="brand">
+      <h1>CSS Pseudo-classes & Keywords</h1>
+      <p>Complete library — all standard selectors</p>
+    </div>
+    <nav>
+      <div class="label">Introduction</div>
+      <a href="#intro">📖 What are Pseudo-classes?</a>
+
+      <div class="label">🎯 User Action States</div>
+      <a href="#hover">:hover</a>
+      <a href="#focus">:focus</a>
+      <a href="#focus-within">:focus-within</a>
+      <a href="#focus-visible">:focus-visible</a>
+      <a href="#active">:active</a>
+      <a href="#visited">:visited</a>
+      <a href="#link">:link / :any-link</a>
+      <a href="#target">:target</a>
+
+      <div class="label">📋 Form Input States</div>
+      <a href="#checked">:checked</a>
+      <a href="#disabled">:disabled / :enabled</a>
+      <a href="#required">:required / :optional</a>
+      <a href="#valid">:valid / :invalid</a>
+      <a href="#in-range">:in-range / :out-of-range</a>
+      <a href="#read-only">:read-only / :read-write</a>
+      <a href="#placeholder-shown">:placeholder-shown</a>
+      <a href="#default">:default</a>
+      <a href="#user-invalid">:user-invalid</a>
+
+      <div class="label">🌳 Position / Structural</div>
+      <a href="#root">:root</a>
+      <a href="#empty">:empty</a>
+      <a href="#first-child">:first-child</a>
+      <a href="#last-child">:last-child</a>
+      <a href="#only-child">:only-child</a>
+      <a href="#nth-child">:nth-child(N)</a>
+      <a href="#nth-last-child">:nth-last-child(N)</a>
+      <a href="#first-of-type">:first-of-type</a>
+      <a href="#last-of-type">:last-of-type</a>
+      <a href="#only-of-type">:only-of-type</a>
+      <a href="#nth-of-type">:nth-of-type(N)</a>
+      <a href="#nth-last-of-type">:nth-last-of-type(N)</a>
+
+      <div class="label">🔍 Logical Selectors</div>
+      <a href="#not">:not(...)</a>
+      <a href="#is">:is(...)</a>
+      <a href="#where">:where(...)</a>
+      <a href="#has">:has(...)</a>
+
+      <div class="label">🌐 Linguistic</div>
+      <a href="#lang">:lang()</a>
+      <a href="#dir">:dir()</a>
+
+      <div class="label">🎨 Pseudo-elements (::)</div>
+      <a href="#before-after">::before / ::after</a>
+      <a href="#first-letter">::first-letter</a>
+      <a href="#first-line">::first-line</a>
+      <a href="#placeholder">::placeholder</a>
+      <a href="#selection">::selection</a>
+      <a href="#marker">::marker</a>
+      <a href="#backdrop">::backdrop</a>
+      <a href="#file-selector">::file-selector-button</a>
+
+      <div class="label">⚙️ CSS Functions</div>
+      <a href="#repeat">repeat()</a>
+      <a href="#minmax">minmax()</a>
+      <a href="#calc">calc()</a>
+      <a href="#var">var()</a>
+      <a href="#min-max">min() / max() / clamp()</a>
+
+      <div class="label">🔤 Special Keywords & Units</div>
+      <a href="#units">Units (1fr, rem, vh, vw)</a>
+      <a href="#auto-keywords">auto / inherit / initial / unset</a>
+      <a href="#auto-fill-fit">auto-fill / auto-fit</a>
+      <a href="#span">span N</a>
+      <a href="#alignment-keywords">Alignment keywords</a>
+
+      <div class="label">📋 Reference</div>
+      <a href="#cheat">Master cheat sheet</a>
+    </nav>
+  </aside>
+
+  <main>
+
+    <div class="hero">
+      <span class="eyebrow">CSS REFERENCE — COMPLETE LIBRARY</span>
+      <h1>CSS Pseudo-classes &amp; Keywords</h1>
+      <p class="lead">Every standard CSS pseudo-class, pseudo-element, function, and special keyword — explained simply with examples. Use this as your full reference when learning Flex, Grid, or any CSS.</p>
+      <div class="stats">
+        <div class="stat"><strong>40+</strong>Pseudo-classes</div>
+        <div class="stat"><strong>8</strong>Pseudo-elements</div>
+        <div class="stat"><strong>7</strong>CSS Functions</div>
+        <div class="stat"><strong>20+</strong>Keywords/Units</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ INTRO ============ -->
+      <div class="category" id="intro">
+        <h2>📖 What are Pseudo-classes?</h2>
+        <p class="topic">Pseudo-classes are special CSS selectors that pick elements based on their <strong>state</strong> (hovered, focused, checked) or their <strong>position</strong> (1st, 2nd, last, etc.) — without needing a class name.</p>
+
+        <div class="pc-item">
+          <h3>The word "pseudo"</h3>
+          <p class="desc">"Pseudo" (pronounced <em>SOO-doh</em>) means <strong>"fake"</strong> or <strong>"pretend."</strong> A pseudo-class is like a fake class name the browser provides automatically. You don't write it in HTML — CSS knows it.</p>
+
+          <div class="table-wrap">
+            <table class="compare">
+              <thead>
+                <tr><th>Type</th><th>Starts with</th><th>What it does</th><th>Example</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Class</strong></td><td><code>.</code></td><td>Selects elements with a class</td><td><code>.button</code></td></tr>
+                <tr><td><strong>Pseudo-class</strong></td><td><code>:</code></td><td>Selects based on state/position</td><td><code>:hover</code>, <code>:nth-child(2)</code></td></tr>
+                <tr><td><strong>Pseudo-element</strong></td><td><code>::</code></td><td>Targets PART of element</td><td><code>::before</code>, <code>::after</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout info">
+            <div><strong>Important:</strong> All pseudo-class names are <em>fixed</em> by CSS. You can't make up your own. The full list is built into every browser.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ USER ACTION STATES ============ -->
+      <div class="category">
+        <h2>🎯 User Action State Pseudo-classes</h2>
+        <p class="topic">Trigger styling based on what the user is doing — hovering, clicking, focusing.</p>
+
+        <div class="pc-item" id="hover">
+          <h3><code>:hover</code> <span class="badge">stable</span></h3>
+          <p class="desc">Activates when the mouse is over an element.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Any element — usually buttons or links --&gt;</span>
+&lt;button&gt;Hover me!&lt;/button&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">button:hover</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">blue</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — hover the button</div><button class="btn-hover">Hover me!</button></div>
+          <div class="use-case"><strong>Use:</strong> Buttons, links, cards — show interactivity</div>
+        </div>
+
+        <div class="pc-item" id="focus">
+          <h3><code>:focus</code> <span class="badge">stable</span></h3>
+          <p class="desc">Activates when an element is focused (clicked or tabbed to).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Form inputs --&gt;</span>
+&lt;input type="text" placeholder="Click me"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:focus</span> <span class="punc">{</span>
+  <span class="prop">border</span>: <span class="val">2px solid blue</span>;
+  <span class="prop">outline</span>: <span class="val">none</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — click in the input</div><input type="text" class="demo-input" placeholder="Click me to focus..."></div>
+          <div class="use-case"><strong>Use:</strong> Form inputs — show which field is active</div>
+        </div>
+
+        <div class="pc-item" id="focus-within">
+          <h3><code>:focus-within</code> <span class="badge">stable</span></h3>
+          <p class="desc">Activates when the element OR any of its descendants are focused. Great for highlighting whole forms when typing.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Container element with focusable children --&gt;</span>
+&lt;form&gt;
+  &lt;input type="text"&gt;
+  &lt;input type="text"&gt;
+&lt;/form&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">form:focus-within</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">#f0f8ff</span>;   <span class="com">/* form turns blue when ANY input inside is focused */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — click any input, the WHOLE form highlights</div><div class="form-fw"><input type="text" class="demo-input" placeholder="First name"> <input type="text" class="demo-input" placeholder="Last name"></div></div>
+          <div class="use-case"><strong>Use:</strong> Highlight whole card/form when user is typing inside</div>
+        </div>
+
+        <div class="pc-item" id="focus-visible">
+          <h3><code>:focus-visible</code> <span class="badge">stable</span></h3>
+          <p class="desc">Like <code>:focus</code>, but only shows when the user is using KEYBOARD navigation (Tab key) — NOT when clicking with mouse. Modern accessibility best practice.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Any focusable element --&gt;</span>
+&lt;button&gt;Tab to me using keyboard&lt;/button&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">button:focus</span> <span class="punc">{</span> <span class="prop">outline</span>: <span class="val">none</span>; <span class="punc">}</span>           <span class="com">/* hide on click */</span>
+<span class="sel">button:focus-visible</span> <span class="punc">{</span> <span class="prop">outline</span>: <span class="val">2px solid blue</span>; <span class="punc">}</span>  <span class="com">/* show on Tab */</span></pre>
+          <div class="use-case"><strong>Use:</strong> Better accessibility — keyboard users see focus rings, mouse users don't</div>
+        </div>
+
+        <div class="pc-item" id="active">
+          <h3><code>:active</code> <span class="badge">stable</span></h3>
+          <p class="desc">Activates while an element is being clicked (between mouse-down and mouse-up).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Any clickable element --&gt;</span>
+&lt;button&gt;Click me&lt;/button&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">button:active</span> <span class="punc">{</span>
+  <span class="prop">transform</span>: <span class="val">translateY(2px)</span>;   <span class="com">/* "pressed" effect */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — click and HOLD the button</div><button class="btn-hover btn-active">Press me!</button></div>
+          <div class="use-case"><strong>Use:</strong> Click feedback — buttons appear pressed</div>
+        </div>
+
+        <div class="pc-item" id="visited">
+          <h3><code>:visited</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches links the user has already clicked. Browser tracks history.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Anchor tags --&gt;</span>
+&lt;a href="https://example.com"&gt;A visited link&lt;/a&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">a:visited</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">purple</span>;          <span class="com">/* visited links turn purple */</span>
+<span class="punc">}</span></pre>
+          <div class="callout warn"><div><strong>Privacy note:</strong> Browsers limit which properties work with <code>:visited</code> — only colors. JavaScript can't read this state.</div></div>
+        </div>
+
+        <div class="pc-item" id="link">
+          <h3><code>:link</code> &amp; <code>:any-link</code> <span class="badge">stable</span></h3>
+          <p class="desc"><code>:link</code> = unvisited links only. <code>:any-link</code> = both visited and unvisited.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Anchor tags --&gt;</span>
+&lt;a href="/page"&gt;An unvisited link&lt;/a&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">a:link</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">blue</span>; <span class="punc">}</span>           <span class="com">/* unvisited */</span>
+<span class="sel">a:any-link</span> <span class="punc">{</span> <span class="prop">text-decoration</span>: <span class="val">underline</span>; <span class="punc">}</span>  <span class="com">/* both */</span></pre>
+        </div>
+
+        <div class="pc-item" id="target">
+          <h3><code>:target</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches the element whose ID matches the URL hash. Useful for in-page anchor highlighting.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element with id matching URL hash --&gt;</span>
+&lt;section id="part-2"&gt;Section 2&lt;/section&gt;
+&lt;!-- URL: page.html#part-2 --&gt;&lt;/section&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* URL: example.com/#section-2 */</span>
+<span class="sel">section:target</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">yellow</span>;        <span class="com">/* highlights jumped-to section */</span>
+<span class="punc">}</span></pre>
+          <div class="use-case"><strong>Use:</strong> Pure-CSS tabs, lightboxes, anchor highlights without JavaScript</div>
+        </div>
+      </div>
+
+      <!-- ============ FORM INPUT STATES ============ -->
+      <div class="category">
+        <h2>📋 Form Input State Pseudo-classes</h2>
+        <p class="topic">Style form inputs based on their state — required, valid, checked, disabled.</p>
+
+        <div class="pc-item" id="checked">
+          <h3><code>:checked</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches checkboxes and radio buttons that are checked, plus selected <code>&lt;option&gt;</code>.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Checkboxes, radio buttons, and option elements --&gt;</span>
+&lt;input type="checkbox" id="t1"&gt;
+&lt;label for="t1"&gt;Toggle me&lt;/label&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input[type=checkbox]:checked</span> <span class="punc">{</span>
+  <span class="prop">accent-color</span>: <span class="val">green</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Style label of checked checkbox using sibling combinator */</span>
+<span class="sel">input:checked + label</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">green</span>;
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — click to toggle</div><div class="toggle-checked"><input type="checkbox" id="dt1"><label for="dt1">Toggle me</label></div></div>
+          <div class="use-case"><strong>Use:</strong> Custom toggles, dark mode toggle without JavaScript</div>
+        </div>
+
+        <div class="pc-item" id="disabled">
+          <h3><code>:disabled</code> &amp; <code>:enabled</code> <span class="badge">stable</span></h3>
+          <p class="desc">Match form elements based on whether they're disabled or enabled.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Form inputs with the disabled attribute --&gt;</span>
+&lt;input type="text" disabled&gt;
+&lt;input type="text"&gt;  &lt;!-- enabled by default --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:disabled</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">#f0f0f0</span>;
+  <span class="prop">cursor</span>: <span class="val">not-allowed</span>;
+  <span class="prop">opacity</span>: <span class="val">0.6</span>;
+<span class="punc">}</span>
+<span class="sel">input:enabled</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">white</span>;        <span class="com">/* default state */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — disabled vs enabled inputs</div><div class="form-validate"><input type="text" placeholder="Enabled" value="I'm editable"><br><input type="text" placeholder="Disabled" value="I'm disabled" disabled></div></div>
+        </div>
+
+        <div class="pc-item" id="required">
+          <h3><code>:required</code> &amp; <code>:optional</code> <span class="badge">stable</span></h3>
+          <p class="desc">Match form fields with the <code>required</code> attribute (or without it).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Form inputs marked as required (or optional) --&gt;</span>
+&lt;input type="text" required&gt;  &lt;!-- has required attribute --&gt;
+&lt;input type="text"&gt;  &lt;!-- optional --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:required</span> <span class="punc">{</span>
+  <span class="prop">border-left</span>: <span class="val">3px solid red</span>;     <span class="com">/* show required fields */</span>
+<span class="punc">}</span>
+<span class="sel">input:optional</span> <span class="punc">{</span>
+  <span class="prop">border-left</span>: <span class="val">3px solid gray</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — required (red left bar) vs optional</div><div class="form-validate"><input type="text" placeholder="Required field" required value=""><br><input type="text" placeholder="Optional field" value=""></div></div>
+        </div>
+
+        <div class="pc-item" id="valid">
+          <h3><code>:valid</code> &amp; <code>:invalid</code> <span class="badge">stable</span></h3>
+          <p class="desc">Match form fields based on whether they pass HTML5 validation.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Inputs with validation rules (email, number, pattern, etc.) --&gt;</span>
+&lt;input type="email" required&gt;
+&lt;!-- valid when format is correct --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:valid</span> <span class="punc">{</span> <span class="prop">border-color</span>: <span class="val">green</span>; <span class="punc">}</span>
+<span class="sel">input:invalid</span> <span class="punc">{</span> <span class="prop">border-color</span>: <span class="val">red</span>; <span class="punc">}</span>
+
+<span class="com">/* Common pattern — only show invalid AFTER user interaction */</span>
+<span class="sel">input:invalid:not(:placeholder-shown)</span> <span class="punc">{</span>
+  <span class="prop">border-color</span>: <span class="val">red</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — type a valid email vs invalid</div><div class="form-validate"><input type="email" placeholder="Try: hello@email.com" required></div></div>
+        </div>
+
+        <div class="pc-item" id="in-range">
+          <h3><code>:in-range</code> &amp; <code>:out-of-range</code> <span class="badge">stable</span></h3>
+          <p class="desc">For numeric inputs with <code>min</code>/<code>max</code> — match values inside or outside the range.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Number inputs with min/max attributes --&gt;</span>
+&lt;input type="number" min="1" max="10" value="5"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* &lt;input type="number" min="1" max="10"&gt; */</span>
+<span class="sel">input:in-range</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">lightgreen</span>; <span class="punc">}</span>
+<span class="sel">input:out-of-range</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">pink</span>; <span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="read-only">
+          <h3><code>:read-only</code> &amp; <code>:read-write</code> <span class="badge">stable</span></h3>
+          <p class="desc">Match inputs that are read-only or editable.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Inputs with readonly attribute --&gt;</span>
+&lt;input type="text" readonly value="Cannot edit"&gt;
+&lt;input type="text" value="Editable"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:read-only</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">#eee</span>; <span class="punc">}</span>
+<span class="sel">input:read-write</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">white</span>; <span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — read-only (yellow) vs editable</div><div class="form-validate"><input type="text" value="I'm editable"><br><input type="text" value="I'm read-only" readonly></div></div>
+        </div>
+
+        <div class="pc-item" id="placeholder-shown">
+          <h3><code>:placeholder-shown</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches an input that's currently showing its placeholder (i.e., empty).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Inputs that show a placeholder (i.e., empty) --&gt;</span>
+&lt;input type="text" placeholder="Enter your name"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* Float-label trick — placeholder visible = label looks like placeholder */</span>
+<span class="sel">input:placeholder-shown + label</span> <span class="punc">{</span>
+  <span class="prop">transform</span>: <span class="val">translateY(20px)</span>;
+  <span class="prop">font-size</span>: <span class="val">16px</span>;
+<span class="punc">}</span>
+<span class="sel">input:not(:placeholder-shown) + label</span> <span class="punc">{</span>
+  <span class="prop">font-size</span>: <span class="val">12px</span>;     <span class="com">/* shrink label when input has value */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — placeholder text is styled</div><input type="text" class="demo-input ph-demo" placeholder="I'm a styled placeholder!"></div>
+          <div class="use-case"><strong>Use:</strong> Material Design floating labels — pure CSS</div>
+        </div>
+
+        <div class="pc-item" id="default">
+          <h3><code>:default</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches form elements that are the default in their group (the default selected radio button, the default submit button, etc.).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Default form element in a group --&gt;</span>
+&lt;input type="radio" name="fruit" value="apple" checked&gt;  &lt;!-- default --&gt;
+&lt;input type="radio" name="fruit" value="orange"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input[type=radio]:default + label</span> <span class="punc">{</span>
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;        <span class="com">/* highlight original default */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="user-invalid">
+          <h3><code>:user-invalid</code> <span class="badge modern">modern</span></h3>
+          <p class="desc">Like <code>:invalid</code>, but only after the user has interacted with the input. Better UX than showing red borders before they type.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Modern inputs (better UX than :invalid) --&gt;</span>
+&lt;input type="email" required&gt;
+&lt;!-- becomes "user-invalid" only AFTER user types & blurs --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input:user-invalid</span> <span class="punc">{</span>
+  <span class="prop">border-color</span>: <span class="val">red</span>;          <span class="com">/* only red AFTER user touched it */</span>
+<span class="punc">}</span></pre>
+        </div>
+      </div>
+
+      <!-- ============ POSITION/STRUCTURAL ============ -->
+      <div class="category">
+        <h2>🌳 Position / Structural Pseudo-classes</h2>
+        <p class="topic">Pick elements by their position among siblings — first, last, Nth, etc.</p>
+
+        <div class="pc-item" id="root">
+          <h3><code>:root</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches the root element (<code>&lt;html&gt;</code>). Used to define CSS variables.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Always the &lt;html&gt; element --&gt;</span>
+&lt;html&gt;  &lt;!-- :root matches this --&gt;
+  &lt;body&gt;...&lt;/body&gt;
+&lt;/html&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">:root</span> <span class="punc">{</span>
+  <span class="prop">--primary</span>: <span class="val">#3b82f6</span>;
+  <span class="prop">--gap</span>: <span class="val">16px</span>;
+<span class="punc">}</span>
+<span class="sel">.box</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">var(--primary)</span>; <span class="punc">}</span></pre>
+          <div class="use-case"><strong>Use:</strong> Theme variables — dark mode, color systems</div>
+        </div>
+
+        <div class="pc-item" id="empty">
+          <h3><code>:empty</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches elements with NO children (no text, no elements). Useful for empty states.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Elements with absolutely no children (no text either) --&gt;</span>
+&lt;div&gt;Has content&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;  &lt;!-- :empty matches this --&gt;
+&lt;div&gt;   &lt;/div&gt;  &lt;!-- whitespace counts! NOT empty --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">.message-list:empty</span><span class="punc">::</span><span class="key">before</span> <span class="punc">{</span>
+  <span class="prop">content</span>: <span class="val">"No messages yet"</span>;
+  <span class="prop">color</span>: <span class="val">gray</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — empty divs are highlighted</div><div class="empty-demo"><div>This div has content</div><div></div><div>This one too</div><div></div></div></div>
+        </div>
+
+        <div class="pc-item" id="first-child">
+          <h3><code>:first-child</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches an element that is the FIRST child of its parent.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element that is the first child of its parent --&gt;</span>
+&lt;ul&gt;
+  &lt;li&gt;1st  ← :first-child&lt;/li&gt;
+  &lt;li&gt;2nd&lt;/li&gt;
+  &lt;li&gt;3rd&lt;/li&gt;
+&lt;/ul&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li:first-child</span> <span class="punc">{</span> <span class="prop">font-weight</span>: <span class="val">bold</span>; <span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — first item (pink) and last item (yellow)</div><ul class="fl-list"><li>1st item ← :first-child</li><li>2nd item</li><li>3rd item</li><li>4th item ← :last-child</li></ul></div>
+          <div class="use-case"><strong>Used in your Flex tutorial:</strong> <code>li:first-child { flex-grow: 1; }</code></div>
+        </div>
+
+        <div class="pc-item" id="last-child">
+          <h3><code>:last-child</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches an element that is the LAST child of its parent.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element that is the last child of its parent --&gt;</span>
+&lt;ul&gt;
+  &lt;li&gt;1st&lt;/li&gt;
+  &lt;li&gt;2nd&lt;/li&gt;
+  &lt;li&gt;3rd  ← :last-child&lt;/li&gt;
+&lt;/ul&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li:last-child</span> <span class="punc">{</span> <span class="prop">margin-right</span>: <span class="val">0</span>; <span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="only-child">
+          <h3><code>:only-child</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches an element if it's the ONLY child (no siblings).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element that is the only child --&gt;</span>
+&lt;div&gt;
+  &lt;p&gt;Alone here  ← :only-child&lt;/p&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;p&gt;Has&lt;/p&gt;
+  &lt;p&gt;siblings&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p:only-child</span> <span class="punc">{</span>
+  <span class="prop">text-align</span>: <span class="val">center</span>;       <span class="com">/* center if alone */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — only paragraph (alone) gets green; others stay gray</div><div class="only-child-demo"><div><p>Alone (green!)</p></div><div><p>Two</p><p>siblings</p></div></div></div>
+        </div>
+
+        <div class="pc-item" id="nth-child">
+          <h3><code>:nth-child(N)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Picks the Nth child by position. <strong>"nth"</strong> = any number.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Children at specific positions --&gt;</span>
+&lt;ul&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+  &lt;li&gt;Item 2  ← :nth-child(2)&lt;/li&gt;
+  &lt;li&gt;Item 3&lt;/li&gt;
+  &lt;li&gt;Item 4&lt;/li&gt;
+&lt;/ul&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li:nth-child(2)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">red</span>; <span class="punc">}</span>       <span class="com">/* 2nd item */</span>
+<span class="sel">tr:nth-child(odd)</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">#f9f9f9</span>; <span class="punc">}</span>  <span class="com">/* striped table */</span>
+<span class="sel">li:nth-child(even)</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">gray</span>; <span class="punc">}</span>
+<span class="sel">li:nth-child(3n)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">blue</span>; <span class="punc">}</span>      <span class="com">/* every 3rd: 3, 6, 9... */</span>
+<span class="sel">li:nth-child(2n+1)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">red</span>; <span class="punc">}</span>     <span class="com">/* same as odd */</span>
+<span class="sel">li:nth-child(3n+2)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">red</span>; <span class="punc">}</span>     <span class="com">/* 2, 5, 8, 11... */</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — striped list; 3rd item highlighted in pink</div><ul class="nth-list"><li>Item 1 (odd)</li><li>Item 2 (even)</li><li>Item 3 (special!)</li><li>Item 4 (even)</li><li>Item 5 (odd)</li><li>Item 6 (even)</li></ul></div>
+        </div>
+
+        <div class="pc-item" id="nth-last-child">
+          <h3><code>:nth-last-child(N)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Same as <code>:nth-child</code> but counts from the END.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Children counted from the end --&gt;</span>
+&lt;ul&gt;
+  &lt;li&gt;1st&lt;/li&gt;
+  &lt;li&gt;2nd  ← :nth-last-child(3)&lt;/li&gt;
+  &lt;li&gt;3rd&lt;/li&gt;
+  &lt;li&gt;4th&lt;/li&gt;
+&lt;/ul&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li:nth-last-child(1)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">red</span>; <span class="punc">}</span>     <span class="com">/* same as :last-child */</span>
+<span class="sel">li:nth-last-child(2)</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">blue</span>; <span class="punc">}</span>    <span class="com">/* 2nd from end */</span></pre>
+        </div>
+
+        <div class="pc-item" id="first-of-type">
+          <h3><code>:first-of-type</code> <span class="badge">stable</span></h3>
+          <p class="desc">First element of its type within its parent.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- First element of its type --&gt;</span>
+&lt;div&gt;
+  &lt;span&gt;Span&lt;/span&gt;
+  &lt;p&gt;1st p  ← :first-of-type&lt;/p&gt;
+  &lt;p&gt;2nd p&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* HTML: &lt;div&gt;&lt;span&gt;A&lt;/span&gt;&lt;p&gt;1&lt;/p&gt;&lt;p&gt;2&lt;/p&gt;&lt;/div&gt; */</span>
+<span class="sel">p:first-child</span> <span class="punc">{</span> <span class="com">/* matches NOTHING — &lt;span&gt; is first */</span> <span class="punc">}</span>
+<span class="sel">p:first-of-type</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">red</span>; <span class="punc">}</span>  <span class="com">/* matches first &lt;p&gt; */</span></pre>
+        </div>
+
+        <div class="pc-item" id="last-of-type">
+          <h3><code>:last-of-type</code> <span class="badge">stable</span></h3>
+          <p class="desc">Last element of its type within its parent.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Last element of its type --&gt;</span>
+&lt;div&gt;
+  &lt;p&gt;1st p&lt;/p&gt;
+  &lt;p&gt;Last p  ← :last-of-type&lt;/p&gt;
+  &lt;span&gt;span&lt;/span&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p:last-of-type</span> <span class="punc">{</span> <span class="prop">margin-bottom</span>: <span class="val">0</span>; <span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="only-of-type">
+          <h3><code>:only-of-type</code> <span class="badge">stable</span></h3>
+          <p class="desc">Element that's the only one of its type among siblings.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Only element of its type --&gt;</span>
+&lt;div&gt;
+  &lt;span&gt;span&lt;/span&gt;
+  &lt;p&gt;Alone p  ← :only-of-type&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p:only-of-type</span> <span class="punc">{</span>
+  <span class="prop">font-style</span>: <span class="val">italic</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="nth-of-type">
+          <h3><code>:nth-of-type(N)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Like <code>:nth-child</code> but counts only elements of the same type.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Nth element of its type --&gt;</span>
+&lt;div&gt;
+  &lt;span&gt;span&lt;/span&gt;
+  &lt;p&gt;1st p&lt;/p&gt;
+  &lt;p&gt;2nd p  ← :nth-of-type(2)&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p:nth-of-type(2)</span> <span class="punc">{</span>           <span class="com">/* the 2nd &lt;p&gt; (ignoring other elements) */</span>
+  <span class="prop">color</span>: <span class="val">red</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="nth-last-of-type">
+          <h3><code>:nth-last-of-type(N)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Nth of type, counting from the end.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Nth from end of its type --&gt;</span>
+&lt;div&gt;
+  &lt;p&gt;1st p&lt;/p&gt;
+  &lt;p&gt;2nd p  ← :nth-last-of-type(1)&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p:nth-last-of-type(1)</span> <span class="punc">{</span> <span class="prop">font-weight</span>: <span class="val">bold</span>; <span class="punc">}</span>  <span class="com">/* same as :last-of-type */</span></pre>
+        </div>
+      </div>
+
+      <!-- ============ LOGICAL SELECTORS ============ -->
+      <div class="category">
+        <h2>🔍 Logical Pseudo-classes</h2>
+        <p class="topic">Build complex selectors with negation, lists, and parent-aware matching.</p>
+
+        <div class="pc-item" id="not">
+          <h3><code>:not(...)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Picks everything EXCEPT what's inside the parentheses.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Anything except what's in the parens --&gt;</span>
+&lt;ul&gt;
+  &lt;li&gt;1st&lt;/li&gt;
+  &lt;li&gt;2nd  ← matched by :not(:first-child)&lt;/li&gt;
+  &lt;li&gt;3rd  ← matched&lt;/li&gt;
+&lt;/ul&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li:not(:first-child)</span> <span class="punc">{</span> <span class="prop">margin-top</span>: <span class="val">10px</span>; <span class="punc">}</span>   <span class="com">/* all li's except first */</span>
+<span class="sel">button:not(.disabled)</span> <span class="punc">{</span> <span class="prop">cursor</span>: <span class="val">pointer</span>; <span class="punc">}</span>
+<span class="sel">div:not(.hidden, .removed)</span> <span class="punc">{</span> <span class="prop">display</span>: <span class="val">block</span>; <span class="punc">}</span>  <span class="com">/* multiple */</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — all items EXCEPT the first are yellow</div><ul class="not-list"><li>1st (default)</li><li>2nd ← yellow</li><li>3rd ← yellow</li><li>4th ← yellow</li></ul></div>
+        </div>
+
+        <div class="pc-item" id="is">
+          <h3><code>:is(...)</code> <span class="badge modern">modern</span></h3>
+          <p class="desc">Matches if element matches ANY of the selectors inside. Reduces repetition.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Match any of the listed selectors --&gt;</span>
+&lt;header&gt;&lt;h1&gt;Title&lt;/h1&gt;&lt;/header&gt;
+&lt;main&gt;&lt;h1&gt;Section&lt;/h1&gt;&lt;/main&gt;
+&lt;!-- :is(header, main) h1 → both --&gt;&lt;/main&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* Without :is() — repetitive */</span>
+<span class="sel">header h1, header h2, header h3,
+main h1, main h2, main h3,
+footer h1, footer h2, footer h3</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">blue</span>;
+<span class="punc">}</span>
+
+<span class="com">/* With :is() — clean */</span>
+<span class="sel">:is(header, main, footer) :is(h1, h2, h3)</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">blue</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="where">
+          <h3><code>:where(...)</code> <span class="badge modern">modern</span></h3>
+          <p class="desc">Same as <code>:is()</code> but with ZERO specificity. Easy to override.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Same as :is but with zero specificity --&gt;</span>
+&lt;h1&gt;Heading&lt;/h1&gt;
+&lt;!-- :where(h1, h2, h3) — like :is, no specificity --&gt;&lt;/h1&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">:where(h1, h2, h3)</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">blue</span>;        <span class="com">/* easy to override later */</span>
+<span class="punc">}</span></pre>
+          <div class="use-case"><strong>Use:</strong> CSS resets and frameworks — set defaults without specificity wars</div>
+        </div>
+
+        <div class="pc-item" id="has">
+          <h3><code>:has(...)</code> <span class="badge modern">modern (the parent selector!)</span></h3>
+          <p class="desc">FINALLY a parent selector! Matches an element IF it contains a matching descendant.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Parent element containing matching child --&gt;</span>
+&lt;div class="card"&gt;
+  &lt;img src="..."&gt;  &lt;!-- card:has(img) matches parent --&gt;&lt;/div&gt;
+  &lt;p&gt;Card with image&lt;/p&gt;
+&lt;/div&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">.card:has(img)</span> <span class="punc">{</span>
+  <span class="prop">padding</span>: <span class="val">0</span>;       <span class="com">/* card with image — no padding */</span>
+<span class="punc">}</span>
+
+<span class="sel">form:has(input:invalid)</span> <span class="punc">{</span>
+  <span class="prop">border</span>: <span class="val">2px solid red</span>;   <span class="com">/* form with any invalid input */</span>
+<span class="punc">}</span>
+
+<span class="sel">li:has(.active)</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">yellow</span>;        <span class="com">/* li containing .active */</span>
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — card automatically turns red because it CONTAINS .alert</div><div class="card-has"><h4 style="margin-bottom:6px;color:#222;">Card with alert</h4><p style="font-size:13px;color:#444;margin:0;"><span class="alert" style="background:#fb7185;color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:700;">ALERT</span> The parent card turned red automatically!</p></div><div class="card-has" style="margin-top:8px;"><h4 style="margin-bottom:6px;color:#222;">Normal card</h4><p style="font-size:13px;color:#444;margin:0;">No .alert inside, so no red background.</p></div></div>
+          <div class="use-case"><strong>Game changer:</strong> For decades CSS couldn't go "up" the DOM tree. <code>:has()</code> finally lets you style parents based on their children. Browser support: Chrome 105+, Safari 15.4+, Firefox 121+ (Dec 2023).</div>
+        </div>
+      </div>
+
+      <!-- ============ LINGUISTIC ============ -->
+      <div class="category">
+        <h2>🌐 Linguistic Pseudo-classes</h2>
+        <p class="topic">Match elements based on language and text direction.</p>
+
+        <div class="pc-item" id="lang">
+          <h3><code>:lang(language)</code> <span class="badge">stable</span></h3>
+          <p class="desc">Matches elements based on their <code>lang</code> attribute (or inherited from ancestor).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element with lang attribute --&gt;</span>
+&lt;p lang="fr"&gt;Bonjour le monde&lt;/p&gt;
+&lt;p lang="es"&gt;Hola mundo&lt;/p&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="com">/* &lt;p lang="fr"&gt;Bonjour&lt;/p&gt; */</span>
+<span class="sel">p:lang(fr)</span> <span class="punc">{</span> <span class="prop">font-family</span>: <span class="val">'French Font', serif</span>; <span class="punc">}</span>
+<span class="sel">:lang(es)</span> <span class="punc">{</span> <span class="prop">quotes</span>: <span class="val">'«' '»'</span>; <span class="punc">}</span>     <span class="com">/* Spanish quote marks */</span></pre>
+        </div>
+
+        <div class="pc-item" id="dir">
+          <h3><code>:dir(direction)</code> <span class="badge modern">modern</span></h3>
+          <p class="desc">Matches elements based on text direction (left-to-right or right-to-left).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Element with text direction --&gt;</span>
+&lt;p dir="rtl"&gt;مرحبا&lt;/p&gt;  &lt;!-- :dir(rtl) --&gt;
+&lt;p dir="ltr"&gt;Hello&lt;/p&gt;  &lt;!-- :dir(ltr) --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">:dir(rtl)</span> <span class="punc">{</span> <span class="prop">text-align</span>: <span class="val">right</span>; <span class="punc">}</span>     <span class="com">/* Arabic, Hebrew */</span>
+<span class="sel">:dir(ltr)</span> <span class="punc">{</span> <span class="prop">text-align</span>: <span class="val">left</span>; <span class="punc">}</span>      <span class="com">/* English, French */</span></pre>
+        </div>
+      </div>
+
+      <!-- ============ PSEUDO-ELEMENTS ============ -->
+      <div class="category">
+        <h2>🎨 Pseudo-elements (double colon <code>::</code>)</h2>
+        <p class="topic">Style PART of an element — first letter, before/after content, placeholder text, etc.</p>
+
+        <div class="pc-item" id="before-after">
+          <h3><code>::before</code> &amp; <code>::after</code> <span class="badge element">element</span></h3>
+          <p class="desc">Insert generated content BEFORE or AFTER an element using CSS only.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Any element (CSS adds the visual content) --&gt;</span>
+&lt;div class="box"&gt;Some text&lt;/div&gt;
+&lt;!-- ::before/::after add content via CSS, not in HTML --&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">.box::before</span> <span class="punc">{</span>
+  <span class="prop">content</span>: <span class="val">"★ "</span>;          <span class="com">/* content is REQUIRED */</span>
+  <span class="prop">color</span>: <span class="val">gold</span>;
+<span class="punc">}</span>
+
+<span class="sel">.tooltip::after</span> <span class="punc">{</span>
+  <span class="prop">content</span>: <span class="val">""</span>;             <span class="com">/* empty for decorative */</span>
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">border</span>: <span class="val">5px solid black</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — stars added BEFORE each list item, arrows AFTER links</div><ul class="star-list"><li>First item</li><li>Second item</li><li>Third item</li></ul><p style="margin-top:10px;color:#222;">Read more <span class="arrow-link" style="color:#0ea5e9;font-weight:600;">click here</span></p></div>
+          <div class="callout warn"><div><strong>Always include <code>content:</code></strong> — without it, ::before/::after won't render. Use <code>content: ""</code> for decorative shapes.</div></div>
+        </div>
+
+        <div class="pc-item" id="first-letter">
+          <h3><code>::first-letter</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles only the FIRST letter of text — drop-cap effect.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Block-level text elements (p, div, etc.) --&gt;</span>
+&lt;p&gt;This paragraph gets a drop-cap effect on its first letter.&lt;/p&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p::first-letter</span> <span class="punc">{</span>
+  <span class="prop">font-size</span>: <span class="val">3em</span>;
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">float</span>: <span class="val">left</span>;
+  <span class="prop">margin-right</span>: <span class="val">5px</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — drop-cap effect on first letter</div><p class="dropcap" style="color:#222;line-height:1.6;">This paragraph has a drop-cap effect on its first letter using the ::first-letter pseudo-element. The big T is styled separately from the rest of the text.</p></div>
+        </div>
+
+        <div class="pc-item" id="first-line">
+          <h3><code>::first-line</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles only the first VISUAL line of text (changes if window resizes).</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Block-level text elements --&gt;</span>
+&lt;p&gt;This is a long paragraph and only the first visual line gets styled.&lt;/p&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">p::first-line</span> <span class="punc">{</span>
+  <span class="prop">font-weight</span>: <span class="val">bold</span>;
+  <span class="prop">color</span>: <span class="val">crimson</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — only the FIRST visual line is bold/purple (try resizing window)</div><p class="first-line-demo" style="color:#222;line-height:1.6;">This is a longer paragraph. The first line will be styled differently from the rest. Resize the browser window to see how the styled portion changes — only the first VISUAL line is affected, not the first sentence.</p></div>
+        </div>
+
+        <div class="pc-item" id="placeholder">
+          <h3><code>::placeholder</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles input placeholder text.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Inputs with placeholder attribute --&gt;</span>
+&lt;input type="text" placeholder="Type something..."&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input::placeholder</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">#aaa</span>;
+  <span class="prop">font-style</span>: <span class="val">italic</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — placeholder is pink and italic</div><input type="text" class="demo-input ph-demo" placeholder="Type something — placeholder is styled!"></div>
+        </div>
+
+        <div class="pc-item" id="selection">
+          <h3><code>::selection</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles text the user has selected with their cursor.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- Any text element --&gt;</span>
+&lt;p&gt;Try selecting this text with your mouse.&lt;/p&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">::selection</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">yellow</span>;
+  <span class="prop">color</span>: <span class="val">black</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — try selecting this text with your mouse!</div><p class="selection-demo" style="color:#222;line-height:1.6;font-size:14px;">Select any portion of this text to see the custom selection color (yellow background, dark text). This styling applies whenever a user highlights text on the page.</p></div>
+        </div>
+
+        <div class="pc-item" id="marker">
+          <h3><code>::marker</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles list item bullets/numbers.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- List items (li) --&gt;</span>
+&lt;ol&gt;
+  &lt;li&gt;List item&lt;/li&gt;
+  &lt;li&gt;Another item&lt;/li&gt;
+&lt;/ol&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">li::marker</span> <span class="punc">{</span>
+  <span class="prop">color</span>: <span class="val">red</span>;
+  <span class="prop">font-size</span>: <span class="val">1.5em</span>;
+<span class="punc">}</span></pre>
+<div class="demo-live"><div class="demo-label">Live demo — list bullets/numbers are styled pink and bold</div><ol class="marker-demo"><li>First item</li><li>Second item</li><li>Third item</li></ol></div>
+        </div>
+
+        <div class="pc-item" id="backdrop">
+          <h3><code>::backdrop</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles the dimmed area behind <code>&lt;dialog&gt;</code> elements or fullscreen elements.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- &lt;dialog&gt; or fullscreen elements --&gt;</span>
+&lt;dialog open&gt;
+  Modal content
+&lt;/dialog&gt;
+&lt;!-- ::backdrop styles the dimmed area behind --&gt;&lt;/dialog&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">dialog::backdrop</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">rgba(0, 0, 0, 0.7)</span>;
+  <span class="prop">backdrop-filter</span>: <span class="val">blur(4px)</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="file-selector">
+          <h3><code>::file-selector-button</code> <span class="badge element">element</span></h3>
+          <p class="desc">Styles the "Choose File" button on file inputs.</p>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">📄 HTML — applies to:</div>
+          <pre style="border-radius:6px;border:1px solid var(--border);font-size:12.5px;padding:12px 16px;"><span class="com">&lt;!-- File input elements --&gt;</span>
+&lt;input type="file"&gt;</pre>
+          <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;">🎨 CSS:</div>
+<pre><span class="sel">input[type=file]::file-selector-button</span> <span class="punc">{</span>
+  <span class="prop">background</span>: <span class="val">#3b82f6</span>;
+  <span class="prop">color</span>: <span class="val">white</span>;
+  <span class="prop">padding</span>: <span class="val">8px 16px</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">border-radius</span>: <span class="val">4px</span>;
+<span class="punc">}</span></pre>
+        </div>
+      </div>
+
+      <!-- ============ CSS FUNCTIONS ============ -->
+      <div class="category">
+        <h2>⚙️ CSS Functions</h2>
+        <p class="topic">Built-in functions that compute values for properties.</p>
+
+        <div class="pc-item" id="repeat">
+          <h3><code>repeat(N, value)</code></h3>
+          <p class="desc">Repeats a value N times. Used in Grid template properties.</p>
+<pre><span class="prop">grid-template-columns</span>: <span class="val">repeat(4, 1fr)</span>;            <span class="com">/* = 1fr 1fr 1fr 1fr */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">200px repeat(3, 1fr) 200px</span>;  <span class="com">/* mix */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 100px 50px)</span>;     <span class="com">/* repeat pattern */</span></pre>
+        </div>
+
+        <div class="pc-item" id="minmax">
+          <h3><code>minmax(min, max)</code></h3>
+          <p class="desc">Sets a minimum AND maximum size. Track grows up to max, never below min.</p>
+<pre><span class="prop">grid-template-columns</span>: <span class="val">minmax(100px, 1fr)</span>;
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(3, minmax(200px, 1fr))</span>;</pre>
+        </div>
+
+        <div class="pc-item" id="calc">
+          <h3><code>calc(...)</code></h3>
+          <p class="desc">Math inside CSS. Mix different units (+, −, ×, ÷).</p>
+<pre><span class="prop">width</span>: <span class="val">calc(100% - 20px)</span>;
+<span class="prop">height</span>: <span class="val">calc(100vh - 80px)</span>;
+<span class="prop">font-size</span>: <span class="val">calc(16px + 0.5vw)</span>;</pre>
+          <div class="callout warn"><div><strong>Spaces required</strong> around <code>+</code> and <code>-</code>: <code>calc(100% - 20px)</code> ✓</div></div>
+        </div>
+
+        <div class="pc-item" id="var">
+          <h3><code>var(--name)</code></h3>
+          <p class="desc">Use a CSS variable. Define with <code>--name</code> on <code>:root</code> (or any element).</p>
+<pre><span class="sel">:root</span> <span class="punc">{</span> <span class="prop">--primary</span>: <span class="val">#3b82f6</span>; <span class="punc">}</span>
+<span class="sel">.btn</span> <span class="punc">{</span> <span class="prop">background</span>: <span class="val">var(--primary)</span>; <span class="punc">}</span>
+<span class="sel">.box</span> <span class="punc">{</span> <span class="prop">color</span>: <span class="val">var(--text-color, black)</span>; <span class="punc">}</span>  <span class="com">/* with fallback */</span></pre>
+        </div>
+
+        <div class="pc-item" id="min-max">
+          <h3><code>min()</code> · <code>max()</code> · <code>clamp()</code></h3>
+          <p class="desc">Pick smallest/largest value, or clamp between bounds.</p>
+<pre><span class="prop">width</span>: <span class="val">min(100%, 800px)</span>;       <span class="com">/* whichever is smaller */</span>
+<span class="prop">width</span>: <span class="val">max(50%, 400px)</span>;        <span class="com">/* whichever is larger */</span>
+<span class="prop">font-size</span>: <span class="val">clamp(14px, 2vw, 24px)</span>;  <span class="com">/* min, ideal, max */</span></pre>
+          <div class="use-case"><strong>Use:</strong> Responsive typography without media queries</div>
+        </div>
+      </div>
+
+      <!-- ============ KEYWORDS & UNITS ============ -->
+      <div class="category">
+        <h2>🔤 Special Keywords &amp; Units</h2>
+        <p class="topic">Reserved CSS values and units with special meaning.</p>
+
+        <div class="pc-item" id="units">
+          <h3>Units — <code>1fr</code>, <code>1rem</code>, <code>1em</code>, <code>vh</code>, <code>vw</code></h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Unit</th><th>Means</th><th>Example</th></tr></thead>
+              <tbody>
+                <tr><td><code>1fr</code></td><td>1 fraction of leftover space (Grid only)</td><td><code>1fr 2fr 1fr</code></td></tr>
+                <tr><td><code>1px</code></td><td>1 pixel (fixed)</td><td><code>border: 1px</code></td></tr>
+                <tr><td><code>1%</code></td><td>1% of parent</td><td><code>width: 50%</code></td></tr>
+                <tr><td><code>1em</code></td><td>1× current element's font-size</td><td>16px element → 1em = 16px</td></tr>
+                <tr><td><code>1rem</code></td><td>1× root (html) font-size</td><td><code>padding: 1rem</code> = 16px</td></tr>
+                <tr><td><code>1vh</code></td><td>1% of viewport HEIGHT</td><td><code>height: 100vh</code></td></tr>
+                <tr><td><code>1vw</code></td><td>1% of viewport WIDTH</td><td><code>width: 100vw</code></td></tr>
+                <tr><td><code>1vmin</code></td><td>1% of smaller viewport dimension</td><td>Square layouts</td></tr>
+                <tr><td><code>1vmax</code></td><td>1% of larger viewport dimension</td><td></td></tr>
+                <tr><td><code>1ch</code></td><td>Width of "0" character in current font</td><td>Monospace columns</td></tr>
+                <tr><td><code>1ex</code></td><td>x-height of current font</td><td>Rare</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pc-item" id="auto-keywords">
+          <h3><code>auto</code> · <code>inherit</code> · <code>initial</code> · <code>unset</code></h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Keyword</th><th>What it means</th><th>Example</th></tr></thead>
+              <tbody>
+                <tr><td><code>auto</code></td><td>Browser decides — varies by property</td><td><code>margin: auto</code> centers</td></tr>
+                <tr><td><code>inherit</code></td><td>Use parent's value</td><td><code>color: inherit</code></td></tr>
+                <tr><td><code>initial</code></td><td>Reset to default</td><td><code>display: initial</code></td></tr>
+                <tr><td><code>unset</code></td><td>Inherit if inheritable, else initial</td><td><code>all: unset</code></td></tr>
+                <tr><td><code>revert</code></td><td>Revert to browser's default stylesheet</td><td>Advanced</td></tr>
+                <tr><td><code>none</code></td><td>Remove from rendering</td><td><code>display: none</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pc-item" id="auto-fill-fit">
+          <h3><code>auto-fill</code> &amp; <code>auto-fit</code> (Grid)</h3>
+          <p class="desc">Magic responsive grids without media queries.</p>
+<pre><span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fill, minmax(150px, 1fr))</span>;
+<span class="com">/* Creates as many columns as fit, KEEPS empty ones */</span>
+
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(150px, 1fr))</span>;
+<span class="com">/* Same, but COLLAPSES empty columns (items stretch) */</span></pre>
+        </div>
+
+        <div class="pc-item" id="span">
+          <h3><code>span N</code> (Grid)</h3>
+          <p class="desc">Make an item span N tracks (cells).</p>
+<pre><span class="sel">.item</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span>: <span class="val">span 2</span>;            <span class="com">/* spans 2 columns */</span>
+  <span class="prop">grid-row</span>:    <span class="val">span 3</span>;
+  <span class="prop">grid-column</span>: <span class="val">1 / span 3</span>;          <span class="com">/* start at line 1, span 3 */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="pc-item" id="alignment-keywords">
+          <h3>Alignment Keywords (Flex &amp; Grid)</h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Keyword</th><th>What it does</th><th>Used by</th></tr></thead>
+              <tbody>
+                <tr><td><code>flex-start</code></td><td>Pack to start of axis</td><td>Flex, Grid</td></tr>
+                <tr><td><code>flex-end</code></td><td>Pack to end of axis</td><td>Flex, Grid</td></tr>
+                <tr><td><code>start</code></td><td>Same as flex-start (Grid prefers this)</td><td>Grid</td></tr>
+                <tr><td><code>end</code></td><td>Same as flex-end</td><td>Grid</td></tr>
+                <tr><td><code>center</code></td><td>Center items</td><td>Flex, Grid</td></tr>
+                <tr><td><code>stretch</code></td><td>Fill available space (default)</td><td>Flex, Grid</td></tr>
+                <tr><td><code>baseline</code></td><td>Align by text baseline</td><td>Flex, Grid</td></tr>
+                <tr><td><code>space-between</code></td><td>First/last to edges, equal gaps between</td><td>Flex, Grid</td></tr>
+                <tr><td><code>space-around</code></td><td>Equal space around each (half at edges)</td><td>Flex, Grid</td></tr>
+                <tr><td><code>space-evenly</code></td><td>Equal space everywhere (full at edges)</td><td>Flex, Grid</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ MASTER CHEAT SHEET ============ -->
+      <div class="category" id="cheat">
+        <h2>📋 Master Cheat Sheet — All Selectors</h2>
+        <p class="topic">Quick lookup table for everything.</p>
+
+        <div class="pc-item">
+          <h3>Pseudo-classes (single colon <code>:</code>)</h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Selector</th><th>Picks</th></tr></thead>
+              <tbody>
+                <tr><td><code>:hover</code></td><td>Mouse over</td></tr>
+                <tr><td><code>:focus</code></td><td>Focused</td></tr>
+                <tr><td><code>:focus-within</code></td><td>Focused (or descendant)</td></tr>
+                <tr><td><code>:focus-visible</code></td><td>Keyboard-focused only</td></tr>
+                <tr><td><code>:active</code></td><td>Being clicked</td></tr>
+                <tr><td><code>:visited</code></td><td>Visited link</td></tr>
+                <tr><td><code>:link</code></td><td>Unvisited link</td></tr>
+                <tr><td><code>:any-link</code></td><td>Any link (visited or not)</td></tr>
+                <tr><td><code>:target</code></td><td>Element matched by URL hash</td></tr>
+                <tr><td><code>:checked</code></td><td>Checked checkbox/radio</td></tr>
+                <tr><td><code>:disabled</code></td><td>Disabled input</td></tr>
+                <tr><td><code>:enabled</code></td><td>Enabled input</td></tr>
+                <tr><td><code>:required</code></td><td>Required input</td></tr>
+                <tr><td><code>:optional</code></td><td>Non-required input</td></tr>
+                <tr><td><code>:valid</code></td><td>Passes validation</td></tr>
+                <tr><td><code>:invalid</code></td><td>Fails validation</td></tr>
+                <tr><td><code>:user-invalid</code></td><td>Fails after user interaction</td></tr>
+                <tr><td><code>:in-range</code></td><td>Number within min/max</td></tr>
+                <tr><td><code>:out-of-range</code></td><td>Number outside min/max</td></tr>
+                <tr><td><code>:read-only</code></td><td>Read-only input</td></tr>
+                <tr><td><code>:read-write</code></td><td>Editable input</td></tr>
+                <tr><td><code>:placeholder-shown</code></td><td>Showing placeholder (empty)</td></tr>
+                <tr><td><code>:default</code></td><td>Default in group</td></tr>
+                <tr><td><code>:root</code></td><td>Document root (html)</td></tr>
+                <tr><td><code>:empty</code></td><td>No children</td></tr>
+                <tr><td><code>:first-child</code></td><td>First child</td></tr>
+                <tr><td><code>:last-child</code></td><td>Last child</td></tr>
+                <tr><td><code>:only-child</code></td><td>Only child</td></tr>
+                <tr><td><code>:nth-child(N)</code></td><td>Nth child</td></tr>
+                <tr><td><code>:nth-last-child(N)</code></td><td>Nth from end</td></tr>
+                <tr><td><code>:first-of-type</code></td><td>First of type</td></tr>
+                <tr><td><code>:last-of-type</code></td><td>Last of type</td></tr>
+                <tr><td><code>:only-of-type</code></td><td>Only of type</td></tr>
+                <tr><td><code>:nth-of-type(N)</code></td><td>Nth of type</td></tr>
+                <tr><td><code>:nth-last-of-type(N)</code></td><td>Nth of type from end</td></tr>
+                <tr><td><code>:not(...)</code></td><td>NOT what's inside</td></tr>
+                <tr><td><code>:is(...)</code></td><td>Match ANY listed</td></tr>
+                <tr><td><code>:where(...)</code></td><td>Match ANY listed (zero specificity)</td></tr>
+                <tr><td><code>:has(...)</code></td><td>Has matching descendant (parent selector!)</td></tr>
+                <tr><td><code>:lang()</code></td><td>Specific language</td></tr>
+                <tr><td><code>:dir()</code></td><td>Text direction (rtl/ltr)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pc-item">
+          <h3>Pseudo-elements (double colon <code>::</code>)</h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Selector</th><th>Targets</th></tr></thead>
+              <tbody>
+                <tr><td><code>::before</code></td><td>Insert before content</td></tr>
+                <tr><td><code>::after</code></td><td>Insert after content</td></tr>
+                <tr><td><code>::first-letter</code></td><td>First letter of text</td></tr>
+                <tr><td><code>::first-line</code></td><td>First visual line</td></tr>
+                <tr><td><code>::placeholder</code></td><td>Input placeholder</td></tr>
+                <tr><td><code>::selection</code></td><td>User-selected text</td></tr>
+                <tr><td><code>::marker</code></td><td>List item bullet</td></tr>
+                <tr><td><code>::backdrop</code></td><td>Behind dialog/fullscreen</td></tr>
+                <tr><td><code>::file-selector-button</code></td><td>"Choose File" button</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pc-item">
+          <h3>CSS Functions &amp; Keywords</h3>
+          <div class="table-wrap">
+            <table class="compare">
+              <thead><tr><th>Function/Keyword</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>repeat(N, value)</code></td><td>Grid: repeat tracks</td></tr>
+                <tr><td><code>minmax(min, max)</code></td><td>Grid: bounded size</td></tr>
+                <tr><td><code>calc(...)</code></td><td>Math in CSS</td></tr>
+                <tr><td><code>var(--name)</code></td><td>CSS variable</td></tr>
+                <tr><td><code>min()</code> / <code>max()</code></td><td>Smallest/largest value</td></tr>
+                <tr><td><code>clamp(min, val, max)</code></td><td>Bounded value</td></tr>
+                <tr><td><code>auto</code></td><td>Browser decides</td></tr>
+                <tr><td><code>inherit</code> / <code>initial</code> / <code>unset</code></td><td>Reset values</td></tr>
+                <tr><td><code>auto-fill</code> / <code>auto-fit</code></td><td>Grid: dynamic columns</td></tr>
+                <tr><td><code>span N</code></td><td>Grid: span tracks</td></tr>
+                <tr><td><code>1fr</code></td><td>Grid: fraction unit</td></tr>
+                <tr><td><code>flex-start</code> / <code>flex-end</code> / <code>center</code></td><td>Flex/Grid alignment</td></tr>
+                <tr><td><code>space-between</code> / <code>space-around</code> / <code>space-evenly</code></td><td>Spacing distribution</td></tr>
+                <tr><td><code>stretch</code> / <code>baseline</code></td><td>Item alignment</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      Complete CSS Pseudo-classes &amp; Keywords Library · 40+ pseudo-classes · 8 pseudo-elements · 7 functions · Use FLEX / GRID tabs above to see them in action · Print-friendly (Ctrl/Cmd + P)
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.parentElement.nextElementSibling;
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      const orig = btn.innerText;
+      btn.innerText = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerText = orig; btn.classList.remove('copied'); }, 1500);
+    });
+  }
+  // Active nav highlight on scroll
+  const items = document.querySelectorAll('.pc-item, .category');
+  const links = document.querySelectorAll('aside nav a');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        if (!id) return;
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  items.forEach(s => { if (s.id) obs.observe(s); });
+</script>
+</body>
+</html>

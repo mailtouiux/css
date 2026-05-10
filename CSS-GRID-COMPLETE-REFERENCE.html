@@ -1,0 +1,2756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Grid — Professional Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d17;
+    --bg-2: #11141f;
+    --bg-3: #181b29;
+    --bg-4: #1f2336;
+    --border: #2a2e44;
+    --text: #e6e8ef;
+    --text-dim: #9ba1b3;
+    --accent: #6ee7ff;
+    --accent-2: #a78bfa;
+    --warn: #fb7185;
+    --good: #34d399;
+    --gold: #fbbf24;
+    --code-bg: #06080f;
+    --pink: #f472b6;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ TOP NAV ============ */
+  .topnav {
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .topnav .topnav-brand {
+    font-weight: 700;
+    color: var(--text);
+    margin-right: 32px;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .topnav .topnav-tabs { display: flex; gap: 4px; }
+  .topnav a {
+    padding: 8px 18px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .topnav a:hover { background: var(--bg-3); color: var(--text); }
+  .topnav a.active { background: var(--accent); color: var(--bg); }
+
+  /* ============ LAYOUT ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 52px);
+  }
+
+  /* ============ SIDEBAR ============ */
+  aside {
+    background: var(--bg-2);
+    border-right: 1px solid var(--border);
+    padding: 32px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+  aside .brand {
+    padding: 0 28px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  aside .brand h1 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  aside .brand p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  aside nav {
+    padding: 0 16px;
+  }
+  aside nav .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    padding: 12px 12px 6px;
+  }
+  aside nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  aside nav a:hover {
+    background: var(--bg-3);
+    color: var(--text);
+  }
+  aside nav a.active {
+    background: var(--bg-4);
+    color: var(--accent);
+  }
+  aside nav a .file-num {
+    background: var(--bg-3);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 26px;
+    text-align: center;
+  }
+  aside nav a .pc-tag {
+    margin-left: auto;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  aside nav a .pc-tag.p { background: rgba(110, 231, 255, 0.15); color: var(--accent); }
+  aside nav a .pc-tag.c { background: rgba(244, 114, 182, 0.15); color: var(--pink); }
+  aside nav a .pc-tag.b { background: linear-gradient(90deg, rgba(110, 231, 255, 0.15), rgba(244, 114, 182, 0.15)); color: #d8a8d8; }
+
+  /* ============ MAIN ============ */
+  main {
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 64px 56px 48px;
+    background:
+      radial-gradient(ellipse at top right, rgba(110,231,255,0.08), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(167,139,250,0.06), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .eyebrow {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--bg-3);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 680px;
+    line-height: 1.6;
+  }
+  .hero .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .hero .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .hero .meta-item strong { color: var(--text); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); }
+
+  /* Content */
+  .content {
+    padding: 48px 56px 80px;
+    max-width: 920px;
+  }
+
+  /* ============ SECTION ============ */
+  section.lesson {
+    margin-bottom: 72px;
+    scroll-margin-top: 76px;
+  }
+  section.lesson .file-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-3);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  section.lesson .file-tag .num {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  /* PARENT / CHILD badges */
+  .badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .badge.parent {
+    background: rgba(110, 231, 255, 0.1);
+    color: var(--accent);
+    border-color: rgba(110, 231, 255, 0.3);
+  }
+  .badge.child {
+    background: rgba(244, 114, 182, 0.1);
+    color: var(--pink);
+    border-color: rgba(244, 114, 182, 0.3);
+  }
+  .badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  section.lesson h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  section.lesson h2 .star { color: var(--gold); font-size: 24px; vertical-align: middle; }
+  section.lesson .topic {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  section.lesson h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 32px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  section.lesson h3 .icon {
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  section.lesson p { margin-bottom: 14px; }
+  section.lesson ul { margin: 8px 0 16px 20px; }
+  section.lesson ul li { margin-bottom: 6px; color: var(--text-dim); }
+  section.lesson ul li strong { color: var(--text); }
+
+  /* ============ CODE BLOCK ============ */
+  .code-wrap {
+    position: relative;
+    margin: 16px 0;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-3);
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .copy-btn {
+    background: var(--bg-4);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .copy-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .copy-btn.copied { background: var(--good); color: var(--bg); border-color: var(--good); }
+  pre {
+    background: var(--code-bg);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  pre.no-header { border-radius: 8px; }
+  .prop  { color: #82d9ff; }
+  .val   { color: #fde68a; }
+  .com   { color: #6b7280; font-style: italic; }
+  .key   { color: #f472b6; }
+  .sel   { color: #c4b5fd; }
+  .punc  { color: #9ba1b3; }
+
+  /* ============ DEMO BOX ============ */
+  .demo-box {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0 24px;
+    box-shadow: var(--shadow);
+    color: #222;
+  }
+  .demo-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .demo-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--good);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .item {
+    background: linear-gradient(135deg, #6ee7ff, #4dc4e6);
+    color: #0b1220;
+    padding: 14px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 6px;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .item.b { background: linear-gradient(135deg, #f472b6, #db4d97); color: #fff; }
+  .item.c { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #422006; }
+  .item.d { background: linear-gradient(135deg, #86efac, #16a34a); color: #052e16; }
+  .item.e { background: linear-gradient(135deg, #c4b5fd, #7c3aed); color: #fff; }
+  .item.f { background: linear-gradient(135deg, #fdba74, #ea580c); color: #fff; }
+
+  /* ============ CALLOUTS ============ */
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 14px 0;
+    font-size: 14px;
+    border-left: 3px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout .cicon {
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+  }
+  .callout strong { color: var(--text); }
+  .callout.tip {
+    background: rgba(52, 211, 153, 0.07);
+    border-color: var(--good);
+    color: var(--text-dim);
+  }
+  .callout.tip .cicon { color: var(--good); }
+  .callout.warn {
+    background: rgba(251, 113, 133, 0.07);
+    border-color: var(--warn);
+    color: var(--text-dim);
+  }
+  .callout.warn .cicon { color: var(--warn); }
+  .callout.info {
+    background: rgba(110, 231, 255, 0.06);
+    border-color: var(--accent);
+    color: var(--text-dim);
+  }
+  .callout.info .cicon { color: var(--accent); }
+  .callout.real {
+    background: rgba(251, 191, 36, 0.06);
+    border-color: var(--gold);
+    color: var(--text-dim);
+  }
+  .callout.real .cicon { color: var(--gold); }
+
+  /* ============ VALUE PILLS ============ */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin: 12px 0 20px;
+  }
+  .value-pill {
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .value-pill .v {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .value-pill .d {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+
+  /* ============ COMPARE TABLE ============ */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 20px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .compare th, .compare td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare th {
+    background: var(--bg-3);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .compare td { color: var(--text-dim); }
+  .compare td code, .compare th code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .compare tr:last-child td { border-bottom: none; }
+
+  /* Inline code */
+  code {
+    background: var(--bg-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  /* ============ DEMO STYLES ============ */
+  .d-basic { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 70px 70px; gap: 8px; }
+  .d-gap1  { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 65px; gap: 4px; }
+  .d-gap2  { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 65px; gap: 8px 32px; }
+  .d-repeat { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 65px; gap: 8px; }
+  .d-fr     { display: grid; grid-template-columns: 1fr 2fr 1fr; grid-template-rows: 65px; gap: 8px; }
+  .d-pos    { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 60px); gap: 8px; }
+  .d-pos .move { grid-column: 2 / 4; grid-row: 1 / 3; }
+  .d-span   { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 65px); gap: 8px; }
+  .d-span .wide { grid-column: span 2; }
+  .d-span .tall { grid-row: span 2; }
+  .d-named  { display: grid; grid-template-columns: [start] 1fr [middle] 2fr [end]; grid-template-rows: 65px; gap: 8px; }
+  .d-named .item:nth-child(2) { grid-column: middle / end; }
+  .d-areas {
+    display: grid;
+    grid-template-areas:
+      "head head head"
+      "side main main"
+      "side main main"
+      "foot foot foot";
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 60px 80px 80px 50px;
+    gap: 8px;
+  }
+  .d-areas .a-head { grid-area: head; }
+  .d-areas .a-side { grid-area: side; }
+  .d-areas .a-main { grid-area: main; }
+  .d-areas .a-foot { grid-area: foot; }
+
+  .d-justify {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 90px;
+    gap: 8px;
+    background: #f3f4f6;
+    padding: 6px;
+    border-radius: 6px;
+    justify-items: center;
+    align-items: center;
+  }
+  .d-justify .item { width: 70px; height: 45px; }
+
+  .d-content {
+    display: grid;
+    grid-template-columns: 70px 70px 70px;
+    grid-template-rows: 50px;
+    gap: 8px;
+    height: 130px;
+    background: #f3f4f6;
+    padding: 6px;
+    border-radius: 6px;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .d-auto { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 60px; gap: 8px; }
+
+  .d-flow-col {
+    display: grid;
+    grid-template-rows: repeat(2, 60px);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+  }
+
+  .d-self {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 90px;
+    gap: 8px;
+    background: #f3f4f6;
+    padding: 6px;
+    border-radius: 6px;
+  }
+  .d-self .item { width: 65px; height: 45px; }
+  .d-self .one   { justify-self: start;  align-self: start; }
+  .d-self .two   { justify-self: center; align-self: center; }
+  .d-self .three { justify-self: end;    align-self: end; }
+
+  .d-minmax {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(180px, 2fr) minmax(100px, 1fr);
+    grid-template-rows: 65px;
+    gap: 8px;
+  }
+  .d-fill { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); grid-template-rows: 65px; gap: 8px; }
+  .d-fit  { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));  grid-template-rows: 65px; gap: 8px; }
+
+  /* ============ CSS KEYWORD INLINE NOTE ============ */
+  .kw-note {
+    background: linear-gradient(90deg, rgba(167,139,250,0.1), rgba(110,231,255,0.1));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .kw-note::before {
+    content: '📖';
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .kw-note strong { color: var(--accent-2); }
+
+  /* ============ GLOSSARY SECTION ============ */
+  .glossary {
+    background: linear-gradient(135deg, rgba(167,139,250,0.06), rgba(110,231,255,0.06));
+    border: 1px solid var(--accent-2);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 48px;
+    box-shadow: var(--shadow);
+  }
+  .glossary h2 {
+    color: var(--accent-2);
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .glossary .desc { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
+  .glossary h3 {
+    color: var(--accent);
+    font-size: 16px;
+    margin-top: 28px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ============ MASTER CHEAT SHEET ============ */
+  .cheat {
+    background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 48px;
+    box-shadow: var(--shadow);
+  }
+  .cheat h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .cheat .desc { color: var(--text-dim); margin-bottom: 24px; font-size: 14px; }
+
+  /* Footer */
+  footer {
+    padding: 32px 56px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    .hero, .content, footer { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: 32px; }
+  }
+
+  /* ============ PRINT ============ */
+  @media print {
+    .topnav, aside, .copy-btn, .code-header { display: none; }
+    body { background: #fff; color: #000; }
+    .layout { display: block; }
+    .demo-box { box-shadow: none; border: 1px solid #ddd; }
+    pre { background: #f5f5f5; color: #000; }
+    .prop, .val, .com, .key { color: #000 !important; }
+  }
+
+  /* SVG diagram */
+  .grid-svg-wrap {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+
+  /* ============ LIVE DEMO WITH LINE NUMBERS (lcd) ============ */
+  .lcd {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0 24px;
+    box-shadow: var(--shadow);
+    color: #222;
+  }
+  .lcd .lcd-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lcd .lcd-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--good);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .lcd .lcd-cols {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 32px;
+    margin-bottom: 8px;
+  }
+  .lcd .lcd-cols .ln,
+  .lcd .lcd-rows .rn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+  }
+  .lcd .lcd-cols .ln { background: #0ea5e9; }
+  .lcd .lcd-rows .rn { background: #db2777; }
+  .lcd .lcd-body {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .lcd .lcd-rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 22px;
+  }
+  .lcd .lcd-grid {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+  }
+  /* Visible grid track lines (dashed) */
+  .lcd .lcd-grid > .vt {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    width: 0;
+    border-left: 1.5px dashed rgba(100, 116, 139, 0.55);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .lcd .lcd-grid > .ht {
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    height: 0;
+    border-top: 1.5px dashed rgba(100, 116, 139, 0.55);
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Edge lines (top/bottom/left/right) so all grid lines are visible */
+  .lcd .lcd-grid > .vt.edge,
+  .lcd .lcd-grid > .ht.edge {
+    border-color: rgba(100, 116, 139, 0.7);
+  }
+
+  /* ============ NUMBERED GRID DEMO ============ */
+  .lined-demo {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 28px 18px 18px 32px;
+    margin: 16px 0 24px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .lined-demo .lined-label {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+  }
+  .lined-demo .lined-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--good);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .lined-demo .lgrid {
+    display: grid;
+    gap: 0;
+    position: relative;
+  }
+  .lined-demo .cell {
+    background: linear-gradient(135deg, #6ee7ff, #4dc4e6);
+    color: #0b1220;
+    padding: 14px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 4px;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin: 4px;
+  }
+  .lined-demo .cell.b { background: linear-gradient(135deg, #f472b6, #db4d97); color: #fff; }
+  .lined-demo .cell.c { background: linear-gradient(135deg, #fde68a, #f59e0b); color: #422006; }
+  .lined-demo .cell.d { background: linear-gradient(135deg, #86efac, #16a34a); color: #052e16; }
+  .lined-demo .cell.e { background: linear-gradient(135deg, #c4b5fd, #7c3aed); color: #fff; }
+  .lined-demo .cell.f { background: linear-gradient(135deg, #fdba74, #ea580c); color: #fff; }
+  .lined-demo .cell.highlight {
+    background: linear-gradient(135deg, #f472b6, #db4d97);
+    color: #fff;
+    outline: 3px solid #db4d97;
+    outline-offset: -3px;
+    box-shadow: 0 4px 16px rgba(219, 77, 151, 0.4);
+  }
+  .lined-demo .cnum, .lined-demo .rnum {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 5;
+  }
+  .lined-demo .cnum {
+    background: #0ea5e9;
+    color: #fff;
+    align-self: center;
+    transform: translateY(-50%);
+  }
+  .lined-demo .rnum {
+    background: #db2777;
+    color: #fff;
+    justify-self: center;
+    transform: translateX(-50%);
+  }
+  .lined-demo .legend-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e7eb;
+    font-size: 12px;
+    color: #6b7280;
+    flex-wrap: wrap;
+  }
+  .lined-demo .legend-row span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lined-demo .legend-row .dot-c {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #0ea5e9; color: white;
+    font-size: 9px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .lined-demo .legend-row .dot-r {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #db2777; color: white;
+    font-size: 9px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP NAVIGATION ============ -->
+<nav class="topnav">
+  <span class="topnav-brand">📚 CSS Reference</span>
+  <div class="topnav-tabs">
+    <a href="CSS-FLEX-COMPLETE-REFERENCE.html">FLEX</a>
+    <a href="CSS-GRID-COMPLETE-REFERENCE.html" class="active">GRID</a>
+    <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">PSEUDO-CLASSES</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside>
+    <div class="brand">
+      <h1>CSS Grid Reference</h1>
+      <p>Chapter 6 — Resource Files</p>
+    </div>
+    <nav>
+<div class="label">Chapter 6 — File Order</div>
+      <a href="#f1"><span class="file-num">1</span> grid-intro<span class="pc-tag p">P</span></a>
+      <a href="#f3"><span class="file-num">3</span> col-row-gap<span class="pc-tag p">P</span></a>
+      <a href="#f4"><span class="file-num">4</span> repeat-fr<span class="pc-tag p">P</span></a>
+      <a href="#f5"><span class="file-num">5</span> grid-item-position<span class="pc-tag c">C</span></a>
+      <a href="#f6"><span class="file-num">6</span> span-grid-item<span class="pc-tag c">C</span></a>
+      <a href="#f7"><span class="file-num">7</span> grid-line-names<span class="pc-tag b">P+C</span></a>
+      <a href="#f8"><span class="file-num">8</span> grid-temp-areas<span class="pc-tag b">P+C</span></a>
+      <a href="#f9"><span class="file-num">9</span> place-items<span class="pc-tag p">P</span></a>
+      <a href="#f10"><span class="file-num">10</span> place-content<span class="pc-tag p">P</span></a>
+      <a href="#f11"><span class="file-num">11</span> auto-row-col-flow<span class="pc-tag p">P</span></a>
+      <a href="#f12"><span class="file-num">12</span> place-self<span class="pc-tag c">C</span></a>
+      <a href="#f13"><span class="file-num">13</span> max-min-minmax<span class="pc-tag p">P</span></a>
+      <a href="#f14"><span class="file-num">14</span> auto-fill-fit<span class="pc-tag p">P</span></a>
+
+      <div class="label">Reference</div>
+      <a href="#cheat"><span class="file-num">📋</span>Cheat sheet</a>
+      <a href="#mistakes"><span class="file-num">⚠</span>Common mistakes</a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <span class="eyebrow">CHAPTER 6 · CSS GRID LAYOUT</span>
+      <h1>The Complete CSS Grid Reference</h1>
+      <p class="lead">Every property, every value, every common pattern — organized to match your tutorial files. Every example below is live CSS Grid running on this page.</p>
+      <div class="meta">
+        <div class="meta-item"><span class="dot"></span><strong>13</strong> lessons</div>
+        <div class="meta-item"><span class="dot" style="background: var(--accent)"></span><strong>40+</strong> live examples</div>
+        <div class="meta-item"><span class="dot" style="background: var(--accent-2)"></span><strong>All</strong> property values</div>
+        <div class="meta-item"><span class="dot" style="background: var(--gold)"></span>Print-friendly</div>
+      </div>
+      <div style="margin-top: 28px; padding: 16px 20px; background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; max-width: 680px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 10px;">Legend — every section is tagged</div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+          <span class="badge parent">Parent property</span>
+          <span style="font-size: 13px; color: var(--text-dim);">→ goes on the grid container</span>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 8px;">
+          <span class="badge child">Child property</span>
+          <span style="font-size: 13px; color: var(--text-dim);">→ goes on individual grid items</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CONTENT ============ -->
+    <div class="content">
+
+<!-- =========== FILE 1 =========== -->
+      <section class="lesson" id="f1">
+        <span class="file-tag"><span class="num">1</span> grid-intro.html</span>
+        <h2>Grid Introduction & Grid Lines</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Activate Grid mode, define columns and rows, and understand how grid lines are numbered.</p>
+
+        <h3><span class="icon"></span>Grid vs Flexbox — Quick Mental Model</h3>
+        <table class="compare">
+          <tr><th>Feature</th><th>Flexbox</th><th>Grid</th></tr>
+          <tr><td>Direction</td><td>1D — row OR column</td><td>2D — rows AND columns</td></tr>
+          <tr><td>Best for</td><td>Components (navbar, card row)</td><td>Page layouts (whole page sections)</td></tr>
+          <tr><td>Item placement</td><td>Sequential</td><td>Any cell, any size</td></tr>
+          <tr><td>Activated by</td><td><code>display: flex</code></td><td><code>display: grid</code></td></tr>
+        </table>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>1.grid-intro.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>2<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>3<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>4<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>5<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>6<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three Lines of Code That Make a Grid</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>1.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">100px 100px 100px</span>;  <span class="com">/* 3 columns */</span>
+  <span class="prop">grid-template-rows</span>:    <span class="val">80px 80px</span>;          <span class="com">/* 2 rows */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">3 columns × 2 rows = 6 cells</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span>
+            </div>
+            <div class="d-basic lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="ht" style="top: 50%"></div>
+              <div class="item">1</div><div class="item b">2</div><div class="item c">3</div>
+              <div class="item d">4</div><div class="item e">5</div><div class="item f">6</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>Understanding Grid Lines</h3>
+        <p>Grid creates invisible numbered lines between every column and row. For <strong>N columns</strong>, there are <strong>N+1 vertical lines</strong>. For <strong>N rows</strong>, there are <strong>N+1 horizontal lines</strong>.</p>
+
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 6 cells -->
+            <rect x="60" y="50" width="160" height="80" fill="#6ee7ff" opacity="0.5" rx="4"/>
+            <rect x="60" y="50" width="160" height="80" fill="none" stroke="#0ea5e9" stroke-width="1.5" rx="4"/>
+            <text x="140" y="95" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1</text>
+
+            <rect x="220" y="50" width="160" height="80" fill="#f472b6" opacity="0.4" rx="4"/>
+            <rect x="220" y="50" width="160" height="80" fill="none" stroke="#db2777" stroke-width="1.5" rx="4"/>
+            <text x="300" y="95" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2</text>
+
+            <rect x="380" y="50" width="160" height="80" fill="#fde68a" opacity="0.7" rx="4"/>
+            <rect x="380" y="50" width="160" height="80" fill="none" stroke="#f59e0b" stroke-width="1.5" rx="4"/>
+            <text x="460" y="95" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">3</text>
+
+            <rect x="60" y="140" width="160" height="80" fill="#86efac" opacity="0.7" rx="4"/>
+            <rect x="60" y="140" width="160" height="80" fill="none" stroke="#16a34a" stroke-width="1.5" rx="4"/>
+            <text x="140" y="185" text-anchor="middle" fill="#052e16" font-size="14" font-weight="700">4</text>
+
+            <rect x="220" y="140" width="160" height="80" fill="#c4b5fd" opacity="0.6" rx="4"/>
+            <rect x="220" y="140" width="160" height="80" fill="none" stroke="#7c3aed" stroke-width="1.5" rx="4"/>
+            <text x="300" y="185" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">5</text>
+
+            <rect x="380" y="140" width="160" height="80" fill="#fdba74" opacity="0.7" rx="4"/>
+            <rect x="380" y="140" width="160" height="80" fill="none" stroke="#ea580c" stroke-width="1.5" rx="4"/>
+            <text x="460" y="185" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">6</text>
+
+            <!-- vertical column lines (dashed) -->
+            <line x1="60"  y1="40" x2="60"  y2="240" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="220" y1="40" x2="220" y2="240" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="380" y1="40" x2="380" y2="240" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="540" y1="40" x2="540" y2="240" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+            <!-- column line numbers (top) -->
+            <circle cx="60"  cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="220" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="220" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="380" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="380" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- horizontal row lines (dashed) -->
+            <line x1="50" y1="50"  x2="560" y2="50"  stroke="#db2777" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="50" y1="140" x2="560" y2="140" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="50" y1="230" x2="560" y2="230" stroke="#db2777" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+            <!-- row line numbers (left) -->
+            <circle cx="35" cy="50"  r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="55"  text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="35" cy="140" r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="145" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="35" cy="230" r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="235" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+
+            <!-- legend -->
+            <circle cx="120" cy="262" r="6" fill="#0ea5e9"/>
+            <text x="135" y="266" fill="#6b7280" font-size="12">Column lines (4 lines for 3 columns)</text>
+            <circle cx="370" cy="262" r="6" fill="#db2777"/>
+            <text x="385" y="266" fill="#6b7280" font-size="12">Row lines (3 lines for 2 rows)</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Why this matters:</strong> When you write <code>grid-column: 1 / 3</code>, you're saying "start at line 1, end at line 3." Lines, not cells. This is the #1 thing beginners miss.</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Always set both columns AND rows when you start. Use Grid for full-page layout, Flexbox for components inside.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 3 =========== -->
+      <section class="lesson" id="f3">
+        <span class="file-tag"><span class="num">3</span> col-row-gap.html</span>
+        <h2>Gap, Row Gap & Column Gap</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Add space between cells without using margins. Cleaner, more predictable, and respects all alignment.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>3.col-row-gap.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>A<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>B<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>C<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three Properties, One Job</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>3.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>;
+
+  <span class="prop">column-gap</span>: <span class="val">30px</span>;       <span class="com">/* horizontal space (between columns) */</span>
+  <span class="prop">row-gap</span>:    <span class="val">10px</span>;       <span class="com">/* vertical space (between rows) */</span>
+
+  <span class="com">/* Shortcut */</span>
+  <span class="prop">gap</span>: <span class="val">10px</span>;               <span class="com">/* equal: row + column */</span>
+  <span class="prop">gap</span>: <span class="val">10px 30px</span>;          <span class="com">/* row-gap, column-gap */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">gap: 4px (small, equal)</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-gap1 lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="item">A</div><div class="item b">B</div><div class="item c">C</div>
+            </div>
+          </div>
+        </div>
+        <div class="lcd">
+          <div class="lcd-label">gap: 8px 32px (8px between rows, 32px between columns)</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-gap2 lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="item">A</div><div class="item b">B</div><div class="item c">C</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How gap creates space between grid lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 3 cells with visible gaps -->
+            <rect x="60"  y="60" width="140" height="140" fill="#6ee7ff" opacity="0.6" rx="4" stroke="#0ea5e9" stroke-width="2"/>
+            <text x="130" y="135" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">A</text>
+
+            <rect x="240" y="60" width="140" height="140" fill="#f472b6" opacity="0.6" rx="4" stroke="#db2777" stroke-width="2"/>
+            <text x="310" y="135" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">B</text>
+
+            <rect x="420" y="60" width="140" height="140" fill="#fde68a" opacity="0.7" rx="4" stroke="#f59e0b" stroke-width="2"/>
+            <text x="490" y="135" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">C</text>
+
+            <!-- Gap visualization with bracket -->
+            <rect x="200" y="60" width="40" height="140" fill="#fef3c7" opacity="0.7" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="220" y="135" text-anchor="middle" fill="#92400e" font-size="11" font-weight="700">gap</text>
+            <text x="220" y="150" text-anchor="middle" fill="#92400e" font-size="10">20px</text>
+
+            <rect x="380" y="60" width="40" height="140" fill="#fef3c7" opacity="0.7" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="400" y="135" text-anchor="middle" fill="#92400e" font-size="11" font-weight="700">gap</text>
+            <text x="400" y="150" text-anchor="middle" fill="#92400e" font-size="10">20px</text>
+
+            <!-- column lines (grid lines are at the EDGES of cells, gap is in between) -->
+            <line x1="60"  y1="48" x2="60"  y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="200" y1="48" x2="200" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="240" y1="48" x2="240" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="48" x2="380" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="420" y1="48" x2="420" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="560" y1="48" x2="560" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers (note: gap is IN the line, doesn't add new lines) -->
+            <circle cx="130" cy="38" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="130" y="43" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="310" cy="38" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="310" y="43" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="490" cy="38" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="490" y="43" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+
+            <text x="320" y="240" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">The gap sits between cells — it does NOT create extra grid lines</text>
+            <text x="320" y="258" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Grid lines run through the MIDDLE of the gap. Numbers stay 1, 2, 3 (for 3 cells)</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Always use <code>gap</code> instead of margins on grid items. Margins fight with alignment; <code>gap</code> works perfectly with everything.</div>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world use:</strong> Card layouts (16-24px gap), photo galleries (4-8px gap), dashboard widgets (24-32px gap).</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 4 =========== -->
+      <section class="lesson" id="f4">
+        <span class="file-tag"><span class="num">4</span> repeat-fr.html</span>
+        <h2>The repeat() Function & The fr Unit</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Two essential time-savers — <code>repeat()</code> for repetition and <code>fr</code> for fluid sizing.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>repeat()</code></strong> (CSS function) and <strong><code>1fr</code></strong> (special unit). See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>4.repeat-fr.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — repeat() Function</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>4.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Long way */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">1fr 1fr 1fr 1fr</span>;
+
+<span class="com">/* Short way — exactly the same */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(4, 1fr)</span>;
+
+<span class="com">/* Mix repeat with other values */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">200px repeat(3, 1fr) 200px</span>;
+
+<span class="com">/* Repeat patterns */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 100px 50px)</span>;  <span class="com">/* = 100px 50px 100px 50px 100px 50px */</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The fr Unit (Fraction of Available Space)</h3>
+        <p>Think of <code>fr</code> as "shares of leftover space" after fixed sizes and gaps are subtracted.</p>
+
+        <div class="lcd">
+          <div class="lcd-label">repeat(4, 1fr) — 4 equal columns</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span><span class="ln">5</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-repeat lcd-grid">
+              <div class="vt" style="left: 25%"></div>
+              <div class="vt" style="left: 50%"></div>
+              <div class="vt" style="left: 75%"></div>
+              <div class="item">1fr</div><div class="item b">1fr</div><div class="item c">1fr</div><div class="item d">1fr</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">1fr 2fr 1fr — middle is twice as wide (4 total parts: ¼, 2/4, ¼)</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-fr lcd-grid">
+              <div class="vt" style="left: 25%"></div>
+              <div class="vt" style="left: 75%"></div>
+              <div class="item">1fr</div><div class="item b">2fr (bigger)</div><div class="item c">1fr</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>How fr math works:</strong> Add all fr values to get the total. <code>1fr 2fr 1fr</code> = 4 total. Each <code>1fr</code> = ¼ of leftover space, <code>2fr</code> = 2/4.</div>
+        </div>
+
+        <h3><span class="icon"></span>How <code>1fr 2fr 1fr</code> sizes columns + grid lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- Container outline -->
+            <rect x="60" y="60" width="500" height="100" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- 1fr column (125px) -->
+            <rect x="60"  y="60" width="125" height="100" fill="#6ee7ff" opacity="0.7" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="122" y="115" text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1fr</text>
+            <text x="122" y="135" text-anchor="middle" fill="#0b1220" font-size="11">(¼ space)</text>
+
+            <!-- 2fr column (250px) -->
+            <rect x="185" y="60" width="250" height="100" fill="#f472b6" opacity="0.7" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="310" y="115" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2fr</text>
+            <text x="310" y="135" text-anchor="middle" fill="#fff" font-size="11">(2/4 = ½ space)</text>
+
+            <!-- 1fr column (125px) -->
+            <rect x="435" y="60" width="125" height="100" fill="#fde68a" opacity="0.8" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="497" y="115" text-anchor="middle" fill="#422006" font-size="14" font-weight="700">1fr</text>
+            <text x="497" y="135" text-anchor="middle" fill="#422006" font-size="11">(¼ space)</text>
+
+            <!-- column lines -->
+            <line x1="60"  y1="50" x2="60"  y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="185" y1="50" x2="185" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="435" y1="50" x2="435" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="560" y1="50" x2="560" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="60"  cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="185" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="185" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="435" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="435" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="560" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="560" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- Width measurements with brackets -->
+            <line x1="60"  y1="185" x2="185" y2="185" stroke="#0ea5e9" stroke-width="2"/>
+            <line x1="60"  y1="180" x2="60"  y2="190" stroke="#0ea5e9" stroke-width="2"/>
+            <line x1="185" y1="180" x2="185" y2="190" stroke="#0ea5e9" stroke-width="2"/>
+            <text x="122" y="200" text-anchor="middle" fill="#0ea5e9" font-size="11" font-weight="700">125px</text>
+
+            <line x1="185" y1="185" x2="435" y2="185" stroke="#db2777" stroke-width="2"/>
+            <line x1="185" y1="180" x2="185" y2="190" stroke="#db2777" stroke-width="2"/>
+            <line x1="435" y1="180" x2="435" y2="190" stroke="#db2777" stroke-width="2"/>
+            <text x="310" y="200" text-anchor="middle" fill="#db2777" font-size="11" font-weight="700">250px (2× wider)</text>
+
+            <line x1="435" y1="185" x2="560" y2="185" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="435" y1="180" x2="435" y2="190" stroke="#f59e0b" stroke-width="2"/>
+            <line x1="560" y1="180" x2="560" y2="190" stroke="#f59e0b" stroke-width="2"/>
+            <text x="497" y="200" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="700">125px</text>
+
+            <text x="320" y="232" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Total fr units = 1+2+1 = 4. Container width is split: 1/4, 2/4, 1/4</text>
+            <text x="320" y="252" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">3 columns → 4 grid lines (numbered 1-4 at column edges)</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Always prefer <code>fr</code> over <code>%</code>. Percent ignores gaps and breaks math; <code>fr</code> handles gaps automatically.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 5 =========== -->
+      <section class="lesson" id="f5">
+        <span class="file-tag"><span class="num">5</span> grid-item-position.html</span>
+        <h2>Positioning Grid Items by Line Numbers</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Place specific items in specific cells using line numbers — full manual control.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>5.grid-item-position.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item move"</span><span class="punc">&gt;</span>MOVED<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>3<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>4<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>5<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>6<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>7<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Four Properties (Long form vs Shortcut)</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>5.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Long form */</span>
+<span class="sel">.item</span> <span class="punc">{</span>
+  <span class="prop">grid-column-start</span>: <span class="val">2</span>;
+  <span class="prop">grid-column-end</span>:   <span class="val">4</span>;
+  <span class="prop">grid-row-start</span>:    <span class="val">1</span>;
+  <span class="prop">grid-row-end</span>:      <span class="val">3</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Shortcut */</span>
+<span class="sel">.item</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span>: <span class="val">2 / 4</span>;   <span class="com">/* start / end */</span>
+  <span class="prop">grid-row</span>:    <span class="val">1 / 3</span>;
+<span class="punc">}</span>
+
+<span class="com">/* Negative numbers — count from the end */</span>
+<span class="sel">.full-width</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span>: <span class="val">1 / -1</span>;  <span class="com">/* first line to last line */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Pink item placed at columns 2→4, rows 1→3</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span><span class="rn">4</span>
+            </div>
+            <div class="d-pos lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="ht" style="top: 33.33%"></div>
+              <div class="ht" style="top: 66.66%"></div>
+              <div class="item">1</div><div class="item b move">MOVED<br>(2/4, 1/3)</div>
+              <div class="item c">3</div><div class="item d">4</div>
+              <div class="item e">5</div><div class="item f">6</div>
+              <div class="item">7</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How <code>grid-column: 2 / 4</code> maps to lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- background cells (faded) -->
+            <rect x="60"  y="50"  width="160" height="60" fill="#e5e7eb" opacity="0.6" rx="4"/>
+            <rect x="380" y="50"  width="160" height="60" fill="#e5e7eb" opacity="0.6" rx="4"/>
+            <rect x="60"  y="120" width="160" height="60" fill="#e5e7eb" opacity="0.6" rx="4"/>
+            <rect x="380" y="120" width="160" height="60" fill="#e5e7eb" opacity="0.6" rx="4"/>
+
+            <!-- highlighted area (the moved item) -->
+            <rect x="220" y="50" width="320" height="130" fill="#f472b6" opacity="0.85" rx="6" stroke="#db2777" stroke-width="3"/>
+            <text x="380" y="120" text-anchor="middle" fill="#fff" font-size="16" font-weight="700">grid-column: 2 / 4</text>
+            <text x="380" y="142" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">grid-row: 1 / 3</text>
+            <text x="380" y="162" text-anchor="middle" fill="#fff" font-size="11" opacity="0.9">(spans 2 columns × 2 rows)</text>
+
+            <!-- column lines highlighted at 2 and 4 -->
+            <line x1="220" y1="40" x2="220" y2="200" stroke="#db2777" stroke-width="3"/>
+            <line x1="540" y1="40" x2="540" y2="200" stroke="#db2777" stroke-width="3"/>
+            <!-- other column lines (faded) -->
+            <line x1="60"  y1="40" x2="60"  y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="40" x2="380" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="60"  cy="30" r="13" fill="#94a3b8" stroke="#fff" stroke-width="2"/><text x="60"  y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="220" cy="30" r="14" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="220" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="380" cy="30" r="13" fill="#94a3b8" stroke="#fff" stroke-width="2"/><text x="380" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="30" r="14" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="540" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- row lines highlighted at 1 and 3 -->
+            <line x1="50" y1="50"  x2="550" y2="50"  stroke="#0ea5e9" stroke-width="3"/>
+            <line x1="50" y1="180" x2="550" y2="180" stroke="#0ea5e9" stroke-width="3"/>
+            <line x1="50" y1="120" x2="550" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- row line numbers -->
+            <circle cx="35" cy="50"  r="14" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="35" y="55"  text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="35" cy="120" r="13" fill="#94a3b8" stroke="#fff" stroke-width="2"/><text x="35" y="125" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="35" cy="180" r="14" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="35" y="185" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+
+            <!-- annotation arrows -->
+            <text x="120" y="225" fill="#6b7280" font-size="11" font-style="italic">Pink lines = the lines you specified (2 and 4 for column, 1 and 3 for row)</text>
+            <text x="120" y="245" fill="#6b7280" font-size="11" font-style="italic">Item starts at line 2, ends at line 4 → covers cells in between</text>
+          </svg>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Critical concept:</strong> Numbers refer to <strong>LINES</strong>, not cells. <code>grid-column: 2 / 4</code> means "from line 2 to line 4" — that covers <strong>2 cells</strong> (the cells between line 2-3 and line 3-4).</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Useful trick:</strong> <code>grid-column: 1 / -1</code> = full row span (great for "hero" rows in card layouts).</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 6 =========== -->
+      <section class="lesson" id="f6">
+        <span class="file-tag"><span class="num">6</span> span-grid-item.html</span>
+        <h2>Spanning Grid Items</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">Use the <code>span</code> keyword to stretch items across multiple cells without doing line-number math.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>span</code></strong> — a CSS keyword meaning "stretch across N tracks." See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>6.span-grid-item.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item wide"</span><span class="punc">&gt;</span>span 2 cols<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item tall"</span><span class="punc">&gt;</span>span 2 rows<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>D<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>E<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>F<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>G<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three Ways to Use span</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>6.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* 1. Just span N cells (auto-placement decides start) */</span>
+<span class="sel">.wide</span> <span class="punc">{</span> <span class="prop">grid-column</span>: <span class="val">span 2</span>; <span class="punc">}</span>
+<span class="sel">.tall</span> <span class="punc">{</span> <span class="prop">grid-row</span>:    <span class="val">span 2</span>; <span class="punc">}</span>
+
+<span class="com">/* 2. Start at a specific line, then span */</span>
+<span class="sel">.x</span> <span class="punc">{</span> <span class="prop">grid-column</span>: <span class="val">1 / span 3</span>; <span class="punc">}</span>  <span class="com">/* line 1 → 3 cells wide */</span>
+
+<span class="com">/* 3. End at a specific line, span backward */</span>
+<span class="sel">.y</span> <span class="punc">{</span> <span class="prop">grid-column</span>: <span class="val">span 3 / 5</span>; <span class="punc">}</span>  <span class="com">/* 3 cells wide, ending at line 5 */</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Pink = span 2 cols, Yellow = span 2 rows</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span><span class="ln">5</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span>
+            </div>
+            <div class="d-span lcd-grid">
+              <div class="vt" style="left: 25%"></div>
+              <div class="vt" style="left: 50%"></div>
+              <div class="vt" style="left: 75%"></div>
+              <div class="ht" style="top: 50%"></div>
+              <div class="item b wide">span 2 cols</div>
+              <div class="item c tall">span 2 rows</div>
+              <div class="item d">D</div>
+              <div class="item e">E</div>
+              <div class="item">F</div>
+              <div class="item f">G</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How <code>span</code> counts cells</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 4-column 2-row grid -->
+            <!-- pink: span 2 cols, starts at col 1 -->
+            <rect x="60" y="50" width="240" height="60" fill="#f472b6" opacity="0.85" rx="4" stroke="#db2777" stroke-width="2"/>
+            <text x="180" y="85" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">grid-column: span 2</text>
+            <text x="180" y="100" text-anchor="middle" fill="#fff" font-size="11" opacity="0.9">covers 2 cells (cols 1+2)</text>
+
+            <!-- yellow: span 2 rows, in col 3 -->
+            <rect x="300" y="50" width="120" height="130" fill="#fde68a" opacity="0.85" rx="4" stroke="#f59e0b" stroke-width="2"/>
+            <text x="360" y="110" text-anchor="middle" fill="#422006" font-size="12" font-weight="700">grid-row:</text>
+            <text x="360" y="128" text-anchor="middle" fill="#422006" font-size="12" font-weight="700">span 2</text>
+
+            <!-- other cells -->
+            <rect x="420" y="50"  width="120" height="60" fill="#e5e7eb" opacity="0.7" rx="4"/>
+            <rect x="60"  y="120" width="120" height="60" fill="#e5e7eb" opacity="0.7" rx="4"/>
+            <rect x="180" y="120" width="120" height="60" fill="#e5e7eb" opacity="0.7" rx="4"/>
+            <rect x="420" y="120" width="120" height="60" fill="#e5e7eb" opacity="0.7" rx="4"/>
+
+            <!-- column lines -->
+            <line x1="60"  y1="40" x2="60"  y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="180" y1="40" x2="180" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="300" y1="40" x2="300" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="420" y1="40" x2="420" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="540" y1="40" x2="540" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column numbers -->
+            <circle cx="60"  cy="30" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">1</text>
+            <circle cx="180" cy="30" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="180" y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+            <circle cx="300" cy="30" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="300" y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3</text>
+            <circle cx="420" cy="30" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="420" y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">4</text>
+            <circle cx="540" cy="30" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="34" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">5</text>
+
+            <!-- row lines -->
+            <line x1="50" y1="50"  x2="550" y2="50"  stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="50" y1="120" x2="550" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="50" y1="180" x2="550" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- row numbers -->
+            <circle cx="35" cy="50"  r="12" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="54"  text-anchor="middle" fill="#fff" font-size="12" font-weight="700">1</text>
+            <circle cx="35" cy="120" r="12" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="124" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+            <circle cx="35" cy="180" r="12" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="184" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3</text>
+
+            <!-- explanation -->
+            <text x="60" y="225" fill="#6b7280" font-size="11" font-style="italic">Pink box uses "span 2": auto-placed at column 1, then stretches 2 cells wide → ends at line 3</text>
+            <text x="60" y="245" fill="#6b7280" font-size="11" font-style="italic">Yellow box uses "span 2" for rows: stretches 2 rows tall → ends at line 3</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Span counts CELLS, not lines:</strong> <code>span 2</code> = 2 cells wide. The end line is automatic.</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Prefer <code>span</code> over fixed line numbers when the item just needs to "be N wide." It survives layout changes better.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 7 =========== -->
+      <section class="lesson" id="f7">
+        <span class="file-tag"><span class="num">7</span> grid-line-names.html</span>
+        <h2>Naming Grid Lines</h2>
+        <div class="badges">
+          <span class="badge parent">Parent (defines names)</span>
+          <span class="badge child">Child (uses names)</span>
+        </div>
+        <p class="topic">Give grid lines human-readable names instead of using numbers — useful for complex layouts.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>7.grid-line-names.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"sidebar"</span><span class="punc">&gt;</span>Sidebar<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"content"</span><span class="punc">&gt;</span>Main content<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Named Lines (Square Brackets)</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>7.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">grid-template-columns</span>:
+    <span class="key">[sidebar-start]</span> <span class="val">200px</span>
+    <span class="key">[sidebar-end main-start]</span> <span class="val">1fr</span>
+    <span class="key">[main-end]</span>;
+<span class="punc">}</span>
+
+<span class="sel">.sidebar</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span>: <span class="key">sidebar-start</span> / <span class="key">sidebar-end</span>;
+<span class="punc">}</span>
+<span class="sel">.content</span> <span class="punc">{</span>
+  <span class="prop">grid-column</span>: <span class="key">main-start</span> / <span class="key">main-end</span>;
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Item placed using line names: middle → end</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-named lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="item">[start] → [middle]</div>
+              <div class="item b">[middle] → [end]</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How names map to line numbers</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 240" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 3 columns -->
+            <rect x="60"  y="80" width="160" height="80" fill="#6ee7ff" opacity="0.5" rx="4" stroke="#0ea5e9" stroke-width="2"/>
+            <rect x="220" y="80" width="160" height="80" fill="#f472b6" opacity="0.5" rx="4" stroke="#db2777" stroke-width="2"/>
+            <rect x="380" y="80" width="160" height="80" fill="#fde68a" opacity="0.7" rx="4" stroke="#f59e0b" stroke-width="2"/>
+
+            <text x="140" y="125" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">Column 1</text>
+            <text x="300" y="125" text-anchor="middle" fill="#fff"    font-size="13" font-weight="700">Column 2</text>
+            <text x="460" y="125" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">Column 3</text>
+
+            <!-- column lines -->
+            <line x1="60"  y1="40" x2="60"  y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="220" y1="40" x2="220" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="40" x2="380" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="540" y1="40" x2="540" y2="180" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- line numbers (top) -->
+            <circle cx="60"  cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="220" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="220" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="380" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="380" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- line names (bottom) - same lines but with names -->
+            <rect x="32"  y="190" width="56" height="22" fill="#7c3aed" rx="11"/><text x="60"  y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="monospace">start</text>
+            <rect x="180" y="190" width="80" height="22" fill="#7c3aed" rx="11"/><text x="220" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="monospace">col2-start</text>
+            <rect x="340" y="190" width="80" height="22" fill="#7c3aed" rx="11"/><text x="380" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="monospace">col3-start</text>
+            <rect x="514" y="190" width="52" height="22" fill="#7c3aed" rx="11"/><text x="540" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700" font-family="monospace">end</text>
+
+            <!-- arrows showing equivalence -->
+            <text x="60"  y="60" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="700">═══</text>
+            <text x="220" y="60" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="700">═══</text>
+            <text x="380" y="60" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="700">═══</text>
+            <text x="540" y="60" text-anchor="middle" fill="#7c3aed" font-size="10" font-weight="700">═══</text>
+
+            <text x="300" y="232" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Same lines — line 1 = "start", line 2 = "col2-start", etc. Names are just aliases.</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Names ARE the line numbers — just renamed.</strong> <code>grid-column: start / end</code> does the EXACT same thing as <code>grid-column: 1 / 4</code>. Pick whichever is clearer for you.</div>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Multiple names per line:</strong> A single line can have multiple names — useful when a line is both "the end of one area" and "the start of another."</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Beginner advice:</strong> Skip line names while learning. Numbers work for 95% of layouts. Come back to names when building reusable design systems.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 8 =========== -->
+      <section class="lesson" id="f8">
+        <span class="file-tag"><span class="num">8</span> grid-temp-areas.html</span>
+        <h2>Grid Template Areas <span class="star">★</span></h2>
+        <div class="badges">
+          <span class="badge parent">Parent (defines areas)</span>
+          <span class="badge child">Child (places into area)</span>
+        </div>
+        <p class="topic">The most visual layout method. You literally <em>draw</em> your page using words. The MVP property of CSS Grid.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>8.grid-temp-areas.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"header"</span><span class="punc">&gt;</span>HEADER<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"sidebar"</span><span class="punc">&gt;</span>SIDEBAR<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"main"</span><span class="punc">&gt;</span>MAIN CONTENT<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"footer"</span><span class="punc">&gt;</span>FOOTER<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three-Step Recipe</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>8.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">display</span>: <span class="val">grid</span>;
+  <span class="prop">grid-template-areas</span>:
+    <span class="val">"head head head"</span>
+    <span class="val">"side main main"</span>
+    <span class="val">"side main main"</span>
+    <span class="val">"foot foot foot"</span>;
+  <span class="prop">grid-template-columns</span>: <span class="val">1fr 2fr 1fr</span>;
+  <span class="prop">grid-template-rows</span>:    <span class="val">60px 80px 80px 50px</span>;
+  <span class="prop">gap</span>: <span class="val">8px</span>;
+<span class="punc">}</span>
+
+<span class="sel">.header</span>  <span class="punc">{</span> <span class="prop">grid-area</span>: <span class="val">head</span>; <span class="punc">}</span>
+<span class="sel">.sidebar</span> <span class="punc">{</span> <span class="prop">grid-area</span>: <span class="val">side</span>; <span class="punc">}</span>
+<span class="sel">.main</span>    <span class="punc">{</span> <span class="prop">grid-area</span>: <span class="val">main</span>; <span class="punc">}</span>
+<span class="sel">.footer</span>  <span class="punc">{</span> <span class="prop">grid-area</span>: <span class="val">foot</span>; <span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Real webpage layout — header, sidebar, main, footer</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span><span class="rn">4</span><span class="rn">5</span>
+            </div>
+            <div class="d-areas lcd-grid">
+              <div class="vt" style="left: 25%"></div>
+              <div class="vt" style="left: 75%"></div>
+              <div class="ht" style="top: 21.8%"></div>
+              <div class="ht" style="top: 51.7%"></div>
+              <div class="ht" style="top: 81.6%"></div>
+              <div class="item a-head">HEADER</div>
+              <div class="item b a-side">SIDEBAR</div>
+              <div class="item c a-main">MAIN CONTENT</div>
+              <div class="item d a-foot">FOOTER</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How named areas map to grid lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 320" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- HEADER (row 1, cols 1-4) -->
+            <rect x="60" y="50" width="480" height="40" fill="#6ee7ff" opacity="0.7" rx="4" stroke="#0ea5e9" stroke-width="2"/>
+            <text x="300" y="76" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">"head head head" → grid-area: head</text>
+
+            <!-- SIDEBAR (rows 2-3, col 1) -->
+            <rect x="60" y="100" width="120" height="120" fill="#86efac" opacity="0.7" rx="4" stroke="#16a34a" stroke-width="2"/>
+            <text x="120" y="155" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">"side"</text>
+            <text x="120" y="170" text-anchor="middle" fill="#052e16" font-size="11" font-weight="700">"side"</text>
+
+            <!-- MAIN (rows 2-3, cols 2-4) -->
+            <rect x="180" y="100" width="360" height="120" fill="#fde68a" opacity="0.8" rx="4" stroke="#f59e0b" stroke-width="2"/>
+            <text x="360" y="155" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">"main main main"</text>
+            <text x="360" y="172" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">"main main main"</text>
+
+            <!-- FOOTER (row 4) -->
+            <rect x="60" y="230" width="480" height="40" fill="#c4b5fd" opacity="0.7" rx="4" stroke="#7c3aed" stroke-width="2"/>
+            <text x="300" y="256" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">"foot foot foot" → grid-area: foot</text>
+
+            <!-- column lines -->
+            <line x1="60"  y1="40" x2="60"  y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="180" y1="40" x2="180" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="300" y1="40" x2="300" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="420" y1="40" x2="420" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="540" y1="40" x2="540" y2="280" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <!-- column numbers -->
+            <circle cx="60"  cy="30" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="34" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <circle cx="180" cy="30" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="180" y="34" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <circle cx="300" cy="30" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="300" y="34" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <circle cx="420" cy="30" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="420" y="34" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+            <circle cx="540" cy="30" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="34" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+
+            <!-- row lines -->
+            <line x1="50" y1="50"  x2="550" y2="50"  stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="100" x2="550" y2="100" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="160" x2="550" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="220" x2="550" y2="220" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="50" y1="270" x2="550" y2="270" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <!-- row numbers -->
+            <circle cx="35" cy="50"  r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="54"  text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <circle cx="35" cy="100" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="104" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <circle cx="35" cy="160" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="164" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <circle cx="35" cy="220" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="224" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+            <circle cx="35" cy="270" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="274" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+
+            <text x="60" y="305" fill="#6b7280" font-size="11" font-style="italic">Each named area secretly creates lines like [head-start] / [head-end] in both axes</text>
+          </svg>
+        </div>
+
+        <h3><span class="icon"></span>The 4 Rules You Must Follow</h3>
+        <ul>
+          <li><strong>Equal columns per row:</strong> Each string must have the same number of words.</li>
+          <li><strong>Repeat to span:</strong> Same name in adjacent cells = one merged area.</li>
+          <li><strong>Empty cells:</strong> Use a single dot <code>.</code> (or multiple dots <code>...</code>).</li>
+          <li><strong>Rectangles only:</strong> Repeated names must form a rectangle — never an L-shape or T-shape.</li>
+        </ul>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Mobile-first responsive trick:</strong> Just redefine <code>grid-template-areas</code> in a media query. The same HTML stays — only the layout changes.</div>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice for beginners:</strong> Master this method first. It handles 95% of real-world layouts and is by far the easiest to read 6 months later.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 9 =========== -->
+      <section class="lesson" id="f9">
+        <span class="file-tag"><span class="num">9</span> justify-align-place-items.html</span>
+        <h2>Justify, Align & Place Items</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Aligns ALL grid items inside their cells. Set on the <strong>parent</strong>. Affects every child.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>9.justify-align-place-items.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>A<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>B<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>C<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three Properties</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>9.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">justify-items</span>: <span class="val">center</span>;     <span class="com">/* horizontal — across the row axis ↔ */</span>
+  <span class="prop">align-items</span>:   <span class="val">center</span>;     <span class="com">/* vertical — across the column axis ↕ */</span>
+  <span class="prop">place-items</span>:   <span class="val">center</span>;     <span class="com">/* shortcut: align-items justify-items */</span>
+  <span class="prop">place-items</span>:   <span class="val">center start</span>;  <span class="com">/* vertical horizontal */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>All Possible Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">stretch</span><span class="d">Fill the cell (default)</span></div>
+          <div class="value-pill"><span class="v">start</span><span class="d">Align to start of cell</span></div>
+          <div class="value-pill"><span class="v">end</span><span class="d">Align to end of cell</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Center in the cell</span></div>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">place-items: center — items shrink and center inside cells</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-justify lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="item">A</div><div class="item b">B</div><div class="item c">C</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How alignment works inside numbered cells</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 3 cells with grid lines -->
+            <rect x="60"  y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <rect x="220" y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <rect x="380" y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- Items aligned differently in each cell -->
+            <!-- Cell 1: start -->
+            <rect x="68"  y="58"  width="60" height="35" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="98"  y="80"  text-anchor="middle" fill="#0b1220" font-size="12" font-weight="700">start</text>
+
+            <!-- Cell 2: center -->
+            <rect x="270" y="113" width="60" height="35" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="300" y="135" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">center</text>
+
+            <!-- Cell 3: end -->
+            <rect x="472" y="167" width="60" height="35" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="502" y="189" text-anchor="middle" fill="#422006" font-size="12" font-weight="700">end</text>
+
+            <!-- column lines -->
+            <line x1="60"  y1="40" x2="60"  y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="220" y1="40" x2="220" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="40" x2="380" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="540" y1="40" x2="540" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="60"  cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="220" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="220" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="380" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="380" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- row lines -->
+            <line x1="50" y1="50"  x2="550" y2="50"  stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="50" y1="210" x2="550" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- row line numbers -->
+            <circle cx="35" cy="50"  r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="55"  text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="35" cy="210" r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="215" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+
+            <text x="300" y="248" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Each item aligns inside its own cell — defined by the grid lines</text>
+            <text x="300" y="265" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">place-items affects ALL items at once. Stretch (default) makes items fill their cell.</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Memory trick:</strong> <code>justify</code> = horizontal (left/right). <code>align</code> = vertical (top/bottom). <code>place</code> = both at once.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 10 =========== -->
+      <section class="lesson" id="f10">
+        <span class="file-tag"><span class="num">10</span> justify-align-place-content.html</span>
+        <h2>Justify, Align & Place Content</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Aligns the <strong>WHOLE GRID</strong> inside its container — only matters when the grid is smaller than the container.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>10.justify-align-place-content.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>A<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>B<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>C<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>10.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">justify-content</span>: <span class="val">center</span>;       <span class="com">/* horizontal: whole grid */</span>
+  <span class="prop">align-content</span>:   <span class="val">center</span>;       <span class="com">/* vertical: whole grid */</span>
+  <span class="prop">place-content</span>:   <span class="val">center</span>;       <span class="com">/* shortcut */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>All Values (More Options Than Items)</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">start</span><span class="d">Pack to start</span></div>
+          <div class="value-pill"><span class="v">end</span><span class="d">Pack to end</span></div>
+          <div class="value-pill"><span class="v">center</span><span class="d">Center the grid</span></div>
+          <div class="value-pill"><span class="v">stretch</span><span class="d">Fill container (default)</span></div>
+          <div class="value-pill"><span class="v">space-between</span><span class="d">First/last to edges</span></div>
+          <div class="value-pill"><span class="v">space-around</span><span class="d">Equal space around</span></div>
+          <div class="value-pill"><span class="v">space-evenly</span><span class="d">Equal space everywhere</span></div>
+        </div>
+
+        <div class="demo-box">
+          <div class="demo-label">place-content: center — entire grid (with its own line numbers) sits centered in the gray container</div>
+          <div class="d-content">
+            <div class="item">A</div><div class="item b">B</div><div class="item c">C</div>
+          </div>
+        </div>
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Why no track lines on this demo?</strong> The grid is <em>centered</em> inside the container, so grid lines run through the centered colored cells — not at container edges. See the SVG diagram below for the full picture.</div>
+        </div>
+
+        <h3><span class="icon"></span>How the whole grid moves inside the container</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- Outer container (gray) -->
+            <rect x="50" y="40" width="540" height="200" fill="#f3f4f6" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4,4" rx="6"/>
+            <text x="60" y="60" fill="#6b7280" font-size="11" font-weight="700">CONTAINER</text>
+
+            <!-- Inner grid (centered example) -->
+            <g transform="translate(180, 120)">
+              <rect x="0" y="0" width="80" height="40" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+              <text x="40" y="25" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">A</text>
+              <rect x="100" y="0" width="80" height="40" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="4"/>
+              <text x="140" y="25" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">B</text>
+              <rect x="200" y="0" width="80" height="40" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="4"/>
+              <text x="240" y="25" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">B</text>
+            </g>
+
+            <!-- Grid lines (around the centered grid) -->
+            <line x1="180" y1="110" x2="180" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="280" y1="110" x2="280" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="110" x2="380" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="460" y1="110" x2="460" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="180" cy="100" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="180" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">1</text>
+            <circle cx="280" cy="100" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="280" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">2</text>
+            <circle cx="380" cy="100" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="380" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">3</text>
+            <circle cx="460" cy="100" r="12" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="460" y="104" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">4</text>
+
+            <!-- arrows showing the grid can move -->
+            <text x="100" y="145" fill="#7c3aed" font-size="20" font-weight="700">←</text>
+            <text x="525" y="145" fill="#7c3aed" font-size="20" font-weight="700">→</text>
+            <text x="320" y="200" fill="#7c3aed" font-size="14" font-weight="700">↑ ↓</text>
+
+            <text x="320" y="232" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">place-content moves the WHOLE GRID (not items inside cells) within the container</text>
+            <text x="320" y="252" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Only works if the grid is smaller than its container — otherwise nowhere to move</text>
+          </svg>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>Items vs Content — the most confusing pair in CSS Grid:</strong>
+          <br>• <code>justify-items</code> → each item INSIDE its own cell
+          <br>• <code>justify-content</code> → the WHOLE GRID inside the container</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 11 =========== -->
+      <section class="lesson" id="f11">
+        <span class="file-tag"><span class="num">11</span> auto-row-col-flow.html</span>
+        <h2>Grid Auto Rows, Columns & Flow</h2>
+        <div class="badges"><span class="badge parent">Parent property</span></div>
+        <p class="topic">Tells Grid what to do when there are MORE items than the rows/columns you defined — the "implicit grid."</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>11.auto-row-col-flow.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>2<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>3<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>4<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>5<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>6<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>7<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Three Properties</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>11.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.parent</span> <span class="punc">{</span>
+  <span class="prop">grid-template-columns</span>: <span class="val">repeat(3, 1fr)</span>;
+
+  <span class="prop">grid-auto-rows</span>:    <span class="val">70px</span>;       <span class="com">/* size of any AUTO-CREATED rows */</span>
+  <span class="prop">grid-auto-columns</span>: <span class="val">100px</span>;      <span class="com">/* size of any AUTO-CREATED columns */</span>
+  <span class="prop">grid-auto-flow</span>:    <span class="val">row</span>;        <span class="com">/* row | column | row dense | column dense */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">7 items in a 3-column grid — Grid auto-creates rows at 60px each</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span><span class="rn">4</span>
+            </div>
+            <div class="d-auto lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="ht" style="top: 33.33%"></div>
+              <div class="ht" style="top: 66.66%"></div>
+              <div class="item">1</div><div class="item b">2</div><div class="item c">3</div>
+              <div class="item d">4</div><div class="item e">5</div><div class="item f">6</div>
+              <div class="item">7</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>grid-auto-flow Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">row</span><span class="d">Fill row by row (default)</span></div>
+          <div class="value-pill"><span class="v">column</span><span class="d">Fill column by column</span></div>
+          <div class="value-pill"><span class="v">row dense</span><span class="d">Back-fill empty cells</span></div>
+          <div class="value-pill"><span class="v">column dense</span><span class="d">Back-fill empty (column)</span></div>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">grid-auto-flow: column — items flow top-to-bottom first</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span><span class="rn">3</span>
+            </div>
+            <div class="d-flow-col lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="ht" style="top: 50%"></div>
+              <div class="item">1</div><div class="item b">2</div><div class="item c">3</div>
+              <div class="item d">4</div><div class="item e">5</div><div class="item f">6</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>Row vs Column flow — visualized</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 320" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- LEFT: row flow -->
+            <text x="140" y="30" text-anchor="middle" fill="#0ea5e9" font-size="13" font-weight="700">grid-auto-flow: row →</text>
+
+            <!-- 6 cells filling row by row -->
+            <rect x="40"  y="50"  width="60" height="50" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="70"  y="80"  text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1</text>
+            <rect x="110" y="50"  width="60" height="50" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="140" y="80"  text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2</text>
+            <rect x="180" y="50"  width="60" height="50" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="210" y="80"  text-anchor="middle" fill="#422006" font-size="14" font-weight="700">3</text>
+            <rect x="40"  y="110" width="60" height="50" fill="#86efac" stroke="#16a34a" stroke-width="2" rx="4"/>
+            <text x="70"  y="140" text-anchor="middle" fill="#052e16" font-size="14" font-weight="700">4</text>
+            <rect x="110" y="110" width="60" height="50" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2" rx="4"/>
+            <text x="140" y="140" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">5</text>
+            <rect x="180" y="110" width="60" height="50" fill="#fdba74" stroke="#ea580c" stroke-width="2" rx="4"/>
+            <text x="210" y="140" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">6</text>
+
+            <!-- arrows for row flow -->
+            <path d="M 100 75 L 175 75" stroke="#0ea5e9" stroke-width="2" fill="none" marker-end="url(#arrR)"/>
+            <path d="M 240 80 Q 260 95 240 110 Q 80 130 40 130" stroke="#0ea5e9" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+            <path d="M 100 135 L 175 135" stroke="#0ea5e9" stroke-width="2" fill="none" marker-end="url(#arrR)"/>
+
+            <!-- column lines for left grid -->
+            <line x1="40"  y1="42" x2="40"  y2="170" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="110" y1="42" x2="110" y2="170" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="180" y1="42" x2="180" y2="170" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="240" y1="42" x2="240" y2="170" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="40"  cy="42" r="9" fill="#0ea5e9"/><text x="40"  y="46" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">1</text>
+            <circle cx="110" cy="42" r="9" fill="#0ea5e9"/><text x="110" y="46" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+            <circle cx="180" cy="42" r="9" fill="#0ea5e9"/><text x="180" y="46" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+            <circle cx="240" cy="42" r="9" fill="#0ea5e9"/><text x="240" y="46" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">4</text>
+
+            <!-- RIGHT: column flow -->
+            <text x="500" y="30" text-anchor="middle" fill="#db2777" font-size="13" font-weight="700">grid-auto-flow: column ↓</text>
+
+            <rect x="380" y="50"  width="60" height="50" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="410" y="80"  text-anchor="middle" fill="#0b1220" font-size="14" font-weight="700">1</text>
+            <rect x="380" y="110" width="60" height="50" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="410" y="140" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">2</text>
+            <rect x="450" y="50"  width="60" height="50" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="480" y="80"  text-anchor="middle" fill="#422006" font-size="14" font-weight="700">3</text>
+            <rect x="450" y="110" width="60" height="50" fill="#86efac" stroke="#16a34a" stroke-width="2" rx="4"/>
+            <text x="480" y="140" text-anchor="middle" fill="#052e16" font-size="14" font-weight="700">4</text>
+            <rect x="520" y="50"  width="60" height="50" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2" rx="4"/>
+            <text x="550" y="80"  text-anchor="middle" fill="#fff" font-size="14" font-weight="700">5</text>
+            <rect x="520" y="110" width="60" height="50" fill="#fdba74" stroke="#ea580c" stroke-width="2" rx="4"/>
+            <text x="550" y="140" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">6</text>
+
+            <!-- arrows for column flow -->
+            <path d="M 410 100 L 410 110" stroke="#db2777" stroke-width="2" fill="none" marker-end="url(#arrD)"/>
+            <path d="M 480 100 L 480 110" stroke="#db2777" stroke-width="2" fill="none" marker-end="url(#arrD)"/>
+
+            <!-- Row line numbers for right grid -->
+            <line x1="380" y1="42" x2="580" y2="42" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="380" y1="100" x2="580" y2="100" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <line x1="380" y1="160" x2="580" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="365" cy="42"  r="9" fill="#db2777"/><text x="365" y="46"  text-anchor="middle" fill="#fff" font-size="10" font-weight="700">1</text>
+            <circle cx="365" cy="100" r="9" fill="#db2777"/><text x="365" y="104" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+            <circle cx="365" cy="160" r="9" fill="#db2777"/><text x="365" y="164" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+
+            <!-- arrow markers -->
+            <defs>
+              <marker id="arrR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0ea5e9"/></marker>
+              <marker id="arrD" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#db2777"/></marker>
+            </defs>
+
+            <!-- Annotations -->
+            <text x="320" y="220" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">LEFT: row flow — items 1-3 fill row 1, then items 4-6 fill row 2</text>
+            <text x="320" y="240" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">RIGHT: column flow — items 1-2 fill column 1, then items 3-4 fill column 2, etc.</text>
+
+            <!-- Dense explanation -->
+            <rect x="40" y="260" width="560" height="50" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="6"/>
+            <text x="60"  y="280" fill="#422006" font-size="12" font-weight="700">"dense" keyword:</text>
+            <text x="60"  y="298" fill="#422006" font-size="11">Adds back-filling — when a big item leaves a hole, smaller items behind it fill the gap.</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> Always set <code>grid-auto-rows</code> when item count is unknown (database lists, blog posts, products).</div>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>About <code>dense</code>:</strong> Useful for masonry-style image galleries — Grid back-fills holes left by larger items. Caveat: visual order may differ from DOM order (accessibility consideration).</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 12 =========== -->
+      <section class="lesson" id="f12">
+        <span class="file-tag"><span class="num">12</span> justify-align-place-self.html</span>
+        <h2>Justify, Align & Place Self</h2>
+        <div class="badges"><span class="badge child">Child property</span></div>
+        <p class="topic">The same as <code>place-items</code>, but applied to ONE specific item — set on the <strong>child</strong>, not the parent.</p>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>12.justify-align-place-self.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item one"</span><span class="punc">&gt;</span>start/start<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item two"</span><span class="punc">&gt;</span>center/center<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item three"</span><span class="punc">&gt;</span>end/end<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Override per-item</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>12.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="sel">.special-item</span> <span class="punc">{</span>
+  <span class="prop">justify-self</span>: <span class="val">end</span>;          <span class="com">/* override horizontal for this one only */</span>
+  <span class="prop">align-self</span>:   <span class="val">center</span>;       <span class="com">/* override vertical for this one only */</span>
+  <span class="prop">place-self</span>:   <span class="val">center end</span>;    <span class="com">/* shortcut: align justify */</span>
+<span class="punc">}</span></pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Each item aligned independently using *-self</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-self lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="item one">start/start</div>
+              <div class="item b two">center/center</div>
+              <div class="item c three">end/end</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How *-self overrides parent alignment</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- 3 cells -->
+            <rect x="60"  y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <rect x="220" y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <rect x="380" y="50" width="160" height="160" fill="#f3f4f6" rx="4" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- Items aligned via *-self - each different -->
+            <rect x="68"  y="58"  width="60" height="35" fill="#6ee7ff" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="98"  y="80"  text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">A</text>
+            <text x="98"  y="105" text-anchor="middle" fill="#0ea5e9" font-size="9" font-weight="700">place-self:</text>
+            <text x="98"  y="118" text-anchor="middle" fill="#0ea5e9" font-size="9" font-weight="700">start start</text>
+
+            <rect x="270" y="113" width="60" height="35" fill="#f472b6" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="300" y="135" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">B</text>
+            <text x="300" y="160" text-anchor="middle" fill="#db2777" font-size="9" font-weight="700">place-self:</text>
+            <text x="300" y="173" text-anchor="middle" fill="#db2777" font-size="9" font-weight="700">center center</text>
+
+            <rect x="472" y="167" width="60" height="35" fill="#fde68a" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="502" y="189" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">C</text>
+
+            <!-- column lines -->
+            <line x1="60"  y1="40" x2="60"  y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="220" y1="40" x2="220" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="380" y1="40" x2="380" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="540" y1="40" x2="540" y2="220" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="60"  cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="220" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="220" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="380" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="380" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="30" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="35" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- row lines -->
+            <line x1="50" y1="50"  x2="550" y2="50"  stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="50" y1="210" x2="550" y2="210" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- row line numbers -->
+            <circle cx="35" cy="50"  r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="55"  text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="35" cy="210" r="13" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="35" y="215" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+
+            <!-- bottom annotation for C -->
+            <text x="502" y="160" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700">place-self:</text>
+            <text x="502" y="160" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="700"></text>
+
+            <text x="300" y="248" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Each item independently chooses where to sit inside its OWN cell — without affecting siblings</text>
+            <text x="300" y="265" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Same values as place-items: stretch, start, end, center</text>
+          </svg>
+        </div>
+
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Specificity:</strong> <code>*-self</code> on a child OVERRIDES <code>*-items</code> on the parent. Use <code>*-items</code> for "all items," <code>*-self</code> to make exceptions.</div>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>Real-world use:</strong> A logo aligned to the start of a navbar while every other nav item is centered.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 13 =========== -->
+      <section class="lesson" id="f13">
+        <span class="file-tag"><span class="num">13</span> max-min-minmax.html</span>
+        <h2>min-content, max-content & minmax()</h2>
+        <div class="badges"><span class="badge parent">Parent property (used in template-columns/rows)</span></div>
+        <p class="topic">Smart sizing values that respond to content size and viewport — essential for responsive layouts.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>minmax()</code></strong> (CSS function) and <strong><code>min-content</code></strong> / <strong><code>max-content</code></strong> keywords. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>Three Sizing Values</h3>
+        <div class="values-grid">
+          <div class="value-pill"><span class="v">min-content</span><span class="d">As small as content allows (longest word)</span></div>
+          <div class="value-pill"><span class="v">max-content</span><span class="d">As wide as content needs (no wrapping)</span></div>
+          <div class="value-pill"><span class="v">minmax(a, b)</span><span class="d">At least 'a', at most 'b'</span></div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>13.max-min-minmax.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>min 100, max 1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>min 200, max 2fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>min 100, max 1fr<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — minmax() in action</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>13.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* Each column has a floor and ceiling */</span>
+<span class="prop">grid-template-columns</span>:
+  <span class="val">minmax(100px, 1fr)</span>      <span class="com">/* never below 100px, can grow to 1fr */</span>
+  <span class="val">minmax(200px, 2fr)</span>
+  <span class="val">minmax(100px, 1fr)</span>;
+
+<span class="com">/* Common use: prevent columns from squishing */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">minmax(0, 1fr) minmax(0, 2fr)</span>;</pre>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">Columns respect their min and max — they won't squish or stretch beyond limits</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-minmax lcd-grid">
+              <div class="vt" style="left: 25%"></div>
+              <div class="vt" style="left: 75%"></div>
+              <div class="item">min 100, max 1fr</div>
+              <div class="item b">min 200, max 2fr</div>
+              <div class="item c">min 100, max 1fr</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>How <code>minmax()</code> sizes columns + grid lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 280" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- Container -->
+            <rect x="50" y="60" width="540" height="100" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- Column 1: minmax(100px, 1fr) -->
+            <rect x="60"  y="60" width="120" height="100" fill="#6ee7ff" opacity="0.7" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="120" y="105" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">minmax(</text>
+            <text x="120" y="120" text-anchor="middle" fill="#0b1220" font-size="11" font-weight="700">100px, 1fr)</text>
+            <text x="120" y="138" text-anchor="middle" fill="#0b1220" font-size="9">≥ 100, ≤ 1fr</text>
+
+            <!-- Column 2: minmax(200px, 2fr) -->
+            <rect x="180" y="60" width="240" height="100" fill="#f472b6" opacity="0.7" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="300" y="105" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">minmax(</text>
+            <text x="300" y="120" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">200px, 2fr)</text>
+            <text x="300" y="138" text-anchor="middle" fill="#fff" font-size="9">≥ 200, ≤ 2fr</text>
+
+            <!-- Column 3: minmax(100px, 1fr) -->
+            <rect x="420" y="60" width="120" height="100" fill="#fde68a" opacity="0.8" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="480" y="105" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">minmax(</text>
+            <text x="480" y="120" text-anchor="middle" fill="#422006" font-size="11" font-weight="700">100px, 1fr)</text>
+            <text x="480" y="138" text-anchor="middle" fill="#422006" font-size="9">≥ 100, ≤ 1fr</text>
+
+            <!-- Min markers (red dashed line at 100px and 200px) -->
+            <line x1="60"  y1="60" x2="60"  y2="160" stroke="#ef4444" stroke-width="2"/>
+            <line x1="180" y1="60" x2="180" y2="160" stroke="#ef4444" stroke-width="2"/>
+            <line x1="420" y1="60" x2="420" y2="160" stroke="#ef4444" stroke-width="2"/>
+            <line x1="540" y1="60" x2="540" y2="160" stroke="#ef4444" stroke-width="2"/>
+
+            <!-- column lines -->
+            <line x1="60"  y1="50" x2="60"  y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="180" y1="50" x2="180" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="420" y1="50" x2="420" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="540" y1="50" x2="540" y2="170" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers -->
+            <circle cx="60"  cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="60"  y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">1</text>
+            <circle cx="180" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="180" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <circle cx="420" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="420" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">3</text>
+            <circle cx="540" cy="40" r="13" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="540" y="45" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">4</text>
+
+            <!-- Width brackets -->
+            <line x1="60"  y1="180" x2="180" y2="180" stroke="#0ea5e9" stroke-width="2"/>
+            <text x="120" y="195" text-anchor="middle" fill="#0ea5e9" font-size="11" font-weight="700">120px</text>
+
+            <line x1="180" y1="180" x2="420" y2="180" stroke="#db2777" stroke-width="2"/>
+            <text x="300" y="195" text-anchor="middle" fill="#db2777" font-size="11" font-weight="700">240px</text>
+
+            <line x1="420" y1="180" x2="540" y2="180" stroke="#f59e0b" stroke-width="2"/>
+            <text x="480" y="195" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="700">120px</text>
+
+            <text x="320" y="225" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Each column has a FLOOR (min) and CEILING (max)</text>
+            <text x="320" y="245" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Red lines = minimum size — the column will never shrink past these</text>
+            <text x="320" y="263" text-anchor="middle" fill="#6b7280" font-size="11" font-style="italic">Grid still has 4 lines for 3 columns — minmax just controls each column's WIDTH</text>
+          </svg>
+        </div>
+
+        <div class="callout tip">
+          <span class="cicon">✓</span>
+          <div><strong>Best practice:</strong> <code>minmax()</code> is your responsive workhorse. Set <code>minmax(0, 1fr)</code> when content overflows — the <code>0</code> minimum allows shrinking below content size.</div>
+        </div>
+      </section>
+
+      <!-- =========== FILE 14 =========== -->
+      <section class="lesson" id="f14">
+        <span class="file-tag"><span class="num">14</span> auto-fill-fit.html</span>
+        <h2>auto-fill & auto-fit <span class="star">★</span></h2>
+        <div class="badges"><span class="badge parent">Parent property (used in template-columns)</span></div>
+        <p class="topic">Magic responsive grids without media queries. Grid figures out HOW MANY columns to create based on available space.</p>
+
+        <div class="kw-note">
+          <div><strong>Uses <code>auto-fill</code> &amp; <code>auto-fit</code></strong> keywords combined with <code>repeat()</code> and <code>minmax()</code>. See <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">📖 PSEUDO-CLASSES tab</a>.</div>
+        </div>
+
+        <h3><span class="icon"></span>The HTML</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>14.auto-fill-fit.html</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"parent"</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>1<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>2<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>3<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>4<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>5<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+  <span class="punc">&lt;</span><span class="key">div</span> <span class="prop">class</span>=<span class="val">"item"</span><span class="punc">&gt;</span>6<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span>
+<span class="punc">&lt;/</span><span class="key">div</span><span class="punc">&gt;</span></pre>
+        </div>
+
+        <h3><span class="icon"></span>The CSS — Responsive One-Liner</h3>
+        <div class="code-wrap">
+          <div class="code-header"><span>14.style.css</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="com">/* auto-fill: keeps creating columns even if empty */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fill, minmax(110px, 1fr))</span>;
+
+<span class="com">/* auto-fit: collapses empty columns, items stretch to fill */</span>
+<span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(110px, 1fr))</span>;</pre>
+        </div>
+
+        <div class="demo-box">
+          <div class="demo-label">auto-fill — column count changes based on viewport width (resize your browser!)</div>
+          <div class="d-fill">
+            <div class="item">1</div><div class="item b">2</div><div class="item c">3</div>
+            <div class="item d">4</div><div class="item e">5</div><div class="item f">6</div>
+          </div>
+        </div>
+        <div class="callout info">
+          <span class="cicon">ℹ</span>
+          <div><strong>Dynamic line count:</strong> auto-fill creates as many columns as fit. The number of grid lines changes when you resize — that's why no fixed line numbers are shown here.</div>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-label">auto-fit — items stretch to fill any leftover space</div>
+          <div class="lcd-cols">
+            <span class="ln">1</span><span class="ln">2</span><span class="ln">3</span><span class="ln">4</span>
+          </div>
+          <div class="lcd-body">
+            <div class="lcd-rows">
+              <span class="rn">1</span><span class="rn">2</span>
+            </div>
+            <div class="d-fit lcd-grid">
+              <div class="vt" style="left: 33.33%"></div>
+              <div class="vt" style="left: 66.66%"></div>
+              <div class="item">1</div><div class="item b">2</div><div class="item c">3</div>
+            </div>
+          </div>
+        </div>
+
+        <h3><span class="icon"></span>The Difference Visualized</h3>
+        <table class="compare">
+          <tr><th>Behavior</th><th><code>auto-fill</code></th><th><code>auto-fit</code></th></tr>
+          <tr><td>Empty columns</td><td>Kept (invisible placeholders)</td><td>Collapsed</td></tr>
+          <tr><td>Item size</td><td>Stays at min size</td><td>Stretches to fill row</td></tr>
+          <tr><td>Best for</td><td>Consistent card grids</td><td>Filling all available space</td></tr>
+        </table>
+
+        <h3><span class="icon"></span>auto-fill vs auto-fit — visualized with grid lines</h3>
+        <div class="grid-svg-wrap">
+          <svg viewBox="0 0 640 380" style="width:100%; max-width:600px; display:block; margin:0 auto;">
+            <!-- TOP: auto-fill (3 items in space for 5 → 2 empty columns kept) -->
+            <text x="60" y="30" fill="#0ea5e9" font-size="13" font-weight="700">auto-fill — keeps empty columns</text>
+
+            <!-- Container -->
+            <rect x="60" y="50" width="500" height="60" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- 3 actual items -->
+            <rect x="65"  y="55" width="95" height="50" fill="#6ee7ff" opacity="0.7" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="112" y="85" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">1</text>
+            <rect x="165" y="55" width="95" height="50" fill="#f472b6" opacity="0.7" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="212" y="85" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2</text>
+            <rect x="265" y="55" width="95" height="50" fill="#fde68a" opacity="0.8" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="312" y="85" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">3</text>
+
+            <!-- 2 empty columns (still exist, just hidden) -->
+            <rect x="365" y="55" width="95" height="50" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,3" rx="4"/>
+            <text x="412" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-style="italic">empty</text>
+            <rect x="465" y="55" width="95" height="50" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,3" rx="4"/>
+            <text x="512" y="85" text-anchor="middle" fill="#94a3b8" font-size="11" font-style="italic">empty</text>
+
+            <!-- column lines -->
+            <line x1="65"  y1="42" x2="65"  y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="165" y1="42" x2="165" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="265" y1="42" x2="265" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="365" y1="42" x2="365" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="465" y1="42" x2="465" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="560" y1="42" x2="560" y2="120" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers (1-6 for 5 columns including empties) -->
+            <circle cx="65"  cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="65"  y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <circle cx="165" cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="165" y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <circle cx="265" cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="265" y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <circle cx="365" cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="365" y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+            <circle cx="465" cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="465" y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+            <circle cx="560" cy="42" r="11" fill="#0ea5e9" stroke="#fff" stroke-width="2"/><text x="560" y="46" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">6</text>
+
+            <text x="60" y="135" fill="#6b7280" font-size="11" font-style="italic">5 columns created → 6 grid lines. Items stay 100px, empty columns kept.</text>
+
+            <!-- BOTTOM: auto-fit (3 items stretch to fill space, empty columns collapse) -->
+            <text x="60" y="190" fill="#db2777" font-size="13" font-weight="700">auto-fit — empty columns collapse, items stretch</text>
+
+            <!-- Container -->
+            <rect x="60" y="210" width="500" height="60" fill="#fafafa" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,3" rx="4"/>
+
+            <!-- 3 stretched items -->
+            <rect x="65"  y="215" width="163" height="50" fill="#6ee7ff" opacity="0.7" stroke="#0ea5e9" stroke-width="2" rx="4"/>
+            <text x="146" y="245" text-anchor="middle" fill="#0b1220" font-size="13" font-weight="700">1 (stretched)</text>
+            <rect x="233" y="215" width="163" height="50" fill="#f472b6" opacity="0.7" stroke="#db2777" stroke-width="2" rx="4"/>
+            <text x="314" y="245" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">2 (stretched)</text>
+            <rect x="401" y="215" width="159" height="50" fill="#fde68a" opacity="0.8" stroke="#f59e0b" stroke-width="2" rx="4"/>
+            <text x="480" y="245" text-anchor="middle" fill="#422006" font-size="13" font-weight="700">3 (stretched)</text>
+
+            <!-- column lines -->
+            <line x1="65"  y1="202" x2="65"  y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="233" y1="202" x2="233" y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="401" y1="202" x2="401" y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="560" y1="202" x2="560" y2="280" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+            <!-- column line numbers (only 4 lines for 3 columns) -->
+            <circle cx="65"  cy="202" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="65"  y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+            <circle cx="233" cy="202" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="233" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+            <circle cx="401" cy="202" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="401" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+            <circle cx="560" cy="202" r="11" fill="#db2777" stroke="#fff" stroke-width="2"/><text x="560" y="206" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+
+            <text x="60" y="295" fill="#6b7280" font-size="11" font-style="italic">3 columns → 4 grid lines. Empty columns collapsed, items stretch to fill space.</text>
+
+            <!-- Note -->
+            <rect x="60" y="320" width="500" height="50" fill="#fef3c7" stroke="#f59e0b" stroke-width="1" rx="6"/>
+            <text x="80" y="340" fill="#422006" font-size="11" font-weight="700">Same code, same items — different grid line counts!</text>
+            <text x="80" y="358" fill="#422006" font-size="11">auto-fill keeps 5 columns (6 lines). auto-fit shows only 3 (4 lines).</text>
+          </svg>
+        </div>
+
+        <div class="callout real">
+          <span class="cicon">★</span>
+          <div><strong>The most-used real-world pattern in CSS Grid:</strong>
+          <pre style="margin-top: 8px; padding: 12px; font-size: 12px;"><span class="prop">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(250px, 1fr))</span>;
+<span class="prop">gap</span>: <span class="val">1.5rem</span>;</pre>
+          Use this for product grids, image galleries, blog post cards. Zero media queries needed.</div>
+        </div>
+      </section>
+
+      <!-- =========== MASTER CHEAT SHEET =========== -->
+      <section class="lesson" id="cheat">
+        <div class="cheat">
+          <h2>📋 Master Cheat Sheet</h2>
+          <p class="desc">Every property you've learned — what it does and where it goes.</p>
+
+          <table class="compare">
+            <tr><th>Property</th><th>Goes On</th><th>Purpose</th></tr>
+            <tr><td><code>display: grid</code></td><td>Parent</td><td>Activate Grid mode</td></tr>
+            <tr><td><code>grid-template-columns</code></td><td>Parent</td><td>Define column tracks</td></tr>
+            <tr><td><code>grid-template-rows</code></td><td>Parent</td><td>Define row tracks</td></tr>
+            <tr><td><code>grid-template-areas</code></td><td>Parent</td><td>Draw layout with names ★</td></tr>
+            <tr><td><code>gap</code> · <code>row-gap</code> · <code>column-gap</code></td><td>Parent</td><td>Space between cells</td></tr>
+            <tr><td><code>justify-items</code> · <code>align-items</code> · <code>place-items</code></td><td>Parent</td><td>Align items inside their cells</td></tr>
+            <tr><td><code>justify-content</code> · <code>align-content</code> · <code>place-content</code></td><td>Parent</td><td>Align the whole grid in container</td></tr>
+            <tr><td><code>grid-auto-rows</code> · <code>grid-auto-columns</code></td><td>Parent</td><td>Size for implicit (auto) tracks</td></tr>
+            <tr><td><code>grid-auto-flow</code></td><td>Parent</td><td>How auto-placed items flow</td></tr>
+            <tr><td><code>grid-column</code> · <code>grid-row</code></td><td>Child</td><td>Position by line numbers</td></tr>
+            <tr><td><code>grid-area</code></td><td>Child</td><td>Place into a named area ★</td></tr>
+            <tr><td><code>justify-self</code> · <code>align-self</code> · <code>place-self</code></td><td>Child</td><td>Override alignment for one item</td></tr>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 32px;"><span class="icon"></span>Beginner Roadmap (Recommended Order)</h3>
+        <ol style="margin-left: 20px; margin-top: 12px;">
+          <li style="margin-bottom: 8px; color: var(--text-dim);"><strong style="color: var(--text)">Step 1 —</strong> Master <code>grid-template-areas</code> + <code>grid-area</code> (file 8). Most layouts solved.</li>
+          <li style="margin-bottom: 8px; color: var(--text-dim);"><strong style="color: var(--text)">Step 2 —</strong> Add <code>gap</code>, <code>fr</code>, <code>repeat()</code> (files 3, 4). Polish.</li>
+          <li style="margin-bottom: 8px; color: var(--text-dim);"><strong style="color: var(--text)">Step 3 —</strong> Learn <code>auto-fit + minmax()</code> (files 13, 14). Instant responsive.</li>
+          <li style="margin-bottom: 8px; color: var(--text-dim);"><strong style="color: var(--text)">Step 4 —</strong> Alignment properties (files 9, 10, 12). Centering, spacing.</li>
+          <li style="margin-bottom: 8px; color: var(--text-dim);"><strong style="color: var(--text)">Step 5 —</strong> Line numbers + <code>span</code> (files 5, 6). For specific overrides.</li>
+          <li style="color: var(--text-dim);"><strong style="color: var(--text)">Step 6 —</strong> Named lines + <code>auto-flow: dense</code> (files 7, 11). Advanced.</li>
+        </ol>
+      </section>
+
+      <!-- =========== COMMON MISTAKES =========== -->
+      <section class="lesson" id="mistakes">
+        <h2>⚠ Common Mistakes to Avoid</h2>
+        <p class="topic">The most frequent CSS Grid mistakes and how to fix them.</p>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>1. Confusing rows and columns.</strong>
+          Rows go HORIZONTALLY (lying down → ━━━), columns go VERTICALLY (standing up → ┃).</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>2. Mixing up <code>items</code> vs <code>content</code>.</strong>
+          <code>justify-items</code> = each item in its cell. <code>justify-content</code> = the whole grid in its container.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>3. Using <code>%</code> instead of <code>fr</code>.</strong>
+          Percent doesn't account for gaps; your math will break. Use <code>fr</code> always.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>4. Forgetting that line numbers count LINES, not cells.</strong>
+          <code>grid-column: 1 / 3</code> spans 2 cells (line 1 to line 3).</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>5. Using margins on grid items.</strong>
+          Always use <code>gap</code> instead. Margins fight with alignment properties.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>6. L-shapes in <code>grid-template-areas</code>.</strong>
+          Repeated names MUST form a rectangle. The browser silently breaks if you use an L or T shape.</div>
+        </div>
+
+        <div class="callout warn">
+          <span class="cicon">!</span>
+          <div><strong>7. Using Grid for everything.</strong>
+          Use Grid for 2D layouts (page sections). Use Flexbox for 1D (a navbar, a row of buttons inside a card).</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      CSS Grid Reference · Built for Chapter 6 Resource Files · Print this page anytime (Ctrl/Cmd + P)
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Copy code to clipboard
+  function copyCode(btn) {
+    const pre = btn.parentElement.nextElementSibling;
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.innerText;
+      btn.innerText = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  }
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section.lesson');
+  const navLinks = document.querySelectorAll('aside nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

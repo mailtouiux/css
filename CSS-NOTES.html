@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Notes — Common References</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0d17; --bg-2: #11141f; --bg-3: #181b29; --bg-4: #1f2336;
+    --border: #2a2e44;
+    --text: #e6e8ef; --text-dim: #9ba1b3;
+    --accent: #6ee7ff; --accent-2: #a78bfa;
+    --warn: #fb7185; --good: #34d399; --gold: #fbbf24;
+    --code-bg: #06080f; --pink: #f472b6;
+    --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.65; font-size: 15px; -webkit-font-smoothing: antialiased;
+  }
+
+  /* TOP NAV */
+  .topnav {
+    background: var(--bg-2); border-bottom: 1px solid var(--border);
+    padding: 0 32px; display: flex; align-items: center;
+    height: 52px; position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .topnav .topnav-brand {
+    font-weight: 700; color: var(--text); margin-right: 32px;
+    font-size: 14px; letter-spacing: -0.01em;
+  }
+  .topnav .topnav-tabs { display: flex; gap: 4px; }
+  .topnav a {
+    padding: 8px 18px; color: var(--text-dim); text-decoration: none;
+    font-weight: 600; font-size: 13px; border-radius: 6px;
+    letter-spacing: 0.04em; transition: all 0.15s;
+  }
+  .topnav a:hover { background: var(--bg-3); color: var(--text); }
+  .topnav a.active { background: var(--gold); color: var(--bg); }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 52px); }
+
+  aside {
+    background: var(--bg-2); border-right: 1px solid var(--border);
+    padding: 32px 0; position: sticky; top: 52px;
+    height: calc(100vh - 52px); overflow-y: auto;
+  }
+  aside .brand {
+    padding: 0 28px 24px; border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  aside .brand h1 { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  aside .brand p { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  aside nav { padding: 0 16px; }
+  aside nav .label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-dim); padding: 14px 12px 6px;
+  }
+  aside nav a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; color: var(--text-dim); text-decoration: none;
+    font-size: 13px; border-radius: 6px; transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  aside nav a:hover { background: var(--bg-3); color: var(--text); }
+  aside nav a.active { background: var(--bg-4); color: var(--gold); }
+
+  main { padding: 0; max-width: 100%; overflow-x: hidden; }
+
+  .hero {
+    padding: 56px 56px 40px;
+    background:
+      radial-gradient(ellipse at top right, rgba(251,191,36,0.10), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .eyebrow {
+    display: inline-block; padding: 4px 12px;
+    background: var(--bg-3); color: var(--gold);
+    border: 1px solid var(--border); border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 38px; font-weight: 800; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 14px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--gold) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p.lead { font-size: 16px; color: var(--text-dim); max-width: 720px; line-height: 1.6; }
+
+  .content { padding: 40px 56px 80px; max-width: 1400px; }
+
+  section.note {
+    margin-bottom: 56px;
+    scroll-margin-top: 76px;
+  }
+  section.note h2 {
+    font-size: 26px; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 8px;
+    color: var(--text);
+  }
+  section.note .topic {
+    font-size: 15px; color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  /* ============ MASTER TABLE WITH GROUP SEPARATORS ============ */
+  .master-table-wrap {
+    width: 100%; overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+  }
+  table.master {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.master thead th {
+    background: var(--bg-3);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 52px;
+    z-index: 5;
+  }
+  table.master tbody td {
+    padding: 14px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  table.master tbody td code {
+    background: var(--code-bg);
+    color: var(--gold);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    white-space: nowrap;
+    border: 1px solid rgba(251,191,36,0.2);
+    display: inline-block;
+  }
+  table.master tbody tr:hover {
+    background: rgba(251,191,36,0.04);
+  }
+
+  /* GROUP SECTION HEADER ROWS — visual horizontal separators */
+  table.master tr.group-header td {
+    background: linear-gradient(90deg, var(--bg-3), transparent);
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 16px 14px 10px;
+    border-top: 3px solid var(--accent);
+    border-bottom: 1px solid var(--border);
+  }
+  table.master tr.group-main td   { color: #0ea5e9; border-top-color: #0ea5e9; background: linear-gradient(90deg, rgba(14,165,233,0.1), transparent); }
+  table.master tr.group-cross td  { color: #db2777; border-top-color: #db2777; background: linear-gradient(90deg, rgba(219,39,119,0.1), transparent); }
+  table.master tr.group-both td   { color: #7c3aed; border-top-color: #7c3aed; background: linear-gradient(90deg, rgba(124,58,237,0.1), transparent); }
+
+  /* axis label styling */
+  .ax-main  { color: #0ea5e9; font-weight: 700; }
+  .ax-cross { color: #db2777; font-weight: 700; }
+  .ax-both  { color: #7c3aed; font-weight: 700; }
+
+  /* support badges */
+  .badge-yes { color: #16a34a; font-weight: 800; font-size: 16px; }
+  .badge-no  { color: #dc2626; font-weight: 800; font-size: 16px; }
+  .badge-warn { color: #f59e0b; font-weight: 800; font-size: 16px; }
+
+  .set-on-parent { color: var(--text-dim); }
+  .set-on-child  { color: var(--warn); font-weight: 700; }
+
+  /* Callouts */
+  .callout {
+    padding: 14px 18px; border-radius: 8px;
+    margin: 16px 0; font-size: 14px;
+    border-left: 4px solid;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .callout strong { color: var(--text); }
+  .callout.tip { background: rgba(52, 211, 153, 0.07); border-color: var(--good); color: var(--text-dim); }
+  .callout.warn { background: rgba(251, 113, 133, 0.07); border-color: var(--warn); color: var(--text-dim); }
+  .callout.info { background: rgba(110, 231, 255, 0.06); border-color: var(--accent); color: var(--text-dim); }
+
+  code {
+    background: var(--bg-3); padding: 2px 6px;
+    border-radius: 3px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em; color: var(--gold);
+    border: 1px solid var(--border);
+  }
+
+  /* Plain English cards */
+  .plain-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .plain-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid;
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .plain-card.main  { border-left-color: #0ea5e9; }
+  .plain-card.cross { border-left-color: #db2777; }
+  .plain-card.both  { border-left-color: #7c3aed; }
+  .plain-card .pc-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .plain-card .pc-num {
+    background: var(--bg-3);
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 13px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+  .plain-card code {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .plain-card .pc-desc {
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .plain-card .pc-think {
+    color: var(--text-dim);
+    font-size: 13px;
+    font-style: italic;
+    padding: 8px 12px;
+    background: var(--bg-3);
+    border-radius: 4px;
+    border-left: 2px solid var(--gold);
+  }
+  .plain-card .pc-think strong { color: var(--gold); font-style: normal; }
+
+  /* Legend */
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .legend-item {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .legend-item strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 14px; }
+  .legend-item.main  { border-left-color: #0ea5e9; }
+  .legend-item.main strong  { color: #0ea5e9; }
+  .legend-item.cross { border-left-color: #db2777; }
+  .legend-item.cross strong { color: #db2777; }
+  .legend-item.both  { border-left-color: #7c3aed; }
+  .legend-item.both strong  { color: #7c3aed; }
+
+  footer {
+    padding: 32px 56px; border-top: 1px solid var(--border);
+    color: var(--text-dim); font-size: 13px; text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    .hero, .content, footer { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: 28px; }
+  }
+  @media print {
+    .topnav, aside { display: none; }
+    body { background: #fff; color: #000; }
+    .layout { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="topnav-brand">📚 CSS Reference</span>
+  <div class="topnav-tabs">
+    <a href="CSS-FLEX-COMPLETE-REFERENCE.html">FLEX</a>
+    <a href="CSS-GRID-COMPLETE-REFERENCE.html">GRID</a>
+    <a href="CSS-NOTES.html" class="active">NOTE</a>
+    <a href="CSS-PSEUDO-CLASSES-REFERENCE.html">PSEUDO-CLASSES</a>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <aside>
+    <div class="brand">
+      <h1>📝 CSS Notes</h1>
+      <p>Common references &amp; cheat sheets</p>
+    </div>
+    <nav>
+      <div class="label">Note #1 — Alignment</div>
+      <a href="#alignment-table">📊 Master Table</a>
+      <a href="#legend">🎨 Legend &amp; Axis Guide</a>
+      <a href="#mnemonic">🧠 Memory Pattern (JAP)</a>
+    </nav>
+  </aside>
+
+  <main>
+
+    <div class="hero">
+      <span class="eyebrow">📝 CSS NOTES — COMMON REFERENCES</span>
+      <h1>CSS Notes &amp; Cheat Sheets</h1>
+      <p class="lead">Cross-cutting references that apply to BOTH Flex and Grid. Use the dedicated FLEX / GRID tabs for layout-specific properties.</p>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ MASTER ALIGNMENT TABLE ============ -->
+      <section class="note" id="alignment-table">
+        <h2>📊 Note #1 — Alignment Master Table (All 9 Properties)</h2>
+        <p class="topic">Every CSS alignment property organized by axis. Color-coded sections make the pattern instantly visible.</p>
+
+        <div class="master-table-wrap">
+          <table class="master">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Property</th>
+                <th>Formula</th>
+                <th>Axis</th>
+                <th>Target</th>
+                <th>Set on</th>
+                <th>Flex</th>
+                <th>Grid</th>
+                <th>What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- ═══════════ GROUP 1: MAIN AXIS (justify-*) ═══════════ -->
+              <tr class="group-header group-main">
+                <td colspan="9">⬅️➡️ MAIN AXIS — <code>justify-*</code> (direction items flow)</td>
+              </tr>
+              <tr>
+                <td><strong>1</strong></td>
+                <td><code>justify-content</code></td>
+                <td><code>justify-</code> + <code>-content</code></td>
+                <td class="ax-main">Main</td>
+                <td>Whole group</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-yes">✓</td>
+                <td class="badge-yes">✓</td>
+                <td>Aligns the whole group along the main axis</td>
+              </tr>
+              <tr>
+                <td><strong>2</strong></td>
+                <td><code>justify-items</code></td>
+                <td><code>justify-</code> + <code>-items</code></td>
+                <td class="ax-main">Main</td>
+                <td>Each item</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-no">✗</td>
+                <td class="badge-yes">✓</td>
+                <td>Aligns each item in its cell on main axis</td>
+              </tr>
+              <tr>
+                <td><strong>3</strong></td>
+                <td><code>justify-self</code></td>
+                <td><code>justify-</code> + <code>-self</code></td>
+                <td class="ax-main">Main</td>
+                <td>One item</td>
+                <td class="set-on-child">Child</td>
+                <td class="badge-no">✗</td>
+                <td class="badge-yes">✓</td>
+                <td>Override one item on main axis</td>
+              </tr>
+
+              <!-- ═══════════ GROUP 2: CROSS AXIS (align-*) ═══════════ -->
+              <tr class="group-header group-cross">
+                <td colspan="9">⬆️⬇️ CROSS AXIS — <code>align-*</code> (perpendicular to main)</td>
+              </tr>
+              <tr>
+                <td><strong>4</strong></td>
+                <td><code>align-content</code></td>
+                <td><code>align-</code> + <code>-content</code></td>
+                <td class="ax-cross">Cross</td>
+                <td>Whole group</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-yes">✓</td>
+                <td class="badge-yes">✓</td>
+                <td>Aligns wrapped rows as a group on cross axis</td>
+              </tr>
+              <tr>
+                <td><strong>5</strong></td>
+                <td><code>align-items</code></td>
+                <td><code>align-</code> + <code>-items</code></td>
+                <td class="ax-cross">Cross</td>
+                <td>Each item</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-yes">✓</td>
+                <td class="badge-yes">✓</td>
+                <td>Aligns each item on cross axis</td>
+              </tr>
+              <tr>
+                <td><strong>6</strong></td>
+                <td><code>align-self</code></td>
+                <td><code>align-</code> + <code>-self</code></td>
+                <td class="ax-cross">Cross</td>
+                <td>One item</td>
+                <td class="set-on-child">Child</td>
+                <td class="badge-yes">✓</td>
+                <td class="badge-yes">✓</td>
+                <td>Override one item on cross axis</td>
+              </tr>
+
+              <!-- ═══════════ GROUP 3: BOTH AXES (place-*) ═══════════ -->
+              <tr class="group-header group-both">
+                <td colspan="9">⤡ BOTH AXES — <code>place-*</code> (shortcut for align + justify)</td>
+              </tr>
+              <tr>
+                <td><strong>7</strong></td>
+                <td><code>place-content</code></td>
+                <td><code>place-</code> + <code>-content</code></td>
+                <td class="ax-both">Both</td>
+                <td>Whole group</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-yes">✓</td>
+                <td class="badge-yes">✓</td>
+                <td>Shortcut: <code>align-content</code> + <code>justify-content</code></td>
+              </tr>
+              <tr>
+                <td><strong>8</strong></td>
+                <td><code>place-items</code></td>
+                <td><code>place-</code> + <code>-items</code></td>
+                <td class="ax-both">Both</td>
+                <td>Each item</td>
+                <td class="set-on-parent">Parent</td>
+                <td class="badge-no">✗</td>
+                <td class="badge-yes">✓</td>
+                <td>Shortcut: <code>align-items</code> + <code>justify-items</code></td>
+              </tr>
+              <tr>
+                <td><strong>9</strong></td>
+                <td><code>place-self</code></td>
+                <td><code>place-</code> + <code>-self</code></td>
+                <td class="ax-both">Both</td>
+                <td>One item</td>
+                <td class="set-on-child">Child</td>
+                <td class="badge-warn">⚠</td>
+                <td class="badge-yes">✓</td>
+                <td>Shortcut: <code>align-self</code> + <code>justify-self</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warn">
+          <span><strong>Why ✗ in Flex?</strong> Flex items along the main axis flow naturally — there's no "per-item main-axis position" concept. So <code>justify-items</code>, <code>justify-self</code>, and <code>place-items</code> are ignored in Flex. The <code>⚠</code> for <code>place-self</code> means only its <code>align-self</code> part works in Flex.</span>
+        </div>
+
+        <!-- ════════════ PLAIN ENGLISH EXPLANATIONS ════════════ -->
+        <h2 style="margin-top: 56px;">💬 Each Property in Plain English</h2>
+        <p class="topic">A simple one-line description and a memory trick for each property.</p>
+
+        <div class="plain-cards">
+
+          <!-- 1. justify-content -->
+          <div class="plain-card main">
+            <div class="pc-head"><span class="pc-num">1</span><code>justify-content</code></div>
+            <p class="pc-desc"><strong>Moves ALL items together</strong> along the main axis (the direction items flow).</p>
+            <div class="pc-think"><strong>Think:</strong> "Where should the WHOLE group sit horizontally?" (in row layout)</div>
+          </div>
+
+          <!-- 2. justify-items -->
+          <div class="plain-card main">
+            <div class="pc-head"><span class="pc-num">2</span><code>justify-items</code></div>
+            <p class="pc-desc"><strong>Positions EACH item</strong> inside its own grid cell, on the main axis. <em>Grid only.</em></p>
+            <div class="pc-think"><strong>Think:</strong> "Where should each individual item sit inside its cell horizontally?"</div>
+          </div>
+
+          <!-- 3. justify-self -->
+          <div class="plain-card main">
+            <div class="pc-head"><span class="pc-num">3</span><code>justify-self</code></div>
+            <p class="pc-desc"><strong>Moves ONE specific item</strong> inside its cell, overriding the parent's setting. <em>Grid only.</em></p>
+            <div class="pc-think"><strong>Think:</strong> "Just THIS item — let me put it somewhere different from the others."</div>
+          </div>
+
+          <!-- 4. align-content -->
+          <div class="plain-card cross">
+            <div class="pc-head"><span class="pc-num">4</span><code>align-content</code></div>
+            <p class="pc-desc"><strong>Moves the wrapped ROWS</strong> as a group on the cross axis. Only works with <code>flex-wrap: wrap</code>.</p>
+            <div class="pc-think"><strong>Think:</strong> "Where should the GROUP of multi-line rows sit vertically?"</div>
+          </div>
+
+          <!-- 5. align-items -->
+          <div class="plain-card cross">
+            <div class="pc-head"><span class="pc-num">5</span><code>align-items</code></div>
+            <p class="pc-desc"><strong>Positions EACH item</strong> vertically (cross axis) inside its row.</p>
+            <div class="pc-think"><strong>Think:</strong> "Where should each item sit vertically — top, center, bottom?"</div>
+          </div>
+
+          <!-- 6. align-self -->
+          <div class="plain-card cross">
+            <div class="pc-head"><span class="pc-num">6</span><code>align-self</code></div>
+            <p class="pc-desc"><strong>Moves ONE specific item</strong> vertically, overriding the parent's <code>align-items</code> setting.</p>
+            <div class="pc-think"><strong>Think:</strong> "Just THIS item should sit at a different vertical position than the others."</div>
+          </div>
+
+          <!-- 7. place-content -->
+          <div class="plain-card both">
+            <div class="pc-head"><span class="pc-num">7</span><code>place-content</code></div>
+            <p class="pc-desc"><strong>Shortcut</strong> for <code>align-content</code> + <code>justify-content</code> — moves the whole group on BOTH axes at once.</p>
+            <div class="pc-think"><strong>Think:</strong> "Save typing — center the whole group in both directions with ONE line."</div>
+          </div>
+
+          <!-- 8. place-items -->
+          <div class="plain-card both">
+            <div class="pc-head"><span class="pc-num">8</span><code>place-items</code></div>
+            <p class="pc-desc"><strong>Shortcut</strong> for <code>align-items</code> + <code>justify-items</code> — positions each item on BOTH axes at once. <em>Grid only.</em></p>
+            <div class="pc-think"><strong>Think:</strong> "The cleanest way to center anything in Grid: <code>place-items: center</code>"</div>
+          </div>
+
+          <!-- 9. place-self -->
+          <div class="plain-card both">
+            <div class="pc-head"><span class="pc-num">9</span><code>place-self</code></div>
+            <p class="pc-desc"><strong>Shortcut</strong> for <code>align-self</code> + <code>justify-self</code> — moves ONE specific item on BOTH axes at once.</p>
+            <div class="pc-think"><strong>Think:</strong> "ONE item rebels against the parent — let it sit anywhere it wants."</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ LEGEND & AXIS GUIDE ============ -->
+      <section class="note" id="legend">
+        <h2>🎨 Legend — The 3 Color Groups</h2>
+        <p class="topic">Each row group in the table above is color-coded by its axis prefix.</p>
+
+        <div class="legend">
+          <div class="legend-item main">
+            <strong>justify-* (Main axis)</strong>
+            Controls the direction items FLOW.<br>
+            In row layout: horizontal (← →)<br>
+            In column layout: vertical (↑ ↓)
+          </div>
+          <div class="legend-item cross">
+            <strong>align-* (Cross axis)</strong>
+            Perpendicular to the main axis.<br>
+            In row layout: vertical (↑ ↓)<br>
+            In column layout: horizontal (← →)
+          </div>
+          <div class="legend-item both">
+            <strong>place-* (Both axes)</strong>
+            Shortcut for align + justify.<br>
+            Saves you 1 line of CSS.<br>
+            Only fully works in Grid.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MEMORY MNEMONIC ============ -->
+      <section class="note" id="mnemonic">
+        <h2>🧠 Memory Pattern — "JAP"</h2>
+        <p class="topic">Once you remember this pattern, all 9 properties become obvious.</p>
+
+        <div class="callout tip">
+          <div>
+            <strong style="font-size: 16px;">🎯 The Formula:</strong>
+            <br><br>
+            <strong style="color: #0ea5e9;">J</strong>ustify-  →  MAIN axis<br>
+            <strong style="color: #db2777;">A</strong>lign-  →  CROSS axis<br>
+            <strong style="color: #7c3aed;">P</strong>lace-  →  BOTH axes (shortcut)<br>
+            <br>
+            Add one of these as a target:<br>
+            • <code>-content</code> → whole group (set on parent)<br>
+            • <code>-items</code> → each item (set on parent)<br>
+            • <code>-self</code> → one specific item (set on child)<br>
+            <br>
+            <em>That's it — 3 prefixes × 3 targets = all 9 properties memorized!</em>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span><strong>Where to write each one:</strong>
+          <br>• <code>-content</code> or <code>-items</code> → set on the <strong>PARENT</strong> (container)
+          <br>• <code>-self</code> → set on the <strong>CHILD</strong> (the specific item)</span>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      📝 CSS Notes · Note #1: Alignment Master Reference · Cross-cutting references for both Flex and Grid
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
